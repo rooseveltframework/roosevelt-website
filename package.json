@@ -1,0 +1,58 @@
+{
+  "name": "roosevelt-website",
+  "description": "Website for Roosevelt MVC web framework.",
+  "author": "Roosevelt Framework Team <rooseveltframework@gmail.com>",
+  "contributors": [
+    {
+      "name": "Contributors",
+      "url": "https://github.com/rooseveltframework/roosevelt-website/graphs/contributors"
+    }
+  ],
+  "version": "0.20.0",
+  "homepage": "https://github.com/rooseveltframework/roosevelt-website",
+  "license": "CC-BY-4.0",
+  "main": "build.js",
+  "readmeFilename": "README.md",
+  "engines": {
+    "node": ">=16.0.0"
+  },
+  "dependencies": {
+    "roosevelt": "~0.20.0"
+  },
+  "devDependencies": {
+    "http-server": "~14.1.0",
+    "ava": "~4.2.0",
+    "c8": "~7.11.3",
+    "codecov": "~3.8.3",
+    "eslint": "~8.16.0",
+    "eslint-plugin-ava": "~13.2.0",
+    "standard": "~17.0.0"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/rooseveltframework/roosevelt-website.git"
+  },
+  "eslintConfig": {
+    "parserOptions": {
+      "ecmaVersion": "latest"
+    },
+    "plugins": [
+      "ava"
+    ],
+    "rules": {
+      "ava/no-only-test": "error"
+    }
+  },
+  "scripts": {
+    "build": "node build.js",
+    "sample-app": "node build.js && http-server -o public/index.html",
+    "codecov": "codecov",
+    "coverage": "c8 --reporter=text --reporter=lcov ava",
+    "lint": "standard && eslint test/test.js",
+    "test": "ava"
+  },
+  "funding": {
+    "type": "individual",
+    "url": "https://github.com/sponsors/kethinov"
+  }
+}
