@@ -1,0 +1,40 @@
+{
+  "makeBuildArtifacts": "staticsOnly",
+  "viewEngine": "html: teddy",
+  "html": {
+    "blocklist": [
+      "layouts/*"
+    ]
+  },
+  "css": {
+    "compiler": {
+      "enable" : true,
+      "module": "less",
+      "options": {}
+    },
+    "allowlist": [
+      "main.less"
+    ],
+    "versionFile": {
+      "fileName": ".version.less",
+      "varName": "appVersion"
+    }
+  },
+  "js": {
+    "webpack": {
+      "enable": true,
+      "bundles": [
+        {
+          "config": {
+            "entry": "${js.sourcePath}/main.js",
+            "output": {
+              "path": "${publicFolder}/js",
+              "filename": "main.js"
+            }
+          }
+        }
+      ]
+    }
+  },
+  "versionedPublic": true
+}

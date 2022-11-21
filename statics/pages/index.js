@@ -1,5 +1,5 @@
 module.exports = (app) => {
-  return {
-    hello: 'world!'
-  }
+  let model = require('models/global')(app)
+  model.hello = 'world'
+  return model
 }
