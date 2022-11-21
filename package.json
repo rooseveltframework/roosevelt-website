@@ -8,7 +8,7 @@
       "url": "https://github.com/rooseveltframework/roosevelt-website/graphs/contributors"
     }
   ],
-  "version": "0.21.1",
+  "version": "0.21.5",
   "homepage": "https://github.com/rooseveltframework/roosevelt-website",
   "license": "CC-BY-4.0",
   "main": "build.js",
@@ -17,15 +17,18 @@
     "node": ">=16.0.0"
   },
   "dependencies": {
-    "roosevelt": "~0.21.1",
-    "teddy": "~0.5.10"
+    "roosevelt": "~0.21.5",
+    "teddy": "~0.5.10",
+    "less": "~4.1.3"
   },
   "devDependencies": {
-    "http-server": "~14.1.0",
+    "http-server": "~14.1.1",
+    "nodemon": "~2.0.20",
+    "reload": "~3.2.0",
     "ava": "~5.1.0",
     "c8": "~7.12.0",
     "codecov": "~3.8.3",
-    "eslint": "~8.27.0",
+    "eslint": "~8.28.0",
     "eslint-plugin-ava": "~13.2.0",
     "standard": "~17.0.0"
   },
@@ -45,8 +48,13 @@
     }
   },
   "scripts": {
-    "build": "node build.js",
-    "sample-app": "node build.js && http-server -o public/index.html",
+    "build": "nodemon -e html,less,sass,scss,js,mjs,json build.js",
+    "build-dev": "nodemon -e html,less,sass,scss,js,mjs,json build.js --development-mode",
+    "build-once": "node build.js",
+    "build-dev-once": "node build.js --development-mode",
+    "start": "npm run start-reload",
+    "start-reload": "node build.js && ./node_modules/reload/bin/reload -p 4337 -d public/",
+    "start-static": "node build.js && http-server public/",
     "codecov": "codecov",
     "coverage": "c8 --reporter=text --reporter=lcov ava",
     "lint": "standard && eslint test/test.js",
