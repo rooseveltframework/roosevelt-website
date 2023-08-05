@@ -19,7 +19,7 @@
   "dependencies": {
     "roosevelt": "0.21.12",
     "teddy": "0.6.3",
-    "less": "4.1.3"
+    "less": "4.2.0"
   },
   "devDependencies": {
     "http-server": "14.1.1",
