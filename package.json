@@ -14,7 +14,7 @@
   "main": "build.js",
   "readmeFilename": "README.md",
   "engines": {
-    "node": ">=16.0.0"
+    "node": ">=18.0.0"
   },
   "dependencies": {
     "roosevelt": "0.21.12",
@@ -28,7 +28,7 @@
     "ava": "5.3.1",
     "c8": "8.0.1",
     "codecov": "3.8.3",
-    "eslint": "8.46.0",
+    "eslint": "8.52.0",
     "eslint-plugin-ava": "14.0.0",
     "standard": "17.1.0"
   },
