@@ -17,7 +17,7 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "roosevelt": "0.21.13",
+    "roosevelt": "0.21.15",
     "teddy": "0.6.4",
     "less": "4.2.0"
   },
