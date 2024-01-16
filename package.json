@@ -23,7 +23,7 @@
   },
   "devDependencies": {
     "http-server": "14.1.1",
-    "nodemon": "3.0.2",
+    "nodemon": "3.0.3",
     "reload": "3.2.1",
     "ava": "6.0.1",
     "c8": "9.0.0",
