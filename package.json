@@ -17,15 +17,15 @@
     "node": ">=18.0.0"
   },
   "dependencies": {
-    "roosevelt": "0.21.15",
-    "teddy": "0.6.4",
+    "roosevelt": "0.21.16",
+    "teddy": "0.6.5",
     "less": "4.2.0"
   },
   "devDependencies": {
     "http-server": "14.1.1",
     "nodemon": "3.0.3",
     "reload": "3.2.1",
-    "ava": "6.0.1",
+    "ava": "6.1.1",
     "c8": "9.1.0",
     "codecov": "3.8.3",
     "eslint": "8.56.0",
