@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "roosevelt": "0.23.2",
-    "teddy": "0.6.18",
+    "teddy": "0.6.19",
     "less": "4.2.0"
   },
   "devDependencies": {
