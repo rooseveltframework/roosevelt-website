@@ -1,0 +1,20 @@
+<include src="layouts/main">
+<arg pageTitle>Node.js PHP runner — configuration</arg>
+<arg pageId>node-php-runner-node.js-php-runner-—-configuration</arg>
+<arg pageContent><article><p>This module will register values from the data model you pass to the PHP script as global variables in your PHP script by default when you use PHP as an Express view engine or when you call <code>runWithData</code>. You can disable this behavior if desired in the following ways:</p>
+<p>Disable registering globally:</p>
+<pre><code class="js language-js">const php = require('php')
+php.disableRegisterGlobalModel()
+// can be reenabled by calling php.enableRegisterGlobalModel()</code></pre>
+<p>Disable registering on a per render basis in Express:</p>
+<pre><code class="js language-js">app.get('/', (req, res) =&gt; {
+  res.render('index.php', {
+    _REGISTER_GLOBAL_MODEL: false,
+    hello: 'world'
+  })
+})</code></pre>
+<p>Disable registering on a per render basis in <code>runWithData</code> (though if you're doing this, you probably should just use <code>php.run()</code> instead, as that method was written to use simpler logic that doesn't support passing data to PHP):</p>
+<pre><code class="js language-js">const output = await php.runWithData('some_php_script.php', {
+  _REGISTER_GLOBAL_MODEL: false,
+  hello: 'world'
+})</code></pre></article></arg></include>

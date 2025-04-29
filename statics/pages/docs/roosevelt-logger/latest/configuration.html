@@ -1,0 +1,68 @@
+<include src="layouts/main">
+<arg pageTitle>Roosevelt logger — configuration</arg>
+<arg pageId>roosevelt-logger-roosevelt-logger-—-configuration</arg>
+<arg pageContent><article><h2 id="params">Params</h2>
+<p>The following params can be passed when creating a new instance of <code>roosevelt-logger</code>:</p>
+<ul>
+<li><code>methods</code> <em>[Object]</em>: A set of configs that represent logger methods that are available to use. Each config type that maps to a default log type can be set to either a boolean to enable / disable the log or an object:<ul>
+<li><code>info</code> <em>[Boolean]</em>: Enable regular logs. Default: <code>true</code>.</li>
+<li><code>warn</code> <em>[Boolean]</em>: Enable logging of warnings. Default: <code>true</code>.</li>
+<li><code>verbose</code> <em>[Boolean]</em>: Enable verbose (noisy) logging. Default: <code>false</code>.</li>
+<li><code>[custom log name]</code> <em>[Object]</em>: You can also define your own log types and specify what native log type it maps to.<ul>
+<li>API:<ul>
+<li><code>enable</code> <em>[Boolean]</em>: Enable this custom log. Default:  <code>true</code>.</li>
+<li><code>type</code> <em>[String]</em>: What type of native log this custom log maps to. Default: <code>info</code>.<ul>
+<li>Allowed values: <code>info</code>, <code>warn</code>, or <code>error</code>.</li></ul></li>
+<li><code>prefix</code>: <em>[String]</em>: The string that prefixes any log entry. If not set or set to a falsy value (e.g. <code>null</code>, an empty string, etc), the prefix will be disabled.<ul>
+<li>Default for warnings: <code>⚠️</code>.</li>
+<li>Default for errors: <code>❌</code>.</li></ul></li>
+<li><code>color</code>: <em>[String]</em>: The color that the text will be set to using <a href="https://www.npmjs.com/package/@colors/colors">@colors/colors</a> npm package. If not set, it will use whatever the default color is for the native type selected.</li></ul></li></ul></li></ul></li>
+</ul>
+<p>Custom type example:</p>
+<pre><code class="json language-json">{
+  "dbError": {
+    "type": "error",
+    "prefix": "🗄",
+    "color": "cyan"
+  }
+}</code></pre>
+<p>The above example would create a custom log type called <code>dbError</code>. It will log errors with a 🗄 prefix and cyan text color.</p>
+<ul>
+<li><code>params</code>: Configuration that applies to all logger methods:<ul>
+<li><code>disable</code> <em>[Array of Strings]</em>: Disable all logging in certain environments. Each entry can be either an environment variable or the value of the <code>NODE_ENV</code> environment variable. Default: <code>[]</code>.<ul>
+<li>Example usage:<ul>
+<li><code>['LOADED_MOCHA_OPTS']</code>: Disables logger when app is being run by <a href="https://mochajs.org/">Mocha</a>.</li>
+<li><code>['production']</code>: Disables logger when <code>NODE_ENV</code> is set to <code>production</code>.</li></ul></li></ul></li>
+<li><code>enablePrefix</code> <em>[Boolean]</em>: Enable prefixes which can contain emojis or other strings to be prepended to logs. This can also be toggled with the <code>ROOSEVELT_LOGGER_ENABLE_PREFIX</code> environment variable. Default: <code>true</code>.</li></ul></li>
+</ul>
+<h2 id="api">API</h2>
+<p>When you create an instance of <code>roosevelt-logger</code>, the following properties will be available on the <code>logger</code> instance:</p>
+<ul>
+<li><code>winston</code> <em>[Object]</em>: The <a href="https://www.npmjs.com/package/winston">Winston</a> module that <code>roosevelt-logger</code> uses internally.</li>
+<li><code>winstonInstance</code> <em>[Object]</em>: The specific <a href="https://www.npmjs.com/package/winston">Winston</a> object instance instantiated by <code>roosevelt-logger</code>.</li>
+<li><code>transports</code> <em>[Object]</em>: The default <a href="https://github.com/winstonjs/winston#transports">Winston transports</a> enabled by <code>roosevelt-logger</code>.</li>
+<li><code>enableLogging()</code> <em>[Function]</em>: Enable the logger.</li>
+<li><code>disableLogging()</code> <em>[Function]</em>: Disable the logger.</li>
+<li><code>enablePrefix()</code> <em>[Function]</em>: Enable all log prefixes.</li>
+<li><code>disablePrefix()</code> <em>[Function]</em>: Disable all log prefixes.</li>
+<li><code>createLogMethod(config)</code> <em>[Function]</em>: Programmatically create a new logger method.<ul>
+<li><code>config</code> argument <em>[Object]</em>:<ul>
+<li><code>name</code> <em>[String]</em>: New logger method name.</li>
+<li><code>type</code> <em>[String]</em>: What type of native log this custom log maps to.<ul>
+<li>Default: <code>info</code>.</li>
+<li>Allowed values: <code>info</code>, <code>warn</code>, or <code>error</code>.</li></ul></li>
+<li><code>prefix</code>: <em>[String]</em>: The string that prefixes any log entry. If not set or set to a falsy value (e.g. <code>null</code>, an empty string, etc), the prefix will be disabled.<ul>
+<li>Default for warnings: <code>⚠️</code>.</li>
+<li>Default for errors: <code>❌</code>.</li></ul></li>
+<li><code>color</code>: <em>[String]</em>: The color that the text will be set to using <a href="https://www.npmjs.com/package/colors">colors</a> npm package. If not set, it will use whatever the default color is for the native type selected.</li></ul></li></ul></li>
+</ul>
+<p>Example <code>createLogMethod</code> usage:</p>
+<pre><code class="js language-js">logger.createLogMethod({
+  name: 'dbError',
+  type: 'error'
+  prefix: '💥',
+  color: 'red'
+})
+
+logger.dbError('Our whole stack is in crisis mode!')
+// =&gt; 💥 Our whole stack is in crisis mode!</code></pre></article></arg></include>

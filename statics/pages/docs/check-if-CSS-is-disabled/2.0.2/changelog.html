@@ -1,0 +1,28 @@
+<include src="layouts/main">
+<arg pageTitle>Check if CSS is disabled — changelog</arg>
+<arg pageId>check-if-CSS-is-disabled-check-if-css-is-disabled-—-changelog</arg>
+<arg pageContent><article><h2 id="202">2.0.2</h2>
+<ul>
+<li>Fixed a bug that would prevent the module from detecting new <code>&lt;link&gt;</code> tags inserted into the page after the DOM loads.</li>
+<li>Fixed a bug that would cause the module to remove CSS files overly aggressively.</li>
+</ul>
+<h2 id="201">2.0.1</h2>
+<ul>
+<li>Fixed docs issues.</li>
+<li>Fixed bundling issue.</li>
+<li>Updated dependencies.</li>
+</ul>
+<h2 id="200">2.0.0</h2>
+<ul>
+<li>Added feature to detect if stylesheets failed to load. If a CSS file fails to load, this module will emit an event called <code>cssDisabled</code>.</li>
+<li>Altered default behavior to take action if CSS is disabled:<ul>
+<li>If CSS is disabled at the browser level, this module will throw a JS error to prevent any further JS from executing.</li>
+<li>If a CSS file fails to load, this module will remove all <code>&lt;link&gt;</code> tags and <code>&lt;style&gt;</code> tags from the DOM and emit the <code>cssDisabled</code> event so that you can undo any DOM manipulations and then stop any further JS from executing yourself.</li>
+<li>Added a <code>justCheck</code> param to restore the previous default behavior of just checking if CSS is disabled. The new <code>cssDisabled</code> event will still fire if <code>justCheck</code> is set.</li></ul></li>
+<li>Refactored the module considerably.</li>
+<li>Updated dependencies.</li>
+</ul>
+<h2 id="100">1.0.0</h2>
+<ul>
+<li>First version.</li>
+</ul></article></arg></include>

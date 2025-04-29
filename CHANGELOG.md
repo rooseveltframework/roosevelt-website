@@ -1,9 +1,7 @@
-# Changelog
+## 0.30.7
 
-## Next version
+- First launch!
 
-- Put your changes here...
+## 0.x.x
 
-## 0.20.0
-
-- Initial version.
+- Initial prototyping.

@@ -1,14 +1,128 @@
-<!DOCTYPE html>
+<!DOCTYPE html> <!--! roosevelt-blocklist (this comment prevents the template from being exposed publicly) -->
 <html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Roosevelt MVC web framework</title>
-  <link rel="stylesheet" href="/{version}/css/main.css">
-  <script src="/{version}/js/main.js" defer></script>
-</head>
-<body>
-  {pageContent|s}
-</body>
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <meta name="format-detection" content="telephone=no">
+
+    <if titleOverride>
+      <title>{titleOverride}</title>
+    </if>
+    <else>
+      <title>Roosevelt web framework — {pageTitle}</title>
+    </else>
+    <meta name="description" content="The easiest web framework to learn and build apps with — Roosevelt is a web framework for Node.js based on Express that aims to reduce the complexity of your code as much as possible.">
+
+    <!--! this inline script makes it possible for check-if-CSS-is-disabled to listen for any CSS files that fail to load -->
+    <script>window.addEventListener('error', (event) => { if (event?.target?.tagName === 'LINK') { window.linkTagError = true } }, true)</script>
+
+    <link rel="preload" href="/css/global.css" as="style">
+    <link rel="preload" href="/js/global.js" as="script">
+
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&family=Montserrat&family=Nunito:ital,wght@0,200..1000;1,200..1000&family=Oswald:wght@300;400&family=Source+Code+Pro:ital,wght@0,200..900;1,200..900&display=swap" rel="stylesheet">
+
+    <link rel="icon" type="image/png" href="/images/favicon-16x16.png" sizes="16x16">
+    <link rel="icon" type="image/png" href="/images/favicon-32x32.png" sizes="32x32">
+    <link rel="icon" type="image/png" href="/images/favicon-48x48.png" sizes="48x48">
+    <link rel="icon" type="image/png" href="/images/favicon-64x64.png" sizes="64x64">
+    <link rel="icon" type="image/png" href="/images/favicon-128x128.png" sizes="128x128">
+
+    <link rel="stylesheet" href="/css/global.css">
+    <script src="/js/global.js" defer></script>
+
+    <if pageId="splash">
+      <link rel="stylesheet" href="/css/pages/splash.css">
+      <link rel="prefetch" href="/css/main.css" as="style">
+      <link rel="prefetch" href="/css/highlight.js.light.css" as="style">
+      <link rel="prefetch" href="/css/highlight.js.dark.css" media="(prefers-color-scheme: dark)" as="style">
+      <link rel="prefetch" href="/js/main.js" as="script">
+    </if>
+    <else>
+      <link rel="preload" href="/css/main.css" as="style">
+      <link rel="preload" href="/js/main.js" as="script">
+
+      <link rel="stylesheet" href="/css/main.css">
+      <link rel="stylesheet" href="/css/highlight.js.light.css">
+      <link rel="stylesheet" href="/css/highlight.js.dark.css" media="(prefers-color-scheme: dark)">
+      <script src="/js/main.js" defer></script>
+    </else>
+  </head>
+
+  <body class="no-js" if-pageId true='id="{pageId}"'>
+    <main>
+      <header>
+        <h1><a href="/">Roosevelt</a></h1>
+        <h2>{pageTitle}</h2>
+        <div id="nav-search-wrapper">
+          <unless noVersionPicker>
+            <nav id="fancy-version-picker" hidden>
+              <form class="semanticForms">
+                <dl>
+                  <dt><label for="version">API version</label></dt>
+                  <dd><select id="version" selected-value="{currentPage}">
+                    <loop through="versions" key="version" val="link">
+                      <option value="{link}">{version}</option>
+                    </loop>
+                  </select></dd>
+                </dl>
+              </form>
+            </nav>
+          </unless>
+          <search hidden>
+            <form id="searchForm" action="https://github.com/search" method="get" class="semanticForms">
+              <dl>
+                <dt><label for="search">Search</label></dt>
+                <dd><input type="text" id="search" name="q" placeholder="e.g. Teddy"></dd>
+              </dl>
+              <menu class="visuallyHidden">
+                <li><button type="submit" name="submit">Search</button></li>
+              </menu>
+            </form>
+          </search>
+        </div>
+        <button command="show-modal" commandfor="nav" hidden>
+          Site navigation
+        </button>
+      </header>
+
+      <div class="content">
+        <nav id="pages">
+          <dialog id="nav">
+            <form method="dialog">
+              <button>Close</button>
+            </form>
+            <include src="nav"></include>
+          </dialog>
+        </nav>
+        {pageContent|s}
+      </div>
+
+      <unless noFooter>
+        <footer>
+          <nav id="secondary-nav">
+            <details open>
+              <summary>Site map</summary>
+              <include src="nav"></include>
+            </details>
+          </nav>
+          <unless noVersionPicker>
+            <nav id="basic-version-picker">
+              <p>API version:</p>
+              <ul>
+                <loop through="versions" key="version" val="link">
+                  <li><a href="{link}">{version}</a></li>
+                </loop>
+              </ul>
+            </nav>
+          </unless>
+          <aside>
+            <p><small>Except where otherwise noted, all original work available on this site is licensed under the <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</small></p>
+            <p><small>Commercial and noncommercial use is permitted so long as <a href="/contributors">the authors</a> of the work are properly attributed.</small></p>
+          </aside>
+        </footer>
+      </unless>
+    </main>
+  </body>
 </html>

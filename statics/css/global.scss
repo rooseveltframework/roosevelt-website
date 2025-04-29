@@ -1,0 +1,619 @@
+@use "../../node_modules/semantic-forms/dist/semantic-forms.css";
+@use '../../node_modules/tippy.js/dist/tippy.css';
+@use "helpers";
+
+@view-transition { // enable multi-page view transitions
+  navigation: auto;
+}
+
+html, body, main {
+  min-height: 100vh;
+}
+
+html, html.light { // default styles; light theme is also the default
+  body {
+    font-family: "Nunito", sans-serif;
+    background-color: #f8f8f8;
+    color: #000;
+    margin: 0;
+    font-size: 110%;
+
+    ::selection {
+      background-color: #0073e9;
+      color: #fff;
+    }
+
+    a:link, a:visited {
+      color: #0038ce;
+    }
+
+    a:active, a:hover {
+      color: #0073e9;
+    }
+
+    // create an icon indicating external links
+    a[href^="https://"]:not([href^="https://rooseveltframework.org"]):not(:has(img))::after,
+    a[href^="http://"]:not([href^="http://rooseveltframework.org"]):not(:has(img))::after {
+      content: "";
+      display: inline-block;
+      background-image: url('data:image/svg+xml;utf8,<svg fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m10.0002 5h-1.8c-1.12011 0-1.68058 0-2.1084.21799-.37633.19174-.68207.49748-.87381.87381-.21799.42782-.21799.98829-.21799 2.1084v7.6c0 1.1201 0 1.6799.21799 2.1077.19174.3763.49748.6826.87381.8743.4274.2178.98719.2178 2.10511.2178h7.60619c1.1179 0 1.6769 0 2.1043-.2178.3763-.1917.6831-.4983.8748-.8746.2178-.4274.2178-.9866.2178-2.1045v-1.8031m1-5v-5m0 0h-5m5 0-7 7" stroke="%23000" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>');
+      background-repeat: no-repeat;
+      width: 18px;
+      height: 18px;
+      position: relative;
+      top: 5px;
+      margin: 0 0 0 2px;
+    }
+
+    // create an icon indicating email links
+    a[href^="mailto:"]:not(:has(img))::after {
+      content: "";
+      display: inline-block;
+      background-image: url('data:image/svg+xml;utf8,<svg fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="m3.75 5.25-.75.75v12l.75.75h16.5l.75-.75v-12l-.75-.75zm.75 2.4455v9.5545h15v-9.55475l-7.5001 6.81835zm13.8099-.9455h-12.62004l6.31004 5.7364z" fill="%23000" fill-rule="evenodd"/></svg>');
+      background-repeat: no-repeat;
+      width: 18px;
+      height: 18px;
+      position: relative;
+      top: 5px;
+      margin: 0 2px;
+    }
+
+    a.button-link {
+      background-color: #0038ce;
+      color: #fff;
+      border-radius: 25px;
+      display: inline-block;
+      padding: 10px 25px;
+      text-decoration: none;
+    }
+
+    a.button-link:hover {
+      background-color: #0073e9;
+    }
+
+    a.button-link:active {
+      background-color: #002690;
+      color: #ddd;
+    }
+
+    summary {
+      cursor: pointer;
+    }
+
+    ul {
+      padding-left: 20px;
+
+      li {
+        p {
+          padding: 0;
+          margin-bottom: 0;
+        }
+      }
+    }
+
+    menu {
+      li {
+        list-style: none;
+      }
+    }
+
+    // hamburger menu
+    button[commandfor="nav"] {
+      position: absolute;
+      left: 0;
+      bottom: 11px;
+      border: 0;
+      background-color: transparent;
+      color: transparent;
+      width: 32px;
+      height: 32px;
+      background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="m0 0h24v24h-24z" fill-rule="nonzero"/><g stroke="%23000" stroke-linecap="round" stroke-width="2"><path d="m5 7h14"/><path d="m5 17h14"/><path d="m5 12h14"/></g></g></svg>');
+      background-repeat: no-repeat;
+      cursor: pointer;
+    }
+
+    dialog {
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+      border: none;
+      border-radius: 15px;
+      padding: 0 10px;
+      margin-left: 5px;
+
+      form[method="dialog"] {
+        position: relative;
+        float: right;
+        margin: 10px 28px 0 0;
+
+        button {
+          position: fixed;
+          border: none;
+          background-color: #fff;
+          border-radius: 25px;
+          text-indent: -9999px;
+          font-size: 1px;
+          cursor: pointer;
+          background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="m256 0c-141.16 0-256 114.842-256 256s114.84 256 256 256 256-114.842 256-256-114.84-256-256-256zm0 462.452c-113.837 0-206.452-92.614-206.452-206.452s92.615-206.452 206.452-206.452 206.452 92.615 206.452 206.452-92.615 206.452-206.452 206.452z" fill="%23000"/><path d="m355.269 191.767-35.036-35.036-64.233 64.233-64.233-64.233-35.036 35.036 64.233 64.233-64.233 64.233 35.036 35.036 64.233-64.233 64.233 64.233 35.036-35.036-64.233-64.233z" fill="%23000"/></svg>');
+          display: block;
+          width: 24px;
+          height: 24px;
+        }
+      }
+    }
+
+    [hidden] {
+      display: none !important;
+    }
+
+    img {
+      max-width: 100%; // ensure the image never exceeds the width of its container
+    }
+
+    pre {
+      white-space: pre-wrap;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      word-break: break-all;
+      max-width: 100%;
+      box-sizing: border-box;
+
+      code {
+        position: relative;
+        display: inline-block !important; // override some highlight.js stuff
+        padding: 10px !important; // override some highlight.js stuff
+      }
+
+      // copy code button
+      button {
+        display: none; // disable the feature by default unless js is enabled; js will redisplay it
+        position: absolute;
+        top: 4px;
+        right: 4px;
+        font-size: 70% !important; // override some semantic forms stuff
+        padding-left: 5px !important; // override some semantic forms stuff
+        padding-right: 5px !important; // override some semantic forms stuff
+        padding-top: 7px !important; // override some semantic forms stuff
+      }
+    }
+
+    code {
+      background-color: #e3e3e3;
+      border-radius: 5px;
+      display: inline-block;
+      word-wrap: break-word;
+      overflow-wrap: break-word;
+      word-break: break-all;
+    }
+
+    code:not(pre code) {
+      padding: 3px 8px;
+    }
+
+    main {
+      > header {
+        background-color: #ccc;
+        min-height: 108px; // mobile height
+        position: relative;
+        display: flex;
+        flex-wrap: wrap; // allow items to wrap to a new line
+        align-items: flex-start; // align items to the top of the flexbox
+        justify-content: flex-end; // align items to the right when they wrap
+        box-sizing: border-box; // include padding and borders in width calculations
+
+        > h1 {
+          margin: 0;
+          background-image: url('/images/favicon-128x128.png');
+          background-size: contain;
+          background-repeat: no-repeat;
+          height: 70px;
+          flex: 0 0 360px; // fixed width of 360px
+          max-width: 100%; // prevent overflow
+          margin-right: auto; // push h1 to the left
+
+          > a {
+            background-image: url('/images/logo_black.png');
+            background-repeat: no-repeat;
+            background-position-x: 74px;
+            background-position-y: 15px;
+            background-size: 240px auto;
+            display: block;
+            height: 64px;
+            width: 320px;
+            text-indent: -9999px; // visually hide the text inside
+            font-size: 1px;
+          }
+        }
+
+        > h2 {
+          margin: 0 0 0 35px;
+          font-size: 175%;
+          flex: 1 1 450px; // variable width, minimum of 450px
+          word-wrap: break-word; // ensure text wraps if it overflows
+          max-width: 100%; // prevent overflow
+          align-self: center; // vertically center the h2 within the header
+        }
+
+        > div#nav-search-wrapper {
+          display: grid;
+          grid-template-columns: auto auto; // two columns: one for nav and one for search
+          max-width: 100%; // prevent overflow
+
+          // fix for semantic forms pushing a horizontal scrollbar
+          form.semanticForms .floatLabelForm div {
+            min-width: 1px;
+            width: 1px;
+          }
+
+          nav {
+            position: relative;
+            top: 2px;
+            margin: 0 0 0 35px; // make room for the hamburger menu
+            width: 120px;
+
+            form {
+              container-type: normal; // reset semantic-forms
+
+              select {
+                width: 120px;
+              }
+            }
+          }
+
+          search {
+            position: relative;
+            top: 2px;
+            margin: 0 10px;
+            width: 120px;
+
+            form {
+              container-type: normal; // reset semantic-forms
+
+              input {
+                width: 120px;
+              }
+
+              button#semanticFormsClearButton_search {
+                right: -175px;
+              }
+            }
+          }
+        }
+      }
+
+      > div.content {
+        width: 100%;
+        display: flex;
+
+        > nav#pages::before {
+          content: "";
+          position: absolute;
+          z-index: 2;
+          top: 0;
+          width: 100%;
+          border-top: 11px #ccc solid;
+        }
+
+        > nav#pages {
+          background-color: #ccc;
+          min-height: calc(100vh - 70px);
+          flex-shrink: 0;
+          flex: 0 0 auto;
+          width: max-content;
+          font-weight: bold;
+          position: relative;
+          overflow: hidden;
+          font-size: 90%;
+
+          p, h2, h3 {
+            margin: 10px 10px 10px 5px;
+            font-size: 100%;
+          }
+
+          hr {
+            margin: 10px 10px 35px 5px;
+            border: none;
+            border-top: 1px #888 solid;
+          }
+
+          ul {
+            padding: 0;
+            margin: 10px 10px 35px 5px;
+            list-style: none;
+
+            ul {
+              margin: 10px 0 35px 0;
+
+              li::before {
+                content: "↳";
+                display: inline-block;
+                margin-right: 5px;
+              }
+            }
+          }
+
+          li {
+            margin: 10px 0;
+          }
+
+          a:link, a:visited {
+            color: #002584;
+            font-weight: normal;
+          }
+
+          a:active, a:hover {
+            color: #2064b7;
+            font-weight: normal;
+          }
+
+          details#theme {
+            margin: 0 5px 35px 5px;
+          }
+        }
+
+        // rounded corner on top left
+        > article::before {
+          content: "";
+          display: none;
+          width: 25px;
+          height: 25px;
+          background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" preserveAspectRatio="none"><path d="M0 50 A50 50 0 0 1 50 0 L0 0 Z" fill="%23ccc"/></svg>');
+          background-repeat: no-repeat;
+          position: relative;
+          left: -16px;
+          z-index: 2;
+          margin-bottom: -25px;
+        }
+
+        > article {
+          background-color: #f8f8f8;
+          flex: 1 1 auto;
+          padding: 0 16px;
+
+          h1:first-of-type, h2:first-of-type {
+            margin-top: 10px;
+          }
+
+          h1 {
+            font-size: 200%;
+          }
+
+          h2 {
+            font-size: 175%;
+          }
+
+          h3 {
+            font-size: 150%;
+          }
+
+          h4 {
+            font-size: 125%;
+          }
+
+          h5 {
+            font-size: 110%;
+          }
+
+          h6 {
+            font-size: 100%;
+          }
+        }
+
+        > nav#fancy-version-picker {
+          select {
+            width: 150px;
+          }
+        }
+      }
+    }
+  }
+}
+
+@mixin dark-mode {
+  body {
+    background-color: #000;
+    color: #f8f8f8;
+
+    ::selection {
+      background-color: #0073e9;
+      color: #fff;
+    }
+
+    a:link, a:visited {
+      color: #69b4ff;
+    }
+
+    a:active, a:hover {
+      color: #7ab3eb;
+    }
+
+    a[href^="https://"]:not([href^="https://rooseveltframework.org"]):not(:has(img))::after,
+    a[href^="http://"]:not([href^="http://rooseveltframework.org"]):not(:has(img))::after {
+      background-image: url('data:image/svg+xml;utf8,<svg fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m10.0002 5h-1.8c-1.12011 0-1.68058 0-2.1084.21799-.37633.19174-.68207.49748-.87381.87381-.21799.42782-.21799.98829-.21799 2.1084v7.6c0 1.1201 0 1.6799.21799 2.1077.19174.3763.49748.6826.87381.8743.4274.2178.98719.2178 2.10511.2178h7.60619c1.1179 0 1.6769 0 2.1043-.2178.3763-.1917.6831-.4983.8748-.8746.2178-.4274.2178-.9866.2178-2.1045v-1.8031m1-5v-5m0 0h-5m5 0-7 7" stroke="%23fff" stroke-linecap="round" stroke-linejoin="round" stroke-width="2"/></svg>');
+    }
+
+    a[href^="mailto:"]:not(:has(img))::after {
+      background-image: url('data:image/svg+xml;utf8,<svg fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path clip-rule="evenodd" d="m3.75 5.25-.75.75v12l.75.75h16.5l.75-.75v-12l-.75-.75zm.75 2.4455v9.5545h15v-9.55475l-7.5001 6.81835zm13.8099-.9455h-12.62004l6.31004 5.7364z" fill="%23fff" fill-rule="evenodd"/></svg>');
+    }
+
+    a.button-link {
+      background-color: #0073e9;
+      color: #fff;
+    }
+
+    a.button-link:hover {
+      background-color: #5299e1;
+    }
+
+    a.button-link:active {
+      background-color: #5299e1;
+      color: #fff;
+    }
+
+    button[commandfor="nav"] {
+      background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><g fill="none" fill-rule="evenodd"><path d="m0 0h24v24h-24z" fill-rule="nonzero"/><g stroke="%23fff" stroke-linecap="round" stroke-width="2"><path d="m5 7h14"/><path d="m5 17h14"/><path d="m5 12h14"/></g></g></svg>');
+    }
+
+    dialog {
+      background-color: #333;
+      color: #f8f8f8;
+
+      form[method="dialog"] {
+        button {
+          background-color: #333;
+          background-image: url('data:image/svg+xml;utf8,<svg viewBox="0 0 512 512" xmlns="http://www.w3.org/2000/svg"><path d="m256 0c-141.16 0-256 114.842-256 256s114.84 256 256 256 256-114.842 256-256-114.84-256-256-256zm0 462.452c-113.837 0-206.452-92.614-206.452-206.452s92.615-206.452 206.452-206.452 206.452 92.615 206.452 206.452-92.615 206.452-206.452 206.452z" fill="%23f8f8f8"/><path d="m355.269 191.767-35.036-35.036-64.233 64.233-64.233-64.233-35.036 35.036 64.233 64.233-64.233 64.233 35.036 35.036 64.233-64.233 64.233 64.233 35.036-35.036-64.233-64.233z" fill="%23f8f8f8"/></svg>');
+        }
+      }
+    }
+
+    code {
+      background-color: #333 !important;
+    }
+
+    main {
+      > header {
+        background-color: #333;
+
+        > h1 {
+          > a {
+            background-image: url('/images/logo_white.png');
+          }
+        }
+      }
+
+      > div.content {
+        > nav#pages::before {
+          border-top: 11px #333 solid;
+        }
+
+        > nav#pages {
+          background-color: #333;
+
+          hr {
+            border-top: 1px #888 solid;
+          }
+
+          a:link, a:visited {
+            color: #69b4ff;
+          }
+
+          a:active, a:hover {
+            color: #7ab3eb;
+          }
+        }
+
+        > article::before {
+          background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 50 50" preserveAspectRatio="none"><path d="M0 50 A50 50 0 0 1 50 0 L0 0 Z" fill="%23333"/></svg>');
+        }
+
+        > article {
+          background-color: #000;
+        }
+      }
+    }
+  }
+}
+
+html.dark {
+  @include dark-mode;
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    @include dark-mode;
+  }
+}
+
+@media (min-width: 400px) {
+  html, html.light, html.dark {
+    body {
+      main {
+        > header {
+          > h1 {
+            > a {
+              background-position-y: 12px;
+              background-size: 275px auto;
+              width: 360px;
+            }
+          }
+
+          > div#nav-search-wrapper {
+            > nav {
+              width: 175px;
+
+              form select {
+                width: 175px;
+              }
+            }
+
+            > search {
+              width: 175px;
+
+              form input {
+                width: 175px;
+              }
+            }
+          }
+        }
+      }
+
+      pre {
+        code {
+          padding: 10px 55px 10px 10px !important;
+        }
+
+        button {
+          display: block;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 960px) {
+  html, html.light, html.dark {
+    body {
+      button[commandfor="nav"] {
+        display: none;
+      }
+
+      dialog {
+        // reset dialog element to be a normal container
+        margin: 0;
+        padding: 0;
+        border: none;
+        background: transparent;
+        box-shadow: none;
+        display: block;
+        width: auto;
+        height: auto;
+        position: static;
+
+        form[method="dialog"] {
+          display: none;
+        }
+      }
+
+      main {
+        > header {
+          min-height: auto;
+
+          > h2 {
+            margin: 0 0 0 10px;
+            font-size: 200%;
+          }
+
+          > div#nav-search-wrapper {
+            nav {
+              margin: 0 0 0 10px;
+            }
+          }
+        }
+
+        > div.content {
+          > article::before {
+            display: block;
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,6 +1,22 @@
-<include src="layouts/main.html">
+<include src="layouts/main">
+  <arg titleOverride>Roosevelt web framework</arg>
+  <arg pageTitle>web framework</arg>
+  <arg noVersionPicker>true</arg>
+  <arg noFooter>true</arg>
+  <arg pageId>splash</arg>
   <arg pageContent>
-    <h1>Roosevelt MVC web framework</h1>
-    <p>{hello}</p>
+    <article>
+      <h1>The <u>easiest</u> web framework <br>to learn and build apps with</h1>
+
+      <p>Roosevelt is a web framework for <a href="https://nodejs.org">Node.js</a> based on <a href="https://expressjs.com">Express</a> that aims to <strong>reduce the complexity</strong> of your code as much as possible.</p>
+
+      <p>Named for Teddy Roosevelt, the "trust buster" who curtailed the abuses of monopolists, the Roosevelt framework curtails the abuses of the merchants of complexity by trust busting (so to speak) all the unnecessary layers of abstractions and other needless complexities common to other web frameworks. Plus Teddy Roosevelt has a curly brace for a mustache.</p>
+
+      <menu>
+        <li><a href="/design-philosophy" class="button-link">Learn more</a></li>
+        <li><a href="/docs/latest/get-started" class="button-link">Get started</a></li>
+      </menu>
+    </article>
+    <img src="/images/teddy.jpg" alt="Picture of Teddy Roosevelt with a curly brace for a mustache." title="Teddy Roosevelt has a curly brace for a mustache." class="rounded-edges">
   </arg>
 </include>

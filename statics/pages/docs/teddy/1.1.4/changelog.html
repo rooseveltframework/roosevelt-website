@@ -1,0 +1,288 @@
+<include src="layouts/main">
+<arg pageTitle>Teddy — changelog</arg>
+<arg pageId>teddy-teddy-—-changelog</arg>
+<arg pageContent><article><h2 id="114">1.1.4</h2>
+<ul>
+<li>Added slicker live demo docs.</li>
+<li>Added some performance improvements.</li>
+<li>Fixed a bug when escaping escape tags or escape comments.</li>
+<li>Updated dependencies.</li>
+</ul>
+<h2 id="113">1.1.3</h2>
+<ul>
+<li>Added <code>&lt;!--# escape comments --&gt;</code>.</li>
+<li>Updated dependencies.</li>
+</ul>
+<h2 id="112">1.1.2</h2>
+<ul>
+<li>Added <code>teddy.clearTemplates()</code> method to clear the template cache.</li>
+<li>Updated dependencies.</li>
+</ul>
+<h2 id="111">1.1.1</h2>
+<ul>
+<li>Added support for <code>variables-with-dashes-in-their-names</code>.</li>
+<li>Updated dependencies.</li>
+</ul>
+<h2 id="110">1.1.0</h2>
+<ul>
+<li>Added <code>&lt;escape&gt;</code> tag.</li>
+<li>Excluded <code>&lt;pre&gt;</code> tags from Teddy parsing. Add a <code>parse</code> attribute to prevent this behavior.</li>
+<li>Fixed a bug that could cause infinite loops in variable parsing.</li>
+<li>Updated dependencies.</li>
+</ul>
+<h2 id="101">1.0.1</h2>
+<ul>
+<li>Fixed a bug that caused client-side Teddy to try to fetch resources from the server inappropriately while parsing the template.</li>
+<li>Updated dependencies.</li>
+</ul>
+<h2 id="100">1.0.0</h2>
+<ul>
+<li>Added support for a new <code>&lt;!--! server-side comments --&gt;</code> syntax.</li>
+<li>Changed the behavior of <code>&lt;include&gt;</code> tags to display an error when attempting to include a template that does not exist.</li>
+<li>Updated various dependencies.</li>
+</ul>
+<h2 id="0626">0.6.26</h2>
+<ul>
+<li>Fixed a bug that could cause ${templateLiteral} strings to lose their $ character if they were meant to print as strings and not be parsed as Teddy variables.</li>
+<li>Updated various dependencies.</li>
+</ul>
+<h2 id="0625">0.6.25</h2>
+<ul>
+<li>Fixed bugs associated with <code>selected-value</code> and <code>checked-value</code> attributes.</li>
+</ul>
+<h2 id="0624">0.6.24</h2>
+<ul>
+<li>Added <code>{varName|h}</code> to force hide or <code>{varName|d}</code> to force display variable. This is a per-var override for:<ul>
+<li><code>teddy.setEmptyVarBehavior('hide')</code>: Will make it possible for variables which don't resolve to display as empty strings instead of displaying the variable.<ul>
+<li>Default: 'display'.</li></ul></li></ul></li>
+<li>Added support for sourcing most Teddy attribute values dynamically from <code>{variables}</code>.</li>
+<li>Added boolean logic to one-line if statements.</li>
+<li>Added <code>selected-value</code> and <code>checked-value</code> attributes for setting what option to select or what checkbox / radio to check in a more concise way than using one-line ifs.</li>
+<li>Fixed a bug that prevented boolean logic from working if there were multiple <code>and</code> or multiple <code>or</code> attributes on an element.</li>
+<li>Updated various dependencies.</li>
+</ul>
+<h2 id="0623">0.6.23</h2>
+<ul>
+<li>Added new <code>&lt;inline&gt;</code> tag for adding inline CSS or JS using Teddy variables. Usage is optional, but it can help you avoid syntax error warnings in your code editor.</li>
+<li>Fixed a bug preventing <code>&lt;include&gt;</code> args from parsing correctly in certain circumstances.</li>
+<li>Updated various dependencies.</li>
+</ul>
+<h2 id="0622">0.6.22</h2>
+<ul>
+<li>Made variable name lookups case insensitive in server-side Teddy to match client-side Teddy so as to match HTML grammar rules.</li>
+<li>Added some performance improvements to loops and includes.</li>
+<li>Fixed a bug preventing <code>&lt;noparse&gt;</code> and <code>&lt;noteddy&gt;</code> tags from working in markup passed to include tags.</li>
+<li>Updated various dependencies.</li>
+</ul>
+<h2 id="0621">0.6.21</h2>
+<ul>
+<li>Fixed missing exports so you can require/import teddy less verbosely in your projects.</li>
+<li>Updated docs to clarify what the different builds of Teddy are meant to be used for.</li>
+<li>Removed minified cjs build since there is no use case for it.</li>
+<li>Updated various dependencies.</li>
+</ul>
+<h2 id="0620">0.6.20</h2>
+<ul>
+<li>Fixed double-encoding HTML entity bug in client-side mode.</li>
+<li>Updated various dependencies.</li>
+</ul>
+<h2 id="0619">0.6.19</h2>
+<ul>
+<li>Made client-side Teddy parser a bit more tolerant of bad markup.</li>
+</ul>
+<h2 id="0618">0.6.18</h2>
+<ul>
+<li>Fixed a bug which caused client-side Teddy to rename yet more form elements accidentally.</li>
+</ul>
+<h2 id="0617">0.6.17</h2>
+<ul>
+<li>Fixed a bug which caused client-side Teddy to handle array length lookups differently from <code>cheerio</code>-driven Teddy.</li>
+<li>Fixed a bug which caused client-side Teddy to crash if extra spaces were in markup attribute lists.</li>
+<li>Fixed a bug which caused client-side Teddy to return the wrong data with 2 or more layers of object lookups if the object keys were camelCase.</li>
+<li>Fixed a bug which caused client-side Teddy to rename some form elements accidentally.</li>
+<li>Updated various dependencies.</li>
+</ul>
+<h2 id="0616">0.6.16</h2>
+<ul>
+<li>Fixed a bug which caused client-side Teddy to fail in some situations like putting a <code>&lt;loop&gt;</code> in a <code>&lt;select&gt;</code> element.</li>
+<li>Deprecated a test that tests for passing numeric arguments to include tags, since this violates HTML grammar and never should've worked to begin with. It may still work with <code>cheerio</code>-driven Teddy because <code>cheerio</code>'s parser is more forgiving than a standards-compliant one unless and until <code>cheerio</code> deprecates support for that itself. Client-side Teddy will not support it, so for consistency the test has been removed.</li>
+<li>Updated various dependencies.</li>
+</ul>
+<h2 id="0615">0.6.15</h2>
+<ul>
+<li>Fixed a bug which caused the <code>cheerio</code>-driven modules to not work client-side if you choose to use them there.</li>
+<li>Updated various dependencies.</li>
+</ul>
+<h2 id="0614">0.6.14</h2>
+<ul>
+<li>Finished work on <code>cheerioPolyfill.js</code> which makes it possible for Teddy to execute in client-side contexts without using <code>cheerio</code>, allowing for a very small bundle size for client-side Teddy (17kb minified).</li>
+<li>Fixed client-side tests to test Teddy in the browser properly.</li>
+<li>Refactored tests to improve maintainability.</li>
+<li>Updated various dependencies.</li>
+</ul>
+<h2 id="0613">0.6.13</h2>
+<ul>
+<li>Removed <code>xregexp</code> and <code>html-entities</code> dependencies. Also Replaced <code>cheerio</code> with <code>cheerio/slim</code>. These changes have reduced bundle size significantly.</li>
+<li>Began work on <code>cheerioPolyfill.js</code> which will allow Teddy to execute in client-side contexts without using <code>cheerio</code>. This will result in even smaller bundle sizes (currently around 16kb minified), however the work is unfinished.</li>
+<li>Updated various dependencies.</li>
+</ul>
+<h2 id="0612">0.6.12</h2>
+<ul>
+<li>Downgraded <code>cheerio</code> to prevent webpack errors when using Teddy on frontend.</li>
+<li>Updated various dependencies.</li>
+</ul>
+<h2 id="0611">0.6.11</h2>
+<ul>
+<li>Added new setting <code>teddy.setEmptyVarBehavior('hide')</code> that will make it possible for variables which don't resolve to display as empty strings instead of displaying the variable.</li>
+</ul>
+<h2 id="0610">0.6.10</h2>
+<ul>
+<li>Added support for template literal <code>${templateLiteral}</code> variables.</li>
+<li>Fixed bug that caused Teddy to crash if you attempted to loop through a Set.</li>
+<li>Replaced internal HTML entities scanner with the <code>html-entities</code> npm package.</li>
+<li>Updated various dependencies.</li>
+</ul>
+<h2 id="069">0.6.9</h2>
+<ul>
+<li>Fixed issue with rendering variables with empty strings piped through variables with flags.</li>
+<li>Updated various dependencies.</li>
+</ul>
+<h2 id="068">0.6.8</h2>
+<ul>
+<li>Fixed issue with rendering special characters correctly when piped through a teddy noparse flagged variable.</li>
+<li>Updated various dependencies.</li>
+</ul>
+<h2 id="067">0.6.7</h2>
+<ul>
+<li>Fixed issue causing server-side comments to not be stripped from templates parsed as strings instead of as files.</li>
+<li>Updated various dependencies.</li>
+</ul>
+<h2 id="066">0.6.6</h2>
+<ul>
+<li>Fixed issue causing the template caching feature to not work properly in Express apps.</li>
+<li>Updated various dependencies.</li>
+</ul>
+<h2 id="065">0.6.5</h2>
+<ul>
+<li>Fixed scenario where one-line if with only a false condition could crash if it's fed by arguments from an include element.</li>
+<li>Fixed crash associated with embedding JSON strings in script tags.</li>
+<li>Fixed bug causing "{}" to be inappropriately stripped from templates.</li>
+<li>Reduced unminified bundle size from 2.4mb to 1.5mb and added a minified bundle that reduces it further to 449kb.</li>
+<li>Improved logging and refactored the code a bit.</li>
+<li>Updated various dependencies.</li>
+</ul>
+<h2 id="064">0.6.4</h2>
+<ul>
+<li>Fixed crash that could occur in an unusual edge case.</li>
+<li>Various dependencies bumped.</li>
+</ul>
+<h2 id="063">0.6.3</h2>
+<ul>
+<li>Restored template-level caching feature with an improved API.</li>
+<li>Restored compile method but now with an API similar to other templating systems. It will now take a template string and return a function which when given model data will render HTML from the template and model data.</li>
+<li>Now hosting the Teddy playground on <a href="https://rooseveltframework.github.io/teddy/playground.html">https://rooseveltframework.github.io/teddy/playground.html</a>. Thanks to <a href="https://www.jsdelivr.com/package/npm/teddy?tab=files">jsDelivr</a> for CDN hosting.</li>
+<li>Various dependencies bumped.</li>
+</ul>
+<h2 id="062">0.6.2</h2>
+<ul>
+<li>Significant performance improvements.</li>
+<li>Added a new <code>&lt;cache&gt;</code> element that can be used to improve template parsing performance further.</li>
+<li>Various dependencies bumped.</li>
+</ul>
+<h2 id="061">0.6.1</h2>
+<ul>
+<li>Fixed memory leak related to the no parse block feature.</li>
+<li>Various dependencies bumped.</li>
+</ul>
+<h2 id="060">0.6.0</h2>
+<ul>
+<li>Breaking: <code>&lt;include&gt;</code> elements will no longer automatically disable escaping content of <code>&lt;arg&gt;</code> variables. Use <code>{var|s}</code> to disable escaping yourself.</li>
+<li>Breaking: One-line if statements like <code>if-something=''</code> will now evaluate as true if <code>something</code> is present in the model.</li>
+<li>Breaking: You can no longer apply more than one one-line if statement to the same element.</li>
+<li>Breaking: Boolean logic will no longer allow you to query the same variable twice in the same if statement or use the same boolean logic operator twice in the same if statement.</li>
+<li>Breaking: You can no longer use Teddy tags in elements that interpret child text as plain text, e.g. <code>&lt;style&gt;</code>, <code>&lt;script&gt;</code>, <code>&lt;textarea&gt;</code>, etc.</li>
+<li>Breaking: Removed the <code>noparse</code> and <code>noteddy</code> attribute feature from <code>&lt;include&gt;</code> tags.</li>
+<li>Breaking: Removed Teddy's internal minifier since third party HTML minifiers are better.</li>
+<li>Breaking: Removed caching feature. A better-designed one may arrive in the future.</li>
+<li>Breaking: Server-side comments will now always be removed, even if they are contained in a no-parse block. To preserve them for display, you must manually escape them with HTML entities.</li>
+<li>Breaking: <code>teddy.compile</code> was removed as a public method. To set a new template, you must now call <code>teddy.setTemplate</code> to create it. Accordingly the <code>teddy.compileAtEveryRender</code> method has been removed as well.</li>
+<li>Breaking: The <code>|p</code> flag will now also apply the same logic as <code>|s</code> as well. If you have any <code>{variables}</code> written like <code>{variable|s|p}</code>, you can now optionally write it as <code>{variable|p}</code> instead to get identical functionality.</li>
+<li>Breaking: The <code>in</code> attribute as a synonym for <code>through</code> in <code>&lt;loop&gt;</code> has been removed.</li>
+<li>Significant stability improvements; lots of bugs fixed.</li>
+<li>Some performance improvements, some performance downgrades (notably looping through large datasets is slightly slower now).</li>
+<li>Simplified API.</li>
+<li><code>maxPasses</code> default changed from 25000 to 1000.</li>
+<li>Various dependencies bumped.</li>
+</ul>
+<h2 id="0510">0.5.10</h2>
+<ul>
+<li>Fixed bug with one-line-ifs. See <a href="https://github.com/rooseveltframework/teddy/pull/540">https://github.com/rooseveltframework/teddy/pull/540</a></li>
+<li>Various dependencies bumped.</li>
+</ul>
+<h2 id="059">0.5.9</h2>
+<ul>
+<li>Fixed an issue where model content could get printed without being escaped even when the <code>|s</code> flag is not present.</li>
+<li>Various dependencies bumped.</li>
+</ul>
+<h2 id="058">0.5.8</h2>
+<ul>
+<li>Fixed bug in client-side support where file extensions would be inappropriately appended to template names in some cases.</li>
+<li>Dropped Node 15 support. Added Node 16 support.</li>
+<li>Various dependencies bumped.</li>
+</ul>
+<h2 id="057">0.5.7</h2>
+<ul>
+<li>Closed:<ul>
+<li><a href="https://github.com/rooseveltframework/teddy/issues/446">https://github.com/rooseveltframework/teddy/issues/446</a></li>
+<li><a href="https://github.com/rooseveltframework/teddy/issues/431">https://github.com/rooseveltframework/teddy/issues/431</a></li>
+<li><a href="https://github.com/rooseveltframework/teddy/issues/449">https://github.com/rooseveltframework/teddy/issues/449</a></li>
+<li><a href="https://github.com/rooseveltframework/teddy/issues/426">https://github.com/rooseveltframework/teddy/issues/426</a></li></ul></li>
+<li>Dropped Node 12 support.</li>
+<li>Various dependencies bumped.</li>
+</ul>
+<h2 id="056">0.5.6</h2>
+<ul>
+<li>Closed <a href="https://github.com/rooseveltframework/teddy/issues/404">https://github.com/rooseveltframework/teddy/issues/404</a></li>
+<li>Various dependencies bumped.</li>
+</ul>
+<h2 id="055">0.5.5</h2>
+<ul>
+<li>Closed <a href="https://github.com/rooseveltframework/teddy/issues/421">https://github.com/rooseveltframework/teddy/issues/421</a></li>
+</ul>
+<h2 id="054">0.5.4</h2>
+<ul>
+<li>Closed <a href="https://github.com/rooseveltframework/teddy/issues/412">https://github.com/rooseveltframework/teddy/issues/412</a></li>
+<li>Closed <a href="https://github.com/rooseveltframework/teddy/pull/418">https://github.com/rooseveltframework/teddy/pull/418</a></li>
+<li>Closed many unreported bugs.</li>
+<li>Wrote a test for <a href="https://github.com/rooseveltframework/teddy/issues/404">https://github.com/rooseveltframework/teddy/issues/404</a></li>
+<li>Wrote a test for <a href="https://github.com/rooseveltframework/teddy/issues/357">https://github.com/rooseveltframework/teddy/issues/357</a> but upon further investigation now consider it a wontfix.</li>
+<li>Various dependencies bumped.</li>
+</ul>
+<h2 id="053">0.5.3</h2>
+<ul>
+<li>Fixed some Windows-exclusive bugs related to how newlines are parsed in Windows vs. other operating systems.</li>
+<li>Various dependencies bumped.</li>
+<li>CI improvements.</li>
+</ul>
+<h2 id="052">0.5.2</h2>
+<ul>
+<li>Undo accidental removal of package-lock.json.</li>
+</ul>
+<h2 id="051">0.5.1</h2>
+<ul>
+<li>Removed postinstall script since it created a problematic prompt to install webpack-cli during npm installs.</li>
+</ul>
+<h2 id="050">0.5.0</h2>
+<ul>
+<li>Variables with spaces in them will now be parsed.</li>
+<li>Fixed issue where one line if statements couldn't use variables as part of the condition.</li>
+<li>Fixed issue where recursive variable resolution could cause an infinite loop.</li>
+<li>Significant performance improvements.</li>
+<li>Total rewrite into a much cleaner codebase:<ul>
+<li>Less reliance on regex and more reliance on character counting in base algorithm.</li>
+<li>Code now split into separate files for development but bundled into a single JS file with Webpack during deployment.</li></ul></li>
+<li>Various dependencies bumped.</li>
+<li>CI improvements.</li>
+</ul>
+<h2 id="0428andbelow">0.4.28 and below</h2>
+<p><a href="https://en.wikipedia.org/wiki/Here_be_dragons">Here be dragons</a>…</p></article></arg></include>

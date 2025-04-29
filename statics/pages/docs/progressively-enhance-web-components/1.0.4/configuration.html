@@ -1,0 +1,14 @@
+<include src="layouts/main">
+<arg pageTitle>SSR web components — configuration</arg>
+<arg pageId>progressively-enhance-web-components-ssr-web-components-—-configuration</arg>
+<arg pageContent><article><p>When you call:</p>
+<pre><code class="javascript language-javascript">const editedFiles = require('progressively-enhance-web-components')({
+  templatesDir: './mvc/views'
+})</code></pre>
+<p>There are other params you can pass to it besides <code>templatesDir</code>.</p>
+<p>The full list of params available is:</p>
+<ul>
+<li><code>templatesDir</code> <em>[String]</em>: What folder to examine. This is required.</li>
+<li><code>disableBeautify</code> <em>[Boolean]</em>: If set to true, this module will not beautify the HTML in the outputted markup. Default: <code>false</code>.</li>
+<li><code>beautifyOptions</code> <em>[Object]</em>: Options to pass to <a href="https://github.com/beautifier/js-beautify">js-beautify</a>. Default: <code>{ indent_size: 2 }</code>.</li>
+</ul></article></arg></include>

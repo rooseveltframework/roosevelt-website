@@ -1,0 +1,32 @@
+<include src="layouts/main">
+<arg pageTitle>Express browser reloader — usage</arg>
+<arg pageId>express-browser-reload-express-browser-reloader-—-usage</arg>
+<arg pageContent><article><p>Here's a full sample app:</p>
+<pre><code class="javascript language-javascript">const express = require('express')
+const app = express()
+
+app.get('/', (req, res) =&gt; {
+  res.type('text/html')
+  res.send(`&lt;!doctype html&gt;
+&lt;html&gt;
+  &lt;head&gt;
+    &lt;title&gt;express-browser-reload express sample&lt;/title&gt;
+  &lt;/head&gt;
+  &lt;body&gt;
+    &lt;p&gt;express-browser-reload express sample&lt;/p&gt;
+    &lt;!-- all you have to do is include the reload script and have it be on every page of your project --&gt;
+    &lt;!-- you do not create this route, reload creates it for you automatically --&gt;
+    &lt;script src="/express-browser-reload.js"&gt;&lt;/script&gt;
+  &lt;/body&gt;
+&lt;/html&gt;`)
+})
+
+const server = app.listen(3000, () =&gt; console.log(`🎧 express-browser-reload express sample app server is running on http://localhost:3000`))
+
+// params for express-browser-reload (currently set to the defaults)
+const params = {
+  route: '/express-browser-reload.js',
+  skipDeletingConnections: false
+}
+
+require('express-browser-reload')(app, server, params)</code></pre></article></arg></include>
