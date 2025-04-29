@@ -1,0 +1,53 @@
+<include src="layouts/main">
+<arg pageTitle>Roosevelt logger — usage</arg>
+<arg pageId>roosevelt-logger-roosevelt-logger-—-usage</arg>
+<arg pageContent><article><h2 id="install">Install</h2>
+<p>First declare <code>roosevelt-logger</code> as a dependency in your app.</p>
+<h2 id="use">Use</h2>
+<pre><code class="js language-js">const Logger = require('roosevelt-logger')
+const logger = new Logger()
+
+logger.log('some info')
+// =&gt; some info
+
+logger.warn('a warning')
+// =&gt; ⚠️  a warning
+
+logger.error('an error')
+// =&gt; ❌  an error
+
+logger.verbose('noisy log only displayed when verbose is enabled')
+// =&gt;
+
+logger.log('✅', 'log prepended with a custom emoji or other string')
+// =&gt; ✅  log prepended with a custom emoji or other string</code></pre>
+<h2 id="usewithcustomconfigs">Use with custom configs</h2>
+<pre><code class="js language-js">const Logger = require('roosevelt-logger')
+const logger = new Logger({
+  methods: {
+    verbose: true, // enables verbose logging
+    dbError: { // create custom error called dbError
+      type: 'error',
+      prefix: '🗄'
+    }
+  },
+  params: {
+    disable: ['LOADED_MOCHA_OPTS'] // disable logging during Mocha tests
+  }
+})
+
+logger.log('some info')
+// =&gt; some info
+
+logger.warn('a warning')
+// =&gt; ⚠️  a warning
+
+logger.error('an error')
+// =&gt; ❌  an error
+
+logger.verbose('noisy log only displayed when verbose is enabled')
+// =&gt; noisy log only displayed when verbose is enabled
+
+logger.dbError('custom log for database errors')
+// =&gt; 🗄  custom log for database errors</code></pre>
+<p>See "Configuration" for more info about how to configure <code>roosevelt-logger</code>.</p></article></arg></include>

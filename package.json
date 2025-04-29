@@ -1,6 +1,6 @@
 {
   "name": "roosevelt-website",
-  "description": "Website for Roosevelt MVC web framework.",
+  "description": "🧸🕸 Website for Roosevelt MVC web framework.",
   "author": "Roosevelt Framework Team <rooseveltframework@gmail.com>",
   "contributors": [
     {
@@ -8,57 +8,73 @@
       "url": "https://github.com/rooseveltframework/roosevelt-website/graphs/contributors"
     }
   ],
-  "version": "0.21.11",
+  "version": "0.30.7",
   "homepage": "https://github.com/rooseveltframework/roosevelt-website",
   "license": "CC-BY-4.0",
   "main": "build.js",
   "readmeFilename": "README.md",
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=20.0.0"
   },
   "dependencies": {
-    "roosevelt": "0.23.2",
-    "teddy": "0.6.19",
-    "less": "4.2.1"
+    "@colors/colors": "1.6.0",
+    "axios": "1.9.0",
+    "check-if-css-is-disabled": "2.0.2",
+    "docs-check-if-css-is-disabled": "https://github.com/rooseveltframework/check-if-CSS-is-disabled",
+    "docs-crossplatform-killport": "https://github.com/rooseveltframework/crossplatform-killport",
+    "docs-express-browser-reload": "https://github.com/rooseveltframework/express-browser-reload",
+    "docs-express-html-validator": "https://github.com/rooseveltframework/express-html-validator",
+    "docs-fallback-dependencies": "https://github.com/rooseveltframework/fallback-dependencies",
+    "docs-minify-html-attributes": "https://github.com/rooseveltframework/minify-html-attributes",
+    "docs-multi-db": "https://github.com/rooseveltframework/multi-db",
+    "docs-node-php-runner": "https://github.com/rooseveltframework/node-php-runner",
+    "docs-progressively-enhance-web-components": "https://github.com/rooseveltframework/progressively-enhance-web-components",
+    "docs-roosevelt": "https://github.com/rooseveltframework/roosevelt",
+    "docs-roosevelt-logger": "https://github.com/rooseveltframework/roosevelt-logger",
+    "docs-semantic-forms": "https://github.com/rooseveltframework/semantic-forms",
+    "docs-source-configs": "https://github.com/rooseveltframework/source-configs",
+    "docs-single-page-express": "https://github.com/rooseveltframework/single-page-express",
+    "docs-teddy": "https://github.com/rooseveltframework/teddy",
+    "highlight.js": "11.11.1",
+    "invokers-polyfill": "0.5.4",
+    "roosevelt": "0.30.7",
+    "sass": "1.87.0",
+    "semantic-forms": "5.0.7",
+    "showdown": "2.1.0",
+    "teddy": "1.1.4",
+    "tippy.js": "6.3.7",
+    "webpack": "5.99.7"
   },
   "devDependencies": {
-    "http-server": "14.1.1",
-    "nodemon": "3.1.7",
-    "reload": "3.3.0",
-    "ava": "6.2.0",
-    "c8": "10.1.2",
-    "codecov": "3.8.3",
-    "eslint": "8.57.1",
-    "eslint-plugin-ava": "14.0.0",
-    "standard": "17.1.2"
+    "standard": "17.1.2",
+    "stylelint": "16.19.1",
+    "stylelint-config-standard-scss": "14.0.0",
+    "watcher": "2.3.1"
+  },
+  "standard": {
+    "ignore": [
+      "public/"
+    ]
   },
   "repository": {
     "type": "git",
     "url": "git://github.com/rooseveltframework/roosevelt-website.git"
   },
-  "eslintConfig": {
-    "parserOptions": {
-      "ecmaVersion": "latest"
-    },
-    "plugins": [
-      "ava"
-    ],
-    "rules": {
-      "ava/no-only-test": "error"
-    }
-  },
   "scripts": {
-    "build": "nodemon -e html,less,sass,scss,js,mjs,json build.js",
-    "build-dev": "nodemon -e html,less,sass,scss,js,mjs,json build.js --development-mode",
-    "build-once": "node build.js",
-    "build-dev-once": "node build.js --development-mode",
-    "start": "npm run start-reload",
-    "start-reload": "node build.js && ./node_modules/reload/bin/reload -p 4337 -d public/",
-    "start-static": "node build.js && http-server public/",
-    "codecov": "codecov",
-    "coverage": "c8 --reporter=text --reporter=lcov ava",
-    "lint": "standard && eslint test/test.js",
-    "test": "ava"
+    "contributors": "node contributors.js",
+    "d": "node build.js --development-mode && http-server public/",
+    "dev": "nodemon --exec \"node build.js --development-mode && http-server public/\"",
+    "development": "nodemon --exec \"node build.js --development-mode && http-server public/\"",
+    "p": "nodemon --exec \"node build.js --production-mode && http-server public/\"",
+    "prod": "nodemon --exec \"node build.js --production-mode && http-server public/\"",
+    "production": "nodemon --exec \"node build.js --production-mode && http-server public/\"",
+    "build": "npm run contributors && node build.js --production-mode",
+    "build-dev": "node build.js --development-mode",
+    "lint": "npm run standard && npm run stylelint",
+    "standard": "./node_modules/.bin/standard",
+    "stylelint": "./node_modules/.bin/stylelint \"statics/css/**/*.scss\"",
+    "start": "nodemon --exec \"node build.js --production-mode && http-server public/\"",
+    "test": "npm run lint"
   },
   "funding": "https://www.paypal.com/donate/?hosted_button_id=2L2X8GRXZCGJ6"
 }

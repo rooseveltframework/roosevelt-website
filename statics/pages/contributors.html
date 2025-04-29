@@ -1,0 +1,42 @@
+<include src="layouts/main">
+  <arg pageTitle>contributors</arg>
+  <arg pageId>contributors</arg>
+  <arg noVersionPicker>true</arg>
+  <arg pageContent>
+    <article>
+      <p>Roosevelt was originally created by <a href="https://github.com/kethinov">Eric Newport</a> in 2013 and has since evolved into a large family of interrelated projects that is the collective work of dozens of direct contributors:</p>
+
+      <p>
+        <loop through="contributors" key="name" val="contributor">
+          <a href="{contributor.html_url}"><img src="{contributor.avatar_url}" alt="GitHub avatar for: {name}" title="GitHub avatar for: {name}" width="64" height="64"></a>
+        </loop>
+      </p>
+
+      <p>And is also the work of <a href="https://xkcd.com/2347/">countless indirect contributors</a> who built or contributed code to the dependencies leveraged by the Roosevelt framework project family.</p>
+
+      <p>The current maintainers of Roosevelt are <a href="https://github.com/kethinov">Eric Newport</a> and <a href="https://github.com/Autre31415">Troy Coutu</a>.
+
+      <p>The Roosevelt text logo and parts of this website were designed by <a href="https://kayleigh-east-portfolio.com/">Kayleigh East</a>.</p>
+
+      <h2 id="support">Support Roosevelt's development</h2>
+
+      <p>If you would like to support Roosevelt's ongoing development and maintenance, you can do so in the following ways:</p>
+
+      <h3 id="sponsor">Sponsorship</h3>
+
+      <p>Roosevelt's development is primarily sponsored by <a href="https://otherworldly.media">Otherworldly Media</a>.</p>
+
+      <p>If you or your organization would like to also sponsor Roosevelt, please <a href="mailto:rooseveltframework@gmail.com">contact us</a> with your offer of sponsorship and how you would like us to publicly credit you.</p>
+
+      <h3 id="merch">Buy merch</h3>
+
+      <p>You can support Roosevelt's development and maintenance by buying merch from Otherworldly Media's <a href="https://curly-braces-merch.printify.me/products">Curly Braces Merch</a> shop.</p>
+
+      <h3 id="donate">Donate</h3>
+
+      <p>You can also <a href="https://www.paypal.com/donate/?hosted_button_id=2L2X8GRXZCGJ6">donate</a> to Otherworldly Media directly to support Roosevelt's development and maintenance. Please note that donations are not tax-deductible.</p>
+
+      <p>Thank you for your support!</p>
+    </article>
+  </arg>
+</include>

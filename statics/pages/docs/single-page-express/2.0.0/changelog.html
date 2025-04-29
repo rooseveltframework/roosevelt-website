@@ -1,0 +1,81 @@
+<include src="layouts/main">
+<arg pageTitle>Single Page Express — changelog</arg>
+<arg pageId>single-page-express-single-page-express-—-changelog</arg>
+<arg pageContent><article><h2 id="200">2.0.0</h2>
+<ul>
+<li>Breaking: Changed default Express API version to 5.<ul>
+<li>To migrate:<ul>
+<li>Most apps probably only need to change <code>*</code> routes to <code>*all</code>.</li>
+<li>Apps that use more complex routing may need other changes.</li>
+<li>Full list of considerations for migrating to Express 5: <a href="https://expressjs.com/en/guide/migrating-5.html">https://expressjs.com/en/guide/migrating-5.html</a></li></ul></li></ul></li>
+<li>Fixed a bug that caused <code>req.body</code> to populate <code>{}</code> instead of <code>undefined</code> in Express 5 mode.</li>
+<li>Fixed a bug that caused the default <code>/</code> route to not load in some situations.</li>
+<li>Fixed a bug that caused extra <code>&lt;head&gt;</code> tags to get inserted into the DOM with the default render method in some situations.</li>
+<li>Fixed issues in sample app 2.</li>
+<li>Updated dependencies.</li>
+</ul>
+<h2 id="120">1.2.0</h2>
+<ul>
+<li>Added view transition support in the default render method.</li>
+<li>Added support for multiple DOM update targets in the default render method.</li>
+<li>Added <code>req.backButtonPressed</code> and <code>req.forwardButtonPressed</code> to <code>app</code>.</li>
+<li>Added classes <code>backButtonPressed</code> and <code>forwardButtonPressed</code> which will populate on the <code>&lt;html&gt;</code> element if either button was pressed.</li>
+<li>Added <code>[data-page-title]</code> to the top of the list of accepted query selectors for sourcing content to announce to screen readers when a new page is rendered.</li>
+<li>Added new params to the <code>res.beforeRender(params)</code>, <code>beforeEveryRender(params)</code>, <code>res.afterRender(params)</code>, and <code>afterEveryRender(params)</code> methods:<ul>
+<li>It now supplies an object with:<ul>
+<li><code>model</code>: The data model supplied to the template to be rendered.</li>
+<li><code>doc</code>: The document object created from the template after it is rendered.</li>
+<li><code>markup</code>: The HTML string that will be written to the page.</li>
+<li><code>targets</code>: The list of DOM nodes that will be updated.</li></ul></li></ul></li>
+<li>Fixed a bug that caused <code>postRenderCallbacks</code> not to function properly.</li>
+<li>Fixed a bug related to script tags from the rendered page being executed unnecessarily.</li>
+<li>Fixed a bug causing unnecessary outlines to appear on page transitions in Safari.</li>
+<li>Updated dependencies.</li>
+</ul>
+<h2 id="111">1.1.1</h2>
+<ul>
+<li>Fixed crash related to unfinished HTML validation feature.</li>
+<li>Updated dependencies.</li>
+</ul>
+<h2 id="110">1.1.0</h2>
+<ul>
+<li>Added feature which will allow <code>single-page-express</code> to remember the scroll position of pages that have been visited. It will also remember the scroll position of child containers on each page as well, but only if those containers have assigned <code>id</code> attributes.<ul>
+<li>Added <code>alwaysScrollTop</code> param which will let you disable this behavior app wide and <code>res.resetScroll</code> which will let you disable this behavior on a per-route basis.</li></ul></li>
+<li>Added new behaviors to the default render method. It will now:<ul>
+<li>Update the attributes of the <code>&lt;html&gt;</code> and <code>&lt;head&gt;</code> tags.</li>
+<li>Add new children to the <code>&lt;head&gt;</code> tag if anything new is in the template render.</li>
+<li>Delay the DOM update until any new <code>&lt;link&gt;</code> or <code>&lt;script&gt;</code> tags load to prevent a FOUC.</li>
+<li>Set browser focus appropriately after the DOM update. Also added <code>res.focus</code> to let you set it manually.</li>
+<li>Announce page changes to screen readers.</li></ul></li>
+<li>Added <code>res</code> properties which will let you remove elements from the <code>&lt;head&gt;</code> tag on a per route basis: <code>res.removeMetaTags</code>, <code>res.removeStyleTags</code>, <code>res.removeLinkTags</code>, <code>res.removeScriptTags</code>, <code>res.removeBaseTags</code>, <code>res.removeTemplateTags</code>. There is also <code>res.removeHeadTags</code> to remove all children of the <code>&lt;head&gt;</code> tag except the <code>&lt;title&gt;</code> tag.</li>
+<li>Added <code>topBarRoutes</code> param to allow restricting the top bar to certain routes.</li>
+<li>Added <code>req.singlePageExpress</code> which you can use to detect if your route is executing in the <code>single-page-express</code> context.</li>
+<li>Fixed a bug which caused back/forward buttons to not function properly sometimes.</li>
+<li>Fixed a bug which would cause the top bar not to ever hide if it was enabled but the default render method was replaced.</li>
+<li>Fixed a bug in the Express sample app that would cause server-rendering to fail on routes with more than one <code>/</code>.</li>
+<li>Added a new sample app.</li>
+<li>Added an automated test suite and a few starter tests.</li>
+<li>Refactored some code to simplify it.</li>
+<li>Removed some unneeded dependencies.</li>
+<li>Updated dependencies.</li>
+</ul>
+<h2 id="103">1.0.3</h2>
+<ul>
+<li>Fixed missing exports so you can require/import Single Page Express less verbosely in your projects.</li>
+<li>Updated docs to clarify what the different builds of Single Page Express are meant to be used for.</li>
+<li>Updated dependencies.</li>
+</ul>
+<h2 id="102">1.0.2</h2>
+<ul>
+<li>Fixed bug causing custom <code>res</code> variables to not be set properly during certain default render method calls.</li>
+<li>Fixed broken Express 5 support.</li>
+<li>Updated dependencies.</li>
+</ul>
+<h2 id="101">1.0.1</h2>
+<ul>
+<li>Fixed broken postinstall script.</li>
+</ul>
+<h2 id="100">1.0.0</h2>
+<ul>
+<li>Initial version.</li>
+</ul></article></arg></include>

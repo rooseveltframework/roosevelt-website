@@ -1,0 +1,34 @@
+<include src="layouts/main">
+<arg pageTitle>Node.js PHP runner — usage</arg>
+<arg pageId>node-php-runner-node.js-php-runner-—-usage</arg>
+<arg pageContent><article><p>To use this module, you must have PHP installed and in your PATH.</p>
+<h2 id="runaphpscriptinnodejs">Run a PHP script in Node.js</h2>
+<pre><code class="javascript language-javascript">const php = require('php')
+const output = await php.run('some_php_script.php')</code></pre>
+<h2 id="runaphpscriptinnodejsandpassitdata">Run a PHP script in Node.js and pass it data</h2>
+<pre><code class="javascript language-javascript">const php = require('php')
+const output = await php.runWithData('some_php_script.php', { hello: 'world' })</code></pre>
+<p>Then, assuming your <code>some_php_script.php</code> file looks like this:</p>
+<pre><code class="php language-php">&lt;p&gt;&lt;?=$hello?&gt;&lt;/p&gt;</code></pre>
+<p>The output will be:</p>
+<pre><code class="html language-html">&lt;p&gt;world&lt;/p&gt;</code></pre>
+<h2 id="usewithexpress">Use with Express</h2>
+<pre><code class="js language-js">const express = require('express')
+const app = express()
+const php = require('php')
+
+// setup PHP templating engine
+app.set('views', path.join(__dirname, 'templates'))
+app.set('view engine', 'php') // set PHP as a view engine in your Express app
+app.engine('php', php.__express)
+
+// define a route
+app.get('/', (req, res) =&gt; {
+  res.render('index.php', {
+    hello: 'world'
+  })
+})</code></pre>
+<p>Then, assuming your <code>templates/index.php</code> looks like this:</p>
+<pre><code class="php language-php">&lt;p&gt;&lt;?=$hello?&gt;&lt;/p&gt;</code></pre>
+<p>The output will be:</p>
+<pre><code class="html language-html">&lt;p&gt;world&lt;/p&gt;</code></pre></article></arg></include>

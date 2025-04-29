@@ -1,0 +1,214 @@
+html, html.light {
+  body#splash {
+    > main {
+      background-image: url("/images/manyteddys_white.png");
+      background-size: contain;
+      background-position-y: bottom;
+      background-repeat: no-repeat;
+
+      > header {
+        > h2 {
+          flex: 1 1 395px;
+        }
+      }
+
+      > div.content {
+        width: auto;
+        margin: 0;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        min-height: calc(60vh - 70px);
+
+        nav#pages {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          right: 100%;
+        }
+
+        > article::before {
+          background-image: none;
+        }
+
+        > article {
+          background-color: rgba(248, 248, 248, 0.9);
+          padding: 25px;
+          border-radius: 25px;
+
+          h1 {
+            font-size: 200%;
+            margin-top: 0;
+            margin-bottom: 50px;
+          }
+
+          u {
+            display: inline-block;
+            height: 43px;
+            text-decoration: none;
+            border-bottom: #0073e9 3px solid;
+          }
+
+          menu {
+            padding: 25px 0 0 0;
+            margin: 0 -15px;
+
+            li:first-of-type {
+              float: left;
+            }
+
+            li:last-of-type {
+              float: right;
+            }
+          }
+        }
+
+        > img[src="/images/teddy.jpg"] {
+          margin-bottom: 25%;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 330px) {
+  html, html.light {
+    body#splash {
+      > main {
+        > div.content {
+          > article {
+            menu {
+              margin: 0;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 900px) {
+  html, html.light {
+    body#splash {
+      > main {
+        > div.content {
+          flex-direction: row;
+
+          > article {
+            menu {
+              padding: 50px 15px 0 15px;
+            }
+          }
+
+          img[src="/images/teddy.jpg"] {
+            margin-left: 50px;
+            margin-right: 10px;
+            margin-bottom: 0;
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 960px) {
+  html, html.light {
+    body#splash {
+      button[commandfor="nav"] {
+        display: block;
+        bottom: -35px;
+      }
+
+      dialog[open] {
+        // reset dialog element to its normal values
+        margin: auto;
+        padding: 0 10px;
+        background: #fff;
+        box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+        display: block;
+        width: max-content;
+        height: auto;
+        border-radius: 15px;
+        margin-left: 5px;
+
+        form[method="dialog"] {
+          display: block;
+        }
+      }
+
+      > main {
+        > div.content {
+          margin: 0 5%;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1110px) {
+  html, html.light {
+    body#splash {
+      > main {
+        > div.content {
+          margin: 0 10%;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1280px) {
+  html, html.light {
+    body#splash {
+      > main {
+        > div.content {
+          margin: 0 15%;
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 1480px) {
+  html, html.light {
+    body#splash {
+      > main {
+        > div.content {
+          margin: 0 20%;
+        }
+      }
+    }
+  }
+}
+
+@mixin dark-mode {
+  body#splash {
+    > main {
+      background-image: url("/images/manyteddys_black.png");
+
+      > div.content {
+        > article {
+          background-color: rgba(11, 11, 11, 0.75);
+
+          u {
+            border-bottom: #0073e9 3px solid;
+          }
+        }
+      }
+    }
+
+    dialog[open] {
+      background: #333;
+    }
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    @include dark-mode;
+  }
+}
+
+html.dark {
+  @include dark-mode;
+}

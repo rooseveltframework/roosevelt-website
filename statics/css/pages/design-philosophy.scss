@@ -1,0 +1,135 @@
+body#design-philosophy {
+  blockquote {
+    margin: 15px 0 15px 15px;
+    background-color: #dedede;
+    border-radius: 25px;
+    float: right;
+    width: 100%; // mobile design
+    padding: 10px 0;
+    position: relative;
+
+    p:first-of-type {
+      padding-left: 50px !important;
+    }
+
+    p:first-of-type::before {
+      content: "“";
+      font-size: 500%;
+      position: absolute;
+      left: 15px;
+      top: -30px;
+    }
+
+    p:nth-last-of-type(2) {
+      padding-right: 50px !important;
+    }
+
+    p:nth-last-of-type(2)::before {
+      content: "”";
+      font-size: 500%;
+      position: absolute;
+      padding-left: 5px;
+      right: 10px;
+      bottom: -65px;
+    }
+
+    p {
+      margin: 10px;
+      border-radius: 15px;
+    }
+
+    p.roosevelt {
+      background-color: #acc;
+      float: left;
+      clear: both;
+      position: relative;
+      padding: 0 16px;
+
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        left: 10px;
+        width: 20px;
+        height: 20px;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" preserveAspectRatio="none"><path d="M10 10 L20 10 L10 20 Z" fill="%23acc"/></svg>');
+        background-repeat: no-repeat;
+        background-size: contain;
+      }
+    }
+
+    p.taft {
+      background-color: #cac;
+      float: right;
+      clear: both;
+      position: relative;
+      padding: 0 16px;
+
+      &::after {
+        content: "";
+        position: absolute;
+        bottom: -10px;
+        right: 10px;
+        width: 20px;
+        height: 20px;
+        background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" preserveAspectRatio="none"><path d="M10 10 L0 10 L10 20 Z" fill="%23cac"/></svg>');
+        background-repeat: no-repeat;
+        background-size: contain;
+      }
+    }
+
+    p.the-toast {
+      margin-top: 0;
+      clear: both;
+      float: right;
+      font-size: 80%;
+    }
+  }
+
+  img {
+    height: auto; // maintain the aspect ratio
+    width: auto; // allow the image to grow naturally
+  }
+}
+
+@media (min-width: 710px) {
+  body#design-philosophy {
+    blockquote {
+      width: 30%;
+    }
+  }
+}
+
+@mixin dark-mode {
+  body#design-philosophy {
+    blockquote {
+      background-color: #333;
+
+      p.roosevelt {
+        background-color: #5a6a6a;
+
+        &::after {
+          background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" preserveAspectRatio="none"><path d="M10 10 L20 10 L10 20 Z" fill="%235a6a6a"/></svg>');
+        }
+      }
+
+      p.taft {
+        background-color: #675767;
+
+        &::after {
+          background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" preserveAspectRatio="none"><path d="M10 10 L0 10 L10 20 Z" fill="%23675767"/></svg>');
+        }
+      }
+    }
+  }
+}
+
+@media (prefers-color-scheme: dark) {
+  html {
+    @include dark-mode;
+  }
+}
+
+html.dark {
+  @include dark-mode;
+}

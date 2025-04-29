@@ -1,0 +1,15 @@
+img[alt="Multi-DB logo"] {
+  width: 480px;
+}
+
+form.teddy-live-demo {
+  > fieldset > p:last-of-type {
+    margin-bottom: 0;
+  }
+
+  iframe {
+    border: 2px #999 dashed;
+    border-radius: 25px;
+    background-color: rgba(255, 255, 255, 1);
+  }
+}

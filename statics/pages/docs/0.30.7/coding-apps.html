@@ -1,0 +1,99 @@
+<include src="layouts/main">
+<arg pageTitle>web framework — coding apps</arg>
+<arg pageId>roosevelt-web-framework-—-coding-apps</arg>
+<arg pageContent><article><h2 id="makingmodelfiles">Making model files</h2>
+<p>Place a file named <code>dataModel.js</code> in <code>mvc/models</code>.</p>
+<p>Here's a simple example <code>dataModel.js</code> data model:</p>
+<pre><code class="js language-js">// dataModel.js
+module.exports = () =&gt; {
+  return { some: 'data' }
+}</code></pre>
+<p>In more complex apps, you might query a database to get your data instead.</p>
+<h2 id="makingviewfiles">Making view files</h2>
+<p>Views by default are <a href="https://rooseveltframework.org/docs/teddy">Teddy</a> templates. See the Teddy documentation for information about how to write Teddy templates.</p>
+<p>You can also configure Roosevelt to use any templating system supported by Express for your views.</p>
+<h2 id="makingcontrollerfiles">Making controller files</h2>
+<p>Controller files are places to write <a href="https://expressjs.com/en/api.html#router">Express routes</a>. A route is the term Express uses for URL endpoints, such as <code>https://yoursite/blog</code> or <code>https://yoursite/about</code>.</p>
+<p>Controllers bind models and views together.</p>
+<p>To make a new controller, make a new file in the controllers directory. For example:</p>
+<pre><code class="js language-js">// someController.js
+module.exports = (router, app) =&gt; {
+  // router is an Express router
+  // and app is the Express app created by Roosevelt
+
+  // standard Express route
+  router.route('/about').get((req, res) =&gt; {
+    // load a data model
+    const model = require('models/dataModel')()
+
+    // render a template and pass it the model
+    res.render('about', model)
+  })
+}</code></pre>
+<p>Sometimes it is also useful to separate controller logic from your routing. This can be done by creating a reusable controller module. Reusable controller modules differ from standard controller modules in that they are meant to be called from within other controllers and do not define routes.</p>
+<p>To create a reusable controller, put a file in your controllers directory that accepts <code>app</code>, <code>req</code>, and <code>res</code> arguments with logic that is meant to execute from within a predefined route.</p>
+<p>An example of when this might be needed would be having a reusable controller for "404 Not Found" pages:</p>
+<pre><code class="js language-js">// notFound.js — reusable controller
+module.exports = (app, req, res) =&gt; {
+  const model = { content: 'Cannot find this page' }
+  res.status(404)
+  res.render('404', model)
+}</code></pre>
+<p>You can then call the reusable controller in any other controller when needed:</p>
+<pre><code class="js language-js">// someController.js
+module.exports = (router, app) =&gt; {
+  router.route('/whatever').get((req, res) =&gt; {
+    // test some logic that could fail
+    // thus triggering the need for the 404 controller
+    if (something) {
+      // logic didn't fail
+      // so render the page normally
+      let model = require('models/dataModel')
+      res.render('whatever', model)
+    }
+    else {
+      // logic failed
+      // so throw the 404 by executing your reusable controller
+      require('controllers/notFound')(app, req, res)
+    }
+  })
+}</code></pre>
+<p>Any controller file that has no arguments or more than two arguments will be considered a reusable controller.</p>
+<h2 id="makingstaticpages">Making static pages</h2>
+<p>You can also generate static files from templates and models as well.</p>
+<p>Templates for static pages go in your statics folder (<code>staticsRoot</code>) under the HTML source path (<code>html.sourcePath</code>), which is <code>statics/pages</code> by default.</p>
+<p>Data models for the templates will be merged from different possible locations to source them from in the following order of precedence:</p>
+<ol>
+<li><code>*</code> model in <code>htmlModels</code>.</li>
+<li>File-level override in <code>htmlModels</code>.</li>
+<li>Model file.</li>
+</ol>
+<h3 id="settingstaticpagemodels">Setting static page models</h3>
+<p>To declare a global model in <code>htmlModels</code>, use the <code>*</code> character:</p>
+<pre><code class="javascript language-javascript">// build.js
+(async () =&gt; {
+  await require('roosevelt')({
+    html: {
+      models: {
+        '*': {
+          hello: 'world!'
+        }
+      }
+    }
+  }).init()
+})()</code></pre>
+<p>To declare a model for a specific file in <code>htmlModels</code>:</p>
+<pre><code class="javascript language-javascript">// build.js
+(async () =&gt; {
+  await require('roosevelt')({
+    html: {
+      models: {
+        'index.html': {
+          hello: 'world!'
+        }
+      }
+    }
+  }).init()
+})()</code></pre>
+<p>You can also declare a model for a specific page by placing a JS file with the same name alongside the template.</p>
+<p>For example if an <code>index.js</code> file exists next to <code>index.html</code>, the JS file will be used to set the model so long as it exports either an object or a function that returns an object.</p></article></arg></include>

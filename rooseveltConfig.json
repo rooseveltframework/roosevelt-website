@@ -1,40 +1,75 @@
 {
   "makeBuildArtifacts": "staticsOnly",
-  "viewEngine": "html: teddy",
+  "viewEngine": [
+    "html:teddy"
+  ],
   "html": {
-    "blocklist": [
-      "layouts/*"
-    ]
+    "folderPerPage": "index.html"
   },
   "css": {
+    "sourcePath": "css",
     "compiler": {
-      "enable" : true,
-      "module": "less",
+      "enable": true,
+      "module": "sass",
       "options": {}
     },
-    "allowlist": [
-      "main.less"
-    ],
-    "versionFile": {
-      "fileName": ".version.less",
-      "varName": "appVersion"
-    }
+    "output": "css",
+    "versionFile": null
   },
   "js": {
+    "sourcePath": "js",
     "webpack": {
       "enable": true,
       "bundles": [
+        {
+          "config": {
+            "entry": "${js.sourcePath}/global.js",
+            "output": {
+              "path": "${publicFolder}/js",
+              "filename": "global.js"
+            },
+            "resolve": {
+              "alias": {
+                "fs": false,
+                "path": false
+              },
+              "modules": [
+                "${js.sourcePath}",
+                "${buildFolder}/js",
+                "${appDir}",
+                "node_modules"
+              ]
+            }
+          }
+        },
         {
           "config": {
             "entry": "${js.sourcePath}/main.js",
             "output": {
               "path": "${publicFolder}/js",
               "filename": "main.js"
+            },
+            "resolve": {
+              "alias": {
+                "fs": false,
+                "path": false
+              },
+              "modules": [
+                "${js.sourcePath}",
+                "${buildFolder}/js",
+                "${appDir}",
+                "node_modules"
+              ]
             }
           }
         }
       ]
     }
   },
-  "versionedPublic": true
+  "copy": [
+    {
+      "source": "${staticsRoot}/images",
+      "dest": "${publicFolder}/images"
+    }
+  ]
 }
