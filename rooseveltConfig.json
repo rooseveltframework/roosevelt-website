@@ -3,6 +3,7 @@
   "viewEngine": [
     "html:teddy"
   ],
+  "publicFolder": "docs",
   "html": {
     "folderPerPage": "index.html"
   },
