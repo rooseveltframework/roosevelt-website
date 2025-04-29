@@ -53,7 +53,7 @@
   },
   "standard": {
     "ignore": [
-      "public/"
+      "docs/"
     ]
   },
   "repository": {
@@ -62,18 +62,18 @@
   },
   "scripts": {
     "contributors": "node contributors.js",
-    "d": "node build.js --development-mode && http-server public/",
-    "dev": "nodemon --exec \"node build.js --development-mode && http-server public/\"",
-    "development": "nodemon --exec \"node build.js --development-mode && http-server public/\"",
-    "p": "nodemon --exec \"node build.js --production-mode && http-server public/\"",
-    "prod": "nodemon --exec \"node build.js --production-mode && http-server public/\"",
-    "production": "nodemon --exec \"node build.js --production-mode && http-server public/\"",
+    "d": "node build.js --development-mode && http-server docs/",
+    "dev": "nodemon --exec \"node build.js --development-mode && http-server docs/\"",
+    "development": "nodemon --exec \"node build.js --development-mode && http-server docs/\"",
+    "p": "nodemon --exec \"node build.js --production-mode && http-server docs/\"",
+    "prod": "nodemon --exec \"node build.js --production-mode && http-server docs/\"",
+    "production": "nodemon --exec \"node build.js --production-mode && http-server docs/\"",
     "build": "npm run contributors && node build.js --production-mode",
     "build-dev": "node build.js --development-mode",
     "lint": "npm run standard && npm run stylelint",
     "standard": "./node_modules/.bin/standard",
     "stylelint": "./node_modules/.bin/stylelint \"statics/css/**/*.scss\"",
-    "start": "nodemon --exec \"node build.js --production-mode && http-server public/\"",
+    "start": "nodemon --exec \"node build.js --production-mode && http-server docs/\"",
     "test": "npm run lint"
   },
   "funding": "https://www.paypal.com/donate/?hosted_button_id=2L2X8GRXZCGJ6"
