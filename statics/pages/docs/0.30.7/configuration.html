@@ -274,7 +274,7 @@
 <li><code>defaultBundle</code> <em>[String]</em>: File name for the default JS view bundle.</li>
 <li><code>output</code> <em>[String]</em>: Subdirectory within <code>buildFolder</code> to write JS view bundles to.</li>
 <li><code>minify</code> <em>[Boolean]</em>: Option to minify templates that are exposed via this feature.<ul>
-<li>Be careful with this feature because it can break your templates depending on which templating system you use, and as such it is off by default. You may need to make liberal use of the <code>minifyOptions</code> param to make it work right with your tempalting system.</li></ul></li>
+<li>Be careful with this feature because it can break your templates depending on which templating system you use, and as such it is off by default. You may need to make liberal use of the <code>minifyOptions</code> param to make it work right with your templating system.</li></ul></li>
 <li><code>minifyOptions</code> <em>[Object]</em>: Parameters to supply to <a href="https://github.com/terser/html-minifier-terser#options-quick-reference">html-minifier</a>'s API.<ul>
 <li>Uses the params you set in <code>html.minifier.options</code> if empty.</li></ul></li></ul></li>
 </ul>
@@ -294,7 +294,7 @@
 <li><p><code>copy</code> <em>[Array of Objects]</em>: Declare one or more files or folders to copy at runtime. Default: <code>[]</code>.</p>
 <ul>
 <li><code>source</code> <em>[String]</em>: Path to be copied from.<ul>
-<li>Roosevelt will not attempt to copy files or folders that does not exist.</li></ul></li>
+<li>Roosevelt will not attempt to copy files or folders that do not exist.</li></ul></li>
 <li><code>dest</code> <em>[String]</em>: Path to place the copy.<ul>
 <li>If this destination path already exists <strong>it will be overwritten</strong>.</li></ul></li></ul></li>
 <li><p><code>html</code> <em>[Object]</em>: Generate static HTML pages:</p>
@@ -356,8 +356,8 @@
 <li>Example array member: <code>"example.less:example.min.css"</code> compiles <code>example.less</code> into <code>example.min.css</code>.</li></ul></li>
 <li><code>output</code> <em>[String]</em>: Subdirectory within <code>publicFolder</code> where compiled CSS files will be written to.</li>
 <li><code>versionFile</code> <em>[Object]</em>: If enabled, Roosevelt will create a CSS file which declares a CSS variable containing your app's version number from <code>package.json</code>. Enable this option by supplying an object with the member variables <code>fileName</code> and <code>varName</code>. Versioning your static files is useful for resetting your users' browser cache when you release a new version of your app.<ul>
-<li>Example usage (with SASS): <code>{ "fileName": "_version.scss", "varName": "appVersion" }</code></li>
-<li>Assuming the default Roosevelt configuration otherwise, this will result in a file <code>statics/css/_version.scss</code> with the following content: <code>/* do not edit; generated automatically by Roosevelt */ $appVersion: '0.1.0';</code></li>
+<li>Example usage (with SASS): <code>{ "fileName": "_version.scss", "varName": "appVersion" }</code><ul>
+<li>Assuming the default Roosevelt configuration otherwise, this will result in a file <code>statics/css/_version.scss</code> with the following content: <code>/* do not edit; generated automatically by Roosevelt */ $appVersion: '0.1.0';</code></li></ul></li>
 <li>Some things to note:<ul>
 <li>If there is already a file there with that name, this will overwrite it, so be careful!</li>
 <li>It's generally a good idea to add this file to .gitignore, since it is a build artifact.</li></ul></li></ul></li></ul></li>
@@ -569,7 +569,7 @@
   }).startServer()
 })()</code></pre>
 <h4 id="eventlist">Event list</h4>
-<p>These are sorted in order of when they are executed during the lifecyle of a Roosevelt app.</p>
+<p>These are sorted in order of when they are executed during the lifecycle of a Roosevelt app.</p>
 <ul>
 <li><p><code>onBeforeMiddleware(app)</code>: Fired when the app begins initializing, prior to any middleware being loaded into the app.</p>
 <ul>
@@ -582,7 +582,7 @@
 <li><code>app</code>: The <a href="http://expressjs.com/api.html#express">Express app</a> created by Roosevelt.</li></ul></li>
 <li><p><code>onClientViewsProcess(template)</code>: Fired to preprocess templates before being exposed to the client.</p>
 <ul>
-<li><code>template</code>: A string containing a template written in any JS-based templating engine (e.g. Teddy, Pug, ejs, etc)</li></ul></li>
+<li><code>template</code>: A string containing a template written in any JS-based templating engine (e.g. Teddy, Pug, ejs, etc).</li></ul></li>
 <li><p><code>onServerInit(app)</code>: Fired when the server is fully initialized and all middleware has been loaded but before the server has started.</p>
 <ul>
 <li><code>app</code>: The <a href="http://expressjs.com/api.html#express">Express app</a> created by Roosevelt.</li></ul></li>
@@ -610,7 +610,7 @@
 <li><code>expressSession</code>: The <a href="https://github.com/expressjs/session">express-session</a> module Roosevelt uses internally. Session middleware.</li>
 <li><code>expressSessionStore</code>: The session store instance used by <a href="https://github.com/expressjs/session">express-session</a> module Roosevelt uses internally.</li>
 <li><code>htmlPath</code>: Full path on the file system to where your app's HTML static page source files are located.</li>
-<li><code>htmlRenderedOutput</code>: Full path on the file system to where your app's rendered and minified staic HTML files are located.</li>
+<li><code>htmlRenderedOutput</code>: Full path on the file system to where your app's rendered and minified static HTML files are located.</li>
 <li><code>httpServer</code>: The <a href="https://nodejs.org/api/http.html#http_class_http_server">http server</a> created by Roosevelt.</li>
 <li><code>httpsServer</code>: The <a href="https://nodejs.org/api/https.html#https_class_https_server">https server</a> created by Roosevelt.</li>
 <li><code>jsPath</code>: Full path on the file system to where your app's JS source files are located.</li>
