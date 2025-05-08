@@ -122,8 +122,8 @@ function onBeforeStatics (app) {
   }, {})
 
   // create models for specific pages based on which repo it is derived from so we can include that repo's version history in the model
-  const filelist = fs.readdirSync('statics/pages/docs', { recursive: true })
-  for (const file of filelist) {
+  const fileList = fs.readdirSync('statics/pages/docs', { recursive: true })
+  for (const file of fileList) {
     if (!fs.lstatSync(path.join('statics/pages/docs', file)).isDirectory()) {
       const parts = file.split('/')
       let thisRepo
@@ -140,20 +140,27 @@ function onBeforeStatics (app) {
         const lastPart = fileParts.pop()
         fileParts.pop()
         let newUrl = ('/docs/' + fileParts.join('/') + '/' + (isLatest ? 'latest' : versionWithoutLatest) + '/' + lastPart).replace('//', '/')
+        newUrl = newUrl.slice(0, -5)
+        if (newUrl.endsWith('/index')) newUrl = newUrl.slice(0, -6)
         if (version === 'Older...') newUrl = `https://github.com/rooseveltframework/${thisRepo}/commits/main/README.md`
         versionLinks[version] = newUrl
       }
 
       // set the currentVersion object for the template
-      currentVersion[thisRepo] = file.split('/')
-      currentVersion[thisRepo] = currentVersion[thisRepo][currentVersion[thisRepo].length - 2]
-      if (versions[thisRepo][0].replace(' (latest)', '') === currentVersion[thisRepo]) currentVersion[thisRepo] = 'latest'
+      const localCurrentVersion = { ...currentVersion }
+      localCurrentVersion[thisRepo] = file.split('/')
+      localCurrentVersion[thisRepo] = localCurrentVersion[thisRepo][localCurrentVersion[thisRepo].length - 2]
+      if (versions[thisRepo][0].replace(' (latest)', '') === localCurrentVersion[thisRepo]) localCurrentVersion[thisRepo] = 'latest'
+
+      // set currentPage
+      let currentPage = `/docs/${file.slice(0, -5)}`
+      if (currentPage.endsWith('/index')) currentPage = currentPage.slice(0, -6)
 
       // set the model for this file
       const model = {
-        currentPage: `/docs/${file}`,
-        currentrepo: thisRepo,
-        currentVersion,
+        currentPage,
+        currentRepo: thisRepo,
+        currentVersion: localCurrentVersion,
         versions: versionLinks
       }
 
@@ -182,9 +189,8 @@ function onBeforeStatics (app) {
   }
 }
 
-// this function does a full build of the static site
-async function build () {
-  // build pages from the other modules first
+// build pages from the other modules first
+async function prebuild () {
   require('@colors/colors')
   const fs = require('fs')
   const path = require('path')
@@ -358,7 +364,7 @@ async function build () {
   <meta http-equiv="refresh" content="0;url=/docs/latest/get-started">
 </head>
 <body>
-  <p>You are being redirected to <a href="/docs/latest/get-started">/docs/latest/get-started</a>. If the redirect does not happen automatically, click the link.</p>
+  <p id="redirecting">You are being redirected to <a href="/docs/latest/get-started">/docs/latest/get-started</a>. If the redirect does not happen automatically, click the link.</p>
 </body>
 </html>`
         if (!fs.existsSync('statics/pages/docs/index.html')) {
@@ -400,7 +406,7 @@ async function build () {
   <meta http-equiv="refresh" content="0;url=/docs/${repo}/latest">
 </head>
 <body>
-  <p>You are being redirected to <a href="/docs/${repo}/latest">/docs/${repo}/latest</a>. If the redirect does not happen automatically, click the link.</p>
+  <p id="redirecting">You are being redirected to <a href="/docs/${repo}/latest">/docs/${repo}/latest</a>. If the redirect does not happen automatically, click the link.</p>
 </body>
 </html>`)
           logger.log('📝', `roosevelt-website writing new HTML file statics/pages/docs/${repo}/index.html`.green)
@@ -420,13 +426,61 @@ async function build () {
       }
     }
   }
+}
 
-  // build the static site
+// build the static site
+const cheerio = require('cheerio')
+async function build () {
   await require('roosevelt')({ onBeforeStatics }).init()
+
+  // build siteTexts.js for client-side search
+  const fileList = fs.readdirSync('docs', { recursive: true })
+
+  // sort the fileList array so that strings with version numbers are moved to the end
+  fileList.sort((a, b) => {
+    const versionRegex = /\d+\.\d+\.\d+/ // matches version numbers like "1.0.0"
+
+    const aHasVersion = versionRegex.test(a)
+    const bHasVersion = versionRegex.test(b)
+
+    if (aHasVersion && !bHasVersion) {
+      return 1 // move `a` after `b`
+    } else if (!aHasVersion && bHasVersion) {
+      return -1 // move `a` before `b`
+    } else {
+      return 0 // keep the original order if both or neither have version numbers
+    }
+  })
+
+  let siteTexts = 'window.siteTexts = []'
+  for (const file of fileList) {
+    if (file.endsWith('.html')) {
+      const $ = cheerio.load(fs.readFileSync(path.join('docs/', file), 'utf8'))
+      let title = $('title').html()
+      if (title === 'Redirecting...') continue
+      if (title.startsWith('Roosevelt web framework — ')) title = title.replace('Roosevelt web framework — ', '')
+      if (title.startsWith('web framework — ')) title = title.replace('web framework — ', '')
+      if (file.includes('/latest/')) {
+        title += ' (latest)'
+      } else {
+        // detect version numbers in the file path
+        const versionMatch = file.match(/\/(\d+\.\d+\.\d+)\//) // matches version numbers like "1.0.0"
+        if (versionMatch) {
+          const versionNumber = versionMatch[1] // extract the version number
+          title += ` (${versionNumber})`
+        }
+      }
+      $('head, script, style, main header, #pages, footer, #redirecting').remove()
+      const text = $.text().replaceAll('\\', '\\\\').replaceAll('"', '\\"').replaceAll('\n', ' ')
+      siteTexts += `\nwindow.siteTexts.push({file: "${file}", title: "${title}", text: "${text}"})`
+    }
+  }
+  fs.writeFileSync('docs/js/siteTexts.js', siteTexts)
 }
 
 module.exports = {
   repos,
   onBeforeStatics,
+  prebuild,
   build
 }

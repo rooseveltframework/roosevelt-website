@@ -272,7 +272,38 @@ html, html.light { // default styles; light theme is also the default
               }
 
               button#semanticFormsClearButton_search {
-                right: -175px;
+                right: -120px;
+              }
+            }
+
+            output {
+              position: absolute;
+              font-size: 80%;
+              background: #fff;
+              border: 1px #c0c0c0 solid;
+              margin-top: -11px;
+              border-radius: 15px;
+              max-height: calc(70vh);
+              overflow-y: scroll;
+              width: 120px;
+              max-width: 120px;
+              z-index: 1;
+
+              ul {
+                padding: 0 5px;
+              }
+
+              li {
+                list-style: none;
+                margin-top: 10px;
+                white-space: pre-wrap;
+                word-wrap: break-word;
+                overflow-wrap: break-word;
+
+                 strong {
+                  background-color: #ff0;
+                  color: #000;
+                 }
               }
             }
           }
@@ -477,6 +508,15 @@ html, html.light { // default styles; light theme is also the default
             background-image: url('/images/logo_white.png');
           }
         }
+
+        > div#nav-search-wrapper {
+          search {
+            output {
+              background: #555;
+              border: 1px #666 solid;
+            }
+          }
+        }
       }
 
       > div.content {
@@ -517,7 +557,7 @@ html.dark {
 }
 
 @media (prefers-color-scheme: dark) {
-  html {
+  html:not(.dark):not(.light) {
     @include dark-mode;
   }
 }
@@ -549,6 +589,15 @@ html.dark {
 
               form input {
                 width: 175px;
+              }
+
+              form button#semanticFormsClearButton_search {
+                right: -175px;
+              }
+
+              output {
+                width: 173px;
+                max-width: 173px;
               }
             }
           }

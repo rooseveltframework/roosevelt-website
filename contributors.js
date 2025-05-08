@@ -26,7 +26,6 @@
       'vscode-teddy'
     ]
     for (const repo of repos) {
-      // TODO: fetching contributors data from github hits the github api many times and risks hitting api limits; this needs to be refactored to either 1. make fewer api requests, or 2. authenticate the requests to take advantage of higher limits with authenticated requests
       const res = await axios.get(`https://api.github.com/repos/rooseveltframework/${repo}/contributors`)
       for (const contributor of res.data) {
         contributors[contributor.login] = {

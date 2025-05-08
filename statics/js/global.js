@@ -23,24 +23,52 @@ document.querySelectorAll('[commandfor]').forEach((el) => { el.removeAttribute('
 // activate semantic forms ui library js support https://github.com/rooseveltframework/semantic-forms
 require('semantic-forms')()
 
-// replace title attributes with tippy attributes
-const tippy = require('tippy.js/dist/tippy.cjs.js').default // tippy ui tooltip library https://github.com/atomiks/tippyjs
-document.querySelectorAll('[title]:not(iframe)')?.forEach(titleAttribute => { // apply tippy tooltip to any element with html title attribute
-  if (!titleAttribute.getAttribute('data-tippy-skip')) {
-    tippy(titleAttribute, {
-      content: titleAttribute.getAttribute('title'), // extract tooltip content from html title attribute
-      placement: titleAttribute.getAttribute('data-tippy-placement') || 'top' // allow html elements to customize tooltip placement
-    })
-    titleAttribute.removeAttribute('title') // remove html title attribute as it is now redundant and fights with tippy
-  }
-})
-
 // display search box that does an advanced github search that displays only when js is enabled; this can only work when js is enabled because of how github search works
-// TODO: augment search with roosevelt clientViews feature and search the template strings with some kind of client-side js-based fuzzy search library
+// TODO: update above comment
 document.querySelector('search').removeAttribute('hidden')
+document.querySelector('search').insertAdjacentHTML('beforeend', '<output hidden><ul></ul></output>')
+document.getElementById('search').addEventListener('focus', performSearch)
+document.getElementById('search').addEventListener('input', performSearch)
 document.getElementById('searchForm').addEventListener('submit', (event) => {
   event.preventDefault()
-  window.location = `https://github.com/search?q=org%3Arooseveltframework+language%3AMarkdown+${document.getElementById('search').value}&type=code`
+})
+document.getElementById('search').addEventListener('blur', (event) => {
+  setTimeout(() => {
+    document.querySelector('search output').setAttribute('hidden', 'hidden')
+  }, 1000)
+})
+function performSearch () {
+  const searchTerm = document.getElementById('search').value.toLowerCase().trim()
+  document.querySelector('search output ul').innerHTML = ''
+  if (searchTerm.replace(/\s/g, '').length) {
+    for (const file of window.siteTexts) {
+      if (file.text.toLowerCase().includes(searchTerm)) {
+        // extract context around the search term
+        const regex = new RegExp(`(.{0,30})(${searchTerm})(.{0,30})`, 'i') // match with up to n characters before and after
+        const match = file.text.match(regex)
+        let context = searchTerm
+        if (match) {
+          const before = match[1] || '' // up to n characters before the match
+          const matchedText = match[2] // the matched search term
+          const after = match[3] || '' // up to n characters after the match
+          context = `${before}<strong>${matchedText}</strong>${after}` // highlight the matched term
+        }
+
+        document.querySelector('search output ul').insertAdjacentHTML('beforeend', `<li><a href="/${file.file}" title="${file.title}">…${context}…</li>`)
+      }
+    }
+    document.querySelector('search output ul').insertAdjacentHTML('beforeend', `<li><a href="https://github.com/search?q=org%3Arooseveltframework+language%3AMarkdown+${document.getElementById('search').value}&type=code">Search this term on GitHub</li>`)
+    // TODO: show/hide based on both focus and non-whitespace search term presence
+    document.querySelector('search output').removeAttribute('hidden')
+  } else {
+    document.querySelector('search output').setAttribute('hidden', 'hidden')
+  }
+  enhanceTitleAttributes()
+}
+
+// add permalink icons to <h[n]> tags
+document.querySelectorAll('div.content > article h1[id], div.content > article h2[id], div.content > article h3[id], div.content > article h4[id], div.content > article h5[id], div.content > article h6[id]').forEach((el) => {
+  el.insertAdjacentHTML('beforeend', ` <small><a href="#${el.id}" class="no-underline" title="Permalink">🔗</a></small>`)
 })
 
 // add light/dark mode picker
@@ -79,7 +107,13 @@ function setTheme (event) {
     form.classList.remove('dark')
     form.classList.add(window.theme)
   })
-  // TODO: update teddy live demo iframe text color when the theme changes
+  // check for <source> elements and flip them if theme doesn't match OS pref
+  if (osPreference !== window.theme) {
+    document.querySelectorAll('[media^="(prefers-color-scheme"]').forEach((el) => {
+      if (el.getAttribute('media').includes('dark')) el.setAttribute('media', '(prefers-color-scheme: light)')
+      else el.setAttribute('media', '(prefers-color-scheme: dark)')
+    })
+  }
 }
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { setTheme() })
 setTheme()
@@ -97,3 +131,18 @@ function setCookie (name, value, days) {
   const expires = new Date(Date.now() + days * 24 * 60 * 60 * 1000).toUTCString()
   document.cookie = `${name}=${value}; expires=${expires}; path=/`
 }
+
+// replace title attributes with tippy attributes
+const tippy = require('tippy.js/dist/tippy.cjs.js').default // tippy ui tooltip library https://github.com/atomiks/tippyjs
+function enhanceTitleAttributes () {
+  document.querySelectorAll('[title]:not(iframe)')?.forEach(titleAttribute => { // apply tippy tooltip to any element with html title attribute
+    if (!titleAttribute.getAttribute('data-tippy-skip')) {
+      tippy(titleAttribute, {
+        content: titleAttribute.getAttribute('title'), // extract tooltip content from html title attribute
+        placement: titleAttribute.getAttribute('data-tippy-placement') || 'top' // allow html elements to customize tooltip placement
+      })
+      titleAttribute.removeAttribute('title') // remove html title attribute as it is now redundant and fights with tippy
+    }
+  })
+}
+enhanceTitleAttributes()
