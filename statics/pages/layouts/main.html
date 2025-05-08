@@ -48,6 +48,8 @@
       <link rel="stylesheet" href="/css/highlight.js.dark.css" media="(prefers-color-scheme: dark)">
       <script src="/js/main.js" defer></script>
     </else>
+
+    <script src="/js/siteTexts.js" defer></script>
   </head>
 
   <body class="no-js" if-pageId true='id="{pageId}"'>
@@ -74,7 +76,7 @@
             <form id="searchForm" action="https://github.com/search" method="get" class="semanticForms">
               <dl>
                 <dt><label for="search">Search</label></dt>
-                <dd><input type="text" id="search" name="q" placeholder="e.g. Teddy"></dd>
+                <dd><input type="text" id="search" name="q" placeholder="e.g. Teddy" autocomplete="off"></dd>
               </dl>
               <menu class="visuallyHidden">
                 <li><button type="submit" name="submit">Search</button></li>
@@ -121,6 +123,7 @@
             <p><small>Except where otherwise noted, all original work available on this site is licensed under the <a href="http://creativecommons.org/licenses/by/4.0/">Creative Commons Attribution 4.0 International License</a>.</small></p>
             <p><small>Commercial and noncommercial use is permitted so long as <a href="/contributors">the authors</a> of the work are properly attributed.</small></p>
           </aside>
+          <nav id="scroll-to=top"><a href="#" class="no-underline">🔝 </a><small><a href="#">Scroll to top</a></small></nav>
         </footer>
       </unless>
     </main>

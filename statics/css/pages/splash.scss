@@ -72,7 +72,7 @@ html, html.light {
 }
 
 @media (min-width: 330px) {
-  html, html.light {
+  html, html.light, html.dark {
     body#splash {
       > main {
         > div.content {
@@ -88,7 +88,7 @@ html, html.light {
 }
 
 @media (min-width: 900px) {
-  html, html.light {
+  html, html.light, html.dark {
     body#splash {
       > main {
         > div.content {
@@ -112,7 +112,7 @@ html, html.light {
 }
 
 @media (min-width: 960px) {
-  html, html.light {
+  html, html.light, html.dark {
     body#splash {
       button[commandfor="nav"] {
         display: block;
@@ -146,7 +146,7 @@ html, html.light {
 }
 
 @media (min-width: 1110px) {
-  html, html.light {
+  html, html.light, html.dark {
     body#splash {
       > main {
         > div.content {
@@ -158,7 +158,7 @@ html, html.light {
 }
 
 @media (min-width: 1280px) {
-  html, html.light {
+  html, html.light, html.dark {
     body#splash {
       > main {
         > div.content {
@@ -170,7 +170,7 @@ html, html.light {
 }
 
 @media (min-width: 1480px) {
-  html, html.light {
+  html, html.light, html.dark {
     body#splash {
       > main {
         > div.content {
@@ -204,7 +204,7 @@ html, html.light {
 }
 
 @media (prefers-color-scheme: dark) {
-  html {
+  html:not(.dark):not(.light) {
     @include dark-mode;
   }
 }
