@@ -39,7 +39,7 @@
     "highlight.js": "11.11.1",
     "invokers-polyfill": "0.5.4",
     "roosevelt": "0.30.7",
-    "sass": "1.87.0",
+    "sass": "1.88.0",
     "semantic-forms": "5.0.8",
     "showdown": "2.1.0",
     "teddy": "1.1.4",
@@ -49,7 +49,7 @@
   "devDependencies": {
     "standard": "17.1.2",
     "stylelint": "16.19.1",
-    "stylelint-config-standard-scss": "14.0.0",
+    "stylelint-config-standard-scss": "15.0.0",
     "watcher": "2.3.1"
   },
   "standard": {
