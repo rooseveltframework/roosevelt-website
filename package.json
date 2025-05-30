@@ -37,19 +37,19 @@
     "docs-single-page-express": "https://github.com/rooseveltframework/single-page-express",
     "docs-teddy": "https://github.com/rooseveltframework/teddy",
     "highlight.js": "11.11.1",
-    "invokers-polyfill": "0.5.4",
+    "invokers-polyfill": "0.5.5",
     "roosevelt": "0.30.7",
-    "sass": "1.88.0",
+    "sass": "1.89.0",
     "semantic-forms": "5.0.8",
     "showdown": "2.1.0",
     "teddy": "1.1.4",
     "tippy.js": "6.3.7",
-    "webpack": "5.99.8"
+    "webpack": "5.99.9"
   },
   "devDependencies": {
     "standard": "17.1.2",
     "stylelint": "16.19.1",
-    "stylelint-config-standard-scss": "15.0.0",
+    "stylelint-config-standard-scss": "15.0.1",
     "watcher": "2.3.1"
   },
   "standard": {
