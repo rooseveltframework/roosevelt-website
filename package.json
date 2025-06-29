@@ -18,9 +18,9 @@
   },
   "dependencies": {
     "@colors/colors": "1.6.0",
-    "axios": "1.9.0",
+    "axios": "1.10.0",
     "check-if-css-is-disabled": "2.0.2",
-    "cheerio": "1.0.0",
+    "cheerio": "1.1.0",
     "docs-check-if-css-is-disabled": "https://github.com/rooseveltframework/check-if-CSS-is-disabled",
     "docs-crossplatform-killport": "https://github.com/rooseveltframework/crossplatform-killport",
     "docs-express-browser-reload": "https://github.com/rooseveltframework/express-browser-reload",
@@ -38,9 +38,9 @@
     "docs-teddy": "https://github.com/rooseveltframework/teddy",
     "highlight.js": "11.11.1",
     "invokers-polyfill": "0.5.5",
-    "roosevelt": "0.30.7",
-    "sass": "1.89.1",
-    "semantic-forms": "5.0.9",
+    "roosevelt": "0.31.0",
+    "sass": "1.89.2",
+    "semantic-forms": "5.0.10",
     "showdown": "2.1.0",
     "teddy": "1.1.4",
     "tippy.js": "6.3.7",
@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "standard": "17.1.2",
-    "stylelint": "16.20.0",
+    "stylelint": "16.21.0",
     "stylelint-config-standard-scss": "15.0.1",
     "watcher": "2.3.1"
   },
