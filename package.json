@@ -48,7 +48,7 @@
   },
   "devDependencies": {
     "standard": "17.1.2",
-    "stylelint": "16.21.0",
+    "stylelint": "16.21.1",
     "stylelint-config-standard-scss": "15.0.1",
     "watcher": "2.3.1"
   },
