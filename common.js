@@ -433,6 +433,9 @@ const cheerio = require('cheerio')
 async function build () {
   await require('roosevelt')({ onBeforeStatics }).init()
 
+  // create CNAME for github pages
+  fs.writeFileSync('docs/CNAME', 'rooseveltframework.org')
+
   // build siteTexts.js for client-side search
   const fileList = fs.readdirSync('docs', { recursive: true })
 
