@@ -38,20 +38,20 @@ module.exports = (router, app) =&gt; {
 module.exports = (router, app) =&gt; {
   router.route('/form').get((req, res) =&gt; {
     const model = require('models/dataModel')()
-    model.csrfToken = req.csrfToken() // add CSRF token to the model
+    model.token = req.csrfToken() // add CSRF token to the model
     res.render('about', model)
   })
 }</code></pre>
 <pre><code class="html language-html">&lt;!-- form that include the token in a request body --&gt;
 &lt;form action="/some-protected-endpoint" method="post"&gt;
-  &lt;input type="hidden" name="_csrf" value="{csrfToken}"&gt;
+  &lt;input type="hidden" name="_csrf" value="{token}"&gt;
 &lt;/form&gt;</code></pre>
 <p>You can also add the token as a request header when performing fetch requests by setting the <code>x-csrf-token</code> header:</p>
 <pre><code class="javascript language-javascript">// request that includes the token in headers
 const response = await fetch('/some-protected-endpoint', {
   method: 'POST',
   headers: {
-    'X-CSRF-TOKEN': csrfToken // extract it from the DOM or something
+    'X-CSRF-TOKEN': token
   }
 })</code></pre>
 <p>You can also exempt certain routes from CSRF protection or disable the feature entirely by configuration. See configuration section for details.</p>
