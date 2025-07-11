@@ -38,13 +38,13 @@
     "docs-teddy": "https://github.com/rooseveltframework/teddy",
     "highlight.js": "11.11.1",
     "invokers-polyfill": "0.5.5",
-    "roosevelt": "0.31.1",
+    "roosevelt": "0.31.3",
     "sass": "1.89.2",
     "semantic-forms": "5.1.0",
     "showdown": "2.1.0",
     "teddy": "1.1.4",
     "tippy.js": "6.3.7",
-    "webpack": "5.99.9"
+    "webpack": "5.100.0"
   },
   "devDependencies": {
     "http-server": "14.1.1",
