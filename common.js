@@ -456,7 +456,7 @@ async function build () {
   })
 
   let siteTexts = 'window.siteTexts = []'
-  for (const file of fileList) {
+  for (let file of fileList) {
     if (file.endsWith('.html')) {
       const $ = cheerio.load(fs.readFileSync(path.join('docs/', file), 'utf8'))
       let title = $('title').html()
@@ -474,6 +474,7 @@ async function build () {
         }
       }
       $('head, script, style, main header, #pages, footer, #redirecting').remove()
+      file = file.replaceAll('\\', '\\\\')
       const text = $.text().replaceAll('\\', '\\\\').replaceAll('"', '\\"').replaceAll('\n', ' ')
       siteTexts += `\nwindow.siteTexts.push({file: "${file}", title: "${title}", text: "${text}"})`
     }
