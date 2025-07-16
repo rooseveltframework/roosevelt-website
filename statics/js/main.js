@@ -45,11 +45,10 @@ document.querySelectorAll('pre code').forEach((codeBlock) => {
 
 // activate teddy live demo
 const teddy = require('teddy/client')
-const srcdocLayout = `<style>body { font-family: sans-serif; padding: 15px; color: ${window.theme === 'dark' ? '#fff;' : '#000;'} }</style><body>`
 document.querySelectorAll('.teddy-live-demo').forEach((form) => {
   form.querySelector('output').innerHTML = ''
   form.querySelector('fieldset').appendChild(document.createElement('iframe'))
-  form.querySelector('iframe').srcdoc = srcdocLayout + 'Click the "Render" button. Rendered template output will go here.' + '</body>'
+  form.querySelector('iframe').srcdoc = `<style>body { font-family: sans-serif; padding: 15px; color: ${window.theme === 'dark' ? '#fff;' : '#000;'} }</style><body>` + 'Click the "Render" button. Rendered template output will go here.' + '</body>'
   form.querySelector('menu button').addEventListener('click', (event) => {
     event.preventDefault()
     let json
@@ -60,7 +59,7 @@ document.querySelectorAll('.teddy-live-demo').forEach((form) => {
       window.alert('Teddy could not parse your JSON data! Please ensure it is valid JSON data.')
     }
     try {
-      teddy.setTemplate('live-demo', srcdocLayout + form.querySelector('.template').value + '</body>' || '')
+      teddy.setTemplate('live-demo', `<style>body { font-family: sans-serif; padding: 15px; color: ${window.theme === 'dark' ? '#fff;' : '#000;'} }</style><body>` + form.querySelector('.template').value + '</body>' || '') // capture style again in case theme has changed
       if (form.querySelector('.other-template')) teddy.setTemplate('other-template', form.querySelector('.other-template').value || '')
       form.querySelector('iframe').srcdoc = teddy.render('live-demo', json)
     } catch (e) {
