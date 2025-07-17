@@ -114,6 +114,12 @@ function setTheme (event) {
       else el.setAttribute('media', '(prefers-color-scheme: dark)')
     })
   }
+  document.querySelectorAll('.teddy-live-demo iframe').forEach((iframe) => {
+    if (iframe.contentDocument) {
+      const body = iframe.contentDocument.querySelector('body')
+      body.style.color = window.theme === 'dark' ? 'white' : 'black'
+    }
+  })
 }
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { setTheme() })
 setTheme()

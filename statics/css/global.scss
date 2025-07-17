@@ -240,7 +240,7 @@ html, html.light { // default styles; light theme is also the default
           // fix for semantic forms pushing a horizontal scrollbar
           form.semanticForms .floatLabelForm div {
             min-width: 1px;
-            width: 1px;
+            width: max-content;
           }
 
           nav {
