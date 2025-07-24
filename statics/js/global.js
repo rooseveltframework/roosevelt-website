@@ -68,7 +68,13 @@ function performSearch () {
 
 // add permalink icons to <h[n]> tags
 document.querySelectorAll('div.content > article h1[id], div.content > article h2[id], div.content > article h3[id], div.content > article h4[id], div.content > article h5[id], div.content > article h6[id]').forEach((el) => {
-  el.insertAdjacentHTML('beforeend', ` <small><a href="#${el.id}" class="no-underline" title="Permalink">🔗</a></small>`)
+  el.insertAdjacentHTML('beforeend', ` <small class="permalink"><a href="#${el.id}" class="no-underline" title="Permalink">🔗</a></small>`)
+  el.addEventListener('mouseover', () => {
+    el.querySelector('small').style.opacity = 1
+  })
+  el.addEventListener('mouseout', () => {
+    el.querySelector('small').style.opacity = 0
+  })
 })
 
 // add light/dark mode picker
