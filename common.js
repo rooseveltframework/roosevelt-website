@@ -278,6 +278,11 @@ async function prebuild () {
       logger.log('📝', `roosevelt-website writing new HTML file statics/pages/docs/${repo}/latest/usage.html`.green)
       fs.copyFileSync(path.normalize(`./node_modules/docs-${repo}/docs/statics/pages/usage.html`), path.normalize(`statics/pages/docs/${repo}/${version}/usage.html`))
       logger.log('📝', `roosevelt-website writing new HTML file statics/pages/docs/${repo}/${version}/usage.html`.green)
+
+      fs.copyFileSync(path.normalize(`./node_modules/docs-${repo}/docs/statics/pages/fullDemo.html`), path.normalize(`statics/pages/docs/${repo}/latest/fullDemo.html`))
+      logger.log('📝', `roosevelt-website writing new HTML file statics/pages/docs/${repo}/latest/fullDemo.html`.green)
+      fs.copyFileSync(path.normalize(`./node_modules/docs-${repo}/docs/statics/pages/fullDemo.html`), path.normalize(`statics/pages/docs/${repo}/${version}/fullDemo.html`))
+      logger.log('📝', `roosevelt-website writing new HTML file statics/pages/docs/${repo}/${version}/fullDemo.html`.green)
     } else if (repo === 'teddy') {
       if (!fs.existsSync(`statics/pages/docs/${repo}`)) {
         fs.mkdirSync(path.normalize(`statics/pages/docs/${repo}`))
