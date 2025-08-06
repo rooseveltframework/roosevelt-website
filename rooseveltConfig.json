@@ -63,6 +63,28 @@
               ]
             }
           }
+        },
+        {
+          "config": {
+            "entry": "node_modules/docs-semantic-forms/docs/statics/js/semantic-forms-main.js",
+            "output": {
+              "path": "${publicFolder}/js",
+              "filename": "semantic-forms-main.js"
+            },
+            "resolve": {
+              "alias": {
+                "fs": false,
+                "path": false
+              },
+              "modules": [
+                "${js.sourcePath}",
+                "${buildFolder}/js",
+                "${appDir}",
+                "node_modules",
+                "node_modules/docs-semantic-forms/docs/statics/js"
+              ]
+            }
+          }
         }
       ]
     }
