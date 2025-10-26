@@ -283,6 +283,11 @@ async function prebuild () {
       logger.log('📝', `roosevelt-website writing new HTML file statics/pages/docs/${repo}/latest/fullDemo.html`.green)
       fs.copyFileSync(path.normalize(`./node_modules/docs-${repo}/docs/statics/pages/fullDemo.html`), path.normalize(`statics/pages/docs/${repo}/${version}/fullDemo.html`))
       logger.log('📝', `roosevelt-website writing new HTML file statics/pages/docs/${repo}/${version}/fullDemo.html`.green)
+
+      fs.copyFileSync(path.normalize(`./node_modules/docs-${repo}/docs/statics/pages/reservedKeyboardShortcuts.html`), path.normalize(`statics/pages/docs/${repo}/latest/reservedKeyboardShortcuts.html`))
+      logger.log('📝', `roosevelt-website writing new HTML file statics/pages/docs/${repo}/latest/reservedKeyboardShortcuts.html`.green)
+      fs.copyFileSync(path.normalize(`./node_modules/docs-${repo}/docs/statics/pages/reservedKeyboardShortcuts.html`), path.normalize(`statics/pages/docs/${repo}/${version}/reservedKeyboardShortcuts.html`))
+      logger.log('📝', `roosevelt-website writing new HTML file statics/pages/docs/${repo}/${version}/reservedKeyboardShortcuts.html`.green)
     } else if (repo === 'teddy') {
       if (!fs.existsSync(`statics/pages/docs/${repo}`)) {
         fs.mkdirSync(path.normalize(`statics/pages/docs/${repo}`))
