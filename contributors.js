@@ -12,7 +12,7 @@
       'express-html-validator',
       'mkroosevelt',
       'minify-html-attributes',
-      'multi-db',
+      'multi-db-driver',
       'node-php-runner',
       'progressively-enhance-web-components',
       'roosevelt',
