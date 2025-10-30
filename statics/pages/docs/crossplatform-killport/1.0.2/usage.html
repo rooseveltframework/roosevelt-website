@@ -1,0 +1,16 @@
+<include src="layouts/main">
+<arg pageTitle>Crossplatform killport — usage</arg>
+<arg pageId>crossplatform-killport-crossplatform-killport-—-usage</arg>
+<arg pageContent><article><p>First make sure <a href="https://nodejs.org">Node.js</a> is installed on your system.</p>
+<p>Then, to install <code>crossplatform-killport</code> to your system:</p>
+<pre><code>npm i -g crossplatform-killport</code></pre>
+<p>Kill whatever process is using port 8080:</p>
+<pre><code>killport 8080</code></pre>
+<p>Windows users may need to run <code>Set-ExecutionPolicy Unrestricted</code> on their terminal to permit the script to run. See <a href="https://learn.microsoft.com/en-us/powershell/module/microsoft.powershell.core/about/about_execution_policies">docs</a> from Microsoft for more information.</p>
+<p>Use via <code>npx</code> (this will allow you to use it without installing it to your system by downloading it from <code>npm</code> temporarily):</p>
+<pre><code>npx crossplatform-killport 8080</code></pre>
+<p>Use from within a Node.js project's root directory:</p>
+<pre><code>node_modules/.bin/killport 8080</code></pre>
+<p>Use from within Node.js code:</p>
+<pre><code class="javascript language-javascript">const { spawnSync, } = require('child_process')
+spawnSync('node_modules/.bin/killport', ['8080', '--silent'], { env: process.env, shell: false, stdio: ['ignore', 'pipe', 'pipe'] })</code></pre></article></arg></include>

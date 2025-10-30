@@ -39,7 +39,7 @@ const repos = {
     'USAGE.md': 'usage.html',
     'CONFIGURATION.md': 'configuration.html'
   },
-  'multi-db': {
+  'multi-db-driver': {
     'README.md': 'index.html',
     'CHANGELOG.md': 'changelog.html',
     'USAGE.md': 'usage.html',
@@ -233,7 +233,7 @@ async function prebuild () {
     'express-html-validator': 'Express HTML validator',
     'fallback-dependencies': 'Fallback dependencies',
     'minify-html-attributes': 'HTML attribute minifier',
-    'multi-db': 'Multi-DB',
+    'multi-db-driver': 'Multi-DB Driver',
     'node-php-runner': 'Node.js PHP runner',
     roosevelt: 'web framework',
     'roosevelt-logger': 'Roosevelt logger',
