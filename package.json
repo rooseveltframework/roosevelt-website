@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@colors/colors": "1.6.0",
-    "axios": "1.13.1",
+    "axios": "1.13.2",
     "check-if-css-is-disabled": "2.0.2",
     "cheerio": "1.1.2",
     "docs-check-if-css-is-disabled": "https://github.com/rooseveltframework/check-if-CSS-is-disabled",
