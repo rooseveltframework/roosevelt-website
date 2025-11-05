@@ -1,0 +1,52 @@
+<include src="layouts/main">
+<arg pageTitle>Fallback dependencies — usage</arg>
+<arg pageId>fallback-dependencies-fallback-dependencies-—-usage</arg>
+<arg pageContent><article><p>First declare <code>fallback-dependencies</code> as a dependency of your app.</p>
+<h2 id="declarefallbackdependencies">Declare fallback-dependencies</h2>
+<p>Next, add a <code>fallbackDependencies</code> entry to your <code>package.json</code> alongside your <code>dependencies</code>, <code>devDependencies</code>, etc, e.g.:</p>
+<pre><code class="js language-js">"fallbackDependencies": {
+  "dir": "lib",
+  "repos": {
+    "some-private-dependency": [
+      "https://some.private.git.repo.somewhere",
+      "https://some.private.git.repo.somewhere.else"
+    ],
+    "some-other-private-dependency": [
+      "https://some.other.private.git.repo.somewhere",
+      "https://some.other.private.git.repo.somewhere.else"
+    ]
+  }
+}</code></pre>
+<h2 id="api">API</h2>
+<ul>
+<li><code>dir</code> <em>[String]</em>: What directory to deposit fallback-dependencies into. Default: <code>fallback_dependencies</code>.</li>
+<li><code>repos</code> <em>[Object of Arrays of Strings]</em>: A list of dependencies similar to the <code>dependencies</code> field in package.json, but instead of supplying a string for where to fetch it, you supply an array of strings of possible locations to fetch it from. This script will attempt to fetch it from the first location, then if that fails will fallback to the second possible place to get it from, and so on until it runs out of places to try. Default: <code>{}</code>.</li>
+<li><code>reposFile</code> <em>[String]</em>: Relative path to a JSON file that contains a list of repos formatted the same as the <code>repos</code> entry. If both <code>repos</code> and <code>reposFile</code> are supplied, the two lists will be merged. Default: <code>{}</code>.</li>
+<li><code>preferredWildcard</code> <em>[String]</em>: Domain to move up to the top of the list of fallback-dependencies to try regardless of the order specified in the app's config. Must match string in the URL list. Default: <code>undefined</code>.</li>
+<li><code>rerunNpmCi</code> <em>[Boolean]</em>: Option to run <code>npm ci</code> on clones even if they already exist. Default: <code>false</code>.</li>
+<li><code>npmCiArgs</code> <em>[String or Array of Strings]</em>: Additional arguments to pass to <code>npm ci</code> command. Default: <code>undefined</code>.</li>
+<li><code>removeStaleDirectories</code> <em>[Boolean]</em>: Removes stale directories from dependency target folder. Default: <code>false</code>.</li>
+</ul>
+<p>Example of <code>reposFile</code> usage:</p>
+<pre><code class="js language-js">// fallback-dependencies.json
+{
+  "some-private-dependency": [
+    "https://some.private.git.repo.somewhere",
+    "https://some.private.git.repo.somewhere.else"
+  ],
+  "some-other-private-dependency": [
+    "https://some.other.private.git.repo.somewhere",
+    "https://some.other.private.git.repo.somewhere.else"
+  ]
+}</code></pre>
+<p>All params are optional, but the module won't do anything unless you supply at least <code>repos</code> or <code>reposFile</code>.</p>
+<h2 id="fetchfallbackdependencieswithapostinstallscript">Fetch fallback-dependencies with a postinstall script</h2>
+<p>Lastly, add a <code>postinstall</code> script to your npm scripts to execute the <code>fallback-dependencies</code> script after you install other dependencies:</p>
+<pre><code class="js language-js">"scripts": {
+  "postinstall": "node node_modules/fallback-dependencies/fallback-dependencies.js"
+},</code></pre>
+<p>You can also write your <code>postinstall</code> script to fail silently if the fallback-dependencies.js file is not found for whatever reason, e.g.:</p>
+<pre><code class="js language-js">"scripts": {
+  "postinstall": "node -e \"try { require('child_process').spawnSync('node', ['node_modules/fallback-dependencies/fallback-dependencies.js'], { shell: false, stdio: 'ignore' }) } catch (e) {}\""
+},</code></pre>
+<p>Writing the <code>postinstall</code> script that way might be a little ugly, but it's useful to do it this way if <code>fallback-dependencies</code> is a <code>devDependency</code> of your app and you don't want the <code>postinstall</code> script to fail when you do a production dependencies-only build.</p></article></arg></include>
