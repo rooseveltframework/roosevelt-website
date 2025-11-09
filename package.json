@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@colors/colors": "1.6.0",
-    "axios": "1.13.1",
+    "axios": "1.13.2",
     "check-if-css-is-disabled": "2.0.2",
     "cheerio": "1.1.2",
     "docs-check-if-css-is-disabled": "https://github.com/rooseveltframework/check-if-CSS-is-disabled",
@@ -40,7 +40,7 @@
     "invokers-polyfill": "0.5.7",
     "roosevelt": "0.31.4",
     "sass": "1.93.3",
-    "semantic-forms": "5.2.1",
+    "semantic-forms": "5.2.2",
     "showdown": "2.1.0",
     "teddy": "1.1.4",
     "tippy.js": "6.3.7",
