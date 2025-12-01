@@ -38,18 +38,18 @@
     "docs-teddy": "https://github.com/rooseveltframework/teddy",
     "highlight.js": "11.11.1",
     "invokers-polyfill": "0.5.7",
-    "roosevelt": "0.31.4",
-    "sass": "1.94.0",
-    "semantic-forms": "5.2.2",
+    "roosevelt": "0.31.6",
+    "sass": "1.94.2",
+    "semantic-forms": "5.3.2",
     "showdown": "2.1.0",
     "teddy": "1.1.4",
     "tippy.js": "6.3.7",
-    "webpack": "5.102.1"
+    "webpack": "5.103.0"
   },
   "devDependencies": {
     "http-server": "14.1.1",
     "standard": "17.1.2",
-    "stylelint": "16.25.0",
+    "stylelint": "16.26.1",
     "stylelint-config-standard-scss": "16.0.0",
     "watcher": "2.3.1"
   },
