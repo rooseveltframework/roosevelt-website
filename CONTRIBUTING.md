@@ -1,4 +1,11 @@
-# How to contribute
+# How to do content updates
+
+- `npm i`
+- `npm run build`: This will likely produce a large diff. That is normal.
+- Open a pull request called "content update" or similar.
+- Once merged, GitHub will automatically deploy the changes to the website.
+
+# How to make code contributions to the static site generator codebase
 
 ## Before opening a pull request
 
