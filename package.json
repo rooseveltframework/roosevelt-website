@@ -37,7 +37,7 @@
     "docs-single-page-express": "https://github.com/rooseveltframework/single-page-express",
     "docs-teddy": "https://github.com/rooseveltframework/teddy",
     "highlight.js": "11.11.1",
-    "invokers-polyfill": "0.6.1",
+    "invokers-polyfill": "1.0.1",
     "roosevelt": "0.31.7",
     "sass": "1.97.3",
     "semantic-forms": "5.3.5",
