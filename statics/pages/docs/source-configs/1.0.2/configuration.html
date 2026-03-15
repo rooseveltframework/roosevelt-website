@@ -1,0 +1,53 @@
+<include src="layouts/main">
+<arg pageTitle>Source Configs — configuration</arg>
+<arg pageId>source-configs-source-configs-—-configuration</arg>
+<arg pageContent><article><h2 id="api">API</h2>
+<ul>
+<li><p><code>logging</code> <em>[Boolean]</em>: Whether or not source-configs will log to console. Default: <code>true</code>.</p></li>
+<li><p><code>sources</code> <em>[Array of Strings]</em>: An array of sources that can be a mix of built-in sources and custom source objects in order of priority.</p>
+<ul>
+<li>Built-in sources can be referenced in multiple ways:<ul>
+<li>Command line: <code>"command line"</code> or <code>"commandLineArg"</code>.</li>
+<li>Environment variable: <code>"environment variable"</code> or <code>"envVar"</code>.</li></ul></li></ul></li>
+</ul>
+<p>Default:</p>
+<pre><code class="javascript language-javascript">[
+  'command line',
+  'environment variable'
+]</code></pre>
+<p>Supply an object to add custom sources:</p>
+<pre><code class="javascript language-javascript">[
+  'command line',
+  'environment variable',
+  { custom: 'object' }
+]</code></pre>
+<ul>
+<li><code>transform(config, commandLineArgs)</code> <em>[Function]</em>: A function that can be used to mutate your config after it has been parsed and sourced but before it gets returned by source-configs.<ul>
+<li><code>config</code> <em>[Object]</em>: The config after being parsed by source-configs.</li>
+<li><code>commandLineArgs</code> <em>[Object]</em>: CLI flags as parsed by <a href="https://www.npmjs.com/package/yargs-parser">yargs-parser</a>.</li></ul></li>
+</ul>
+<p>Example:</p>
+<pre><code class="javascript language-javascript">const sourceConfigs = require('source-configs')
+const schema = require('./your-schema-js-file.json')
+
+const config = sourceConfigs(schema, {
+  transform: (config, commandLineArgs) =&gt; {
+    // check for a cli flag that wouldn't normally translate into a config
+    if (commandLineArgs.switchPort === true) {
+      config.websocket.port = 43711
+    }
+    return config // return the config when done
+  }
+})
+
+// access that config configs
+console.log(config.websocket.port) // prints 43711</code></pre>
+<h3 id="propertiesofsourceconfigsmodule">Properties of source-configs module</h3>
+<p>In addition to its constructor, source-configs exposes the following properties:</p>
+<ul>
+<li><code>configs</code> <em>[Object]</em>: The resulting configs after running source-config's constructor.</li>
+<li><code>commandLineArgs</code> <em>[Array]</em>: All command line arguments passed to your application, including those not listened for by your schema. Powered by <a href="https://www.npmjs.com/package/yargs-parser">yargs-parser</a>.</li>
+<li><code>yargsParser</code> <em>[Function]</em>: The instance of <a href="https://www.npmjs.com/package/yargs-parser">yargs-parser</a> that source-configs used to compile all command line arguments passed to your application.</li>
+<li><code>printHelp</code> <em>[Function]</em>: A function which will generate a help menu describing the command line arguments defined in the schema. Useful for if you want to define a <code>-h</code> or <code>--help</code> command line argument to print all available supported command line arguments. Just print <code>console.log(config.printHelp())</code> to print that information to your users.</li>
+<li><code>safelyPrintSchema</code> <em>[Function]</em>: A function which will print the fully post-processed schema to the console, but obscure any data that is marked as <code>secret</code>.</li>
+</ul></article></arg></include>
