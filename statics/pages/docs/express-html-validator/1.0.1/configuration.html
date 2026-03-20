@@ -13,4 +13,9 @@
 <p>Default for <code>validatorConfig</code>:</p>
 <pre><code class="json language-json">{
   "extends": ["html-validate:standard"]
-}</code></pre></article></arg></include>
+}</code></pre>
+<p>You may also want to override the version of <a href="https://www.npmjs.com/package/html-validate">html-validate</a> this module ships with by default, since that module has had a history of updating faster than this one does at times. To do so, set this in your app's <code>package.json</code>:</p>
+<pre><code class="json language-json">"overrides": {
+  "html-validate": "x.y.z"
+}</code></pre>
+<p>Where <code>x.y.z</code> is your desired version. After doing so, delete your <code>node_modules</code> folder and <code>package-lock.json</code> then run <code>npm i</code> to install the override.</p></article></arg></include>
