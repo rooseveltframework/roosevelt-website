@@ -59,16 +59,22 @@
   }
 }</code></pre>
 <ul>
-<li><p><code>htmlValidator</code> <em>[Object]</em>: Parameters to send to <a href="https://rooseveltframework.org/docs/express-html-validator">express-html-validator</a>.</p>
-<ul>
+<li><code>htmlValidator</code> <em>[Object]</em>: Parameters to send to <a href="https://rooseveltframework.org/docs/express-html-validator">express-html-validator</a>.<ul>
 <li><code>enable</code> <em>[Boolean]</em>: Enables or disables the built-in HTML validator.</li>
 <li><code>exceptions</code> <em>[Object]</em>: A set of params that can be used to prevent validation in certain scenarios.<ul>
 <li><code>header</code> <em>[String]</em>: A custom header that when set will disable the validator on a per request basis.</li>
 <li><code>modelValue</code> <em>[String]</em>: An entry in your data model passed along with a <code>res.render</code> that when set will disable validation on the rendered HTML.</li></ul></li>
 <li><code>validatorConfig</code> <em>[Object]</em>: <a href="https://html-validate.org/usage/#configuration">html-validate configuration</a> that determines what errors the validator looks for.<ul>
 <li>The full list of available validator rules can be found <a href="https://html-validate.org/rules/">here</a>.</li>
-<li>This configuration can also be set by a <code>.htmlValidate.json</code> file placed in your app root directory.</li></ul></li></ul></li>
-<li><p><code>mode</code> <em>[String]</em>: Decides whether your app starts in production mode or development mode by default. Default: <code>production</code>.</p></li>
+<li>This configuration can also be set by a <code>.htmlValidate.json</code> file placed in your app root directory.</li></ul></li>
+<li>You may also want to override the version of <a href="https://www.npmjs.com/package/html-validate">html-validate</a> this module ships with by default, since that module has had a history of updating faster than this one does at times. To do so, set this in your app's <code>package.json</code>:</li></ul></li>
+</ul>
+<pre><code class="json language-json">"overrides": {
+  "html-validate": "x.y.z"
+}</code></pre>
+<p>Where <code>x.y.z</code> is your desired version. After doing so, delete your <code>node_modules</code> folder and <code>package-lock.json</code> then run <code>npm i</code> to install the override.</p>
+<ul>
+<li><code>mode</code> <em>[String]</em>: Decides whether your app starts in production mode or development mode by default. Default: <code>production</code>.</li>
 </ul>
 <p>Default: <em>[Object]</em></p>
 <pre><code class="json language-json">{
@@ -170,7 +176,7 @@
 <li><code>instance</code>: <em>[Object]</em> A store instance. See <a href="https://expressjs.com/en/resources/middleware/session.html#compatible-session-stores">this list</a> for compatible stores.</li>
 <li><code>preset</code> <em>[String]</em>: Available presets provided by Roosevelt. Only used if <code>instance</code> is not provided.<ul>
 <li>Available options:<ul>
-<li><code>"default"</code>: Use Roosevelt's default session store, which is <a href="https://www.npmjs.com/package/better-sqlite3-session-store">better-sqlite3-session-store</a>.</li>
+<li><code>"default"</code>: Use Roosevelt's default session store, which is <a href="https://github.com/attestate/better-sqlite3-session-store">better-sqlite3-session-store</a>, which we hard forked into Roosevelt to continue its regular maintenance since it is no longer maintained.</li>
 <li><code>"express-session-default"</code>: Use <code>express-session</code>'s default session store (not recommended).</li></ul></li></ul></li>
 <li><code>presetOptions</code>  <em>[Object]</em>: Options to pass to the preset session store if one is selected. Only used if <code>instance</code> is not provided.<ul>
 <li><code>checkPeriod</code> <em>[Number]</em>: How long, in milliseconds, the memory store will check for expired items.</li>
