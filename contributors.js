@@ -4,7 +4,7 @@
   let contributors = {}
   try {
     const repos = [
-      'check-if-CSS-is-disabled',
+      'check-if-css-is-disabled',
       'crossplatform-killport',
       'fallback-dependencies',
       'generator-roosevelt',

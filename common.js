@@ -5,7 +5,7 @@ const path = require('path')
 
 // markdown files to convert to html
 const repos = {
-  'check-if-CSS-is-disabled': {
+  'check-if-css-is-disabled': {
     'README.md': 'index.html',
     'CHANGELOG.md': 'changelog.html',
     'USAGE.md': 'usage.html'
@@ -227,7 +227,7 @@ async function prebuild () {
 
   // page titles for the main page for each of these projects
   const prettyNames = {
-    'check-if-CSS-is-disabled': 'Check if CSS is disabled',
+    'check-if-css-is-disabled': 'Check if CSS is disabled',
     'crossplatform-killport': 'Crossplatform killport',
     'express-browser-reload': 'Express browser reloader',
     'express-html-validator': 'Express HTML validator',
