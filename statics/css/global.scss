@@ -12,7 +12,7 @@ html, body, main {
 
 html, html.light { // default styles; light theme is also the default
   body {
-    font-family: "Nunito", sans-serif;
+    font-family: Nunito, sans-serif;
     background-color: #f8f8f8;
     color: #000;
     margin: 0;
@@ -103,6 +103,11 @@ html, html.light { // default styles; light theme is also the default
     }
 
     // hamburger menu
+    // the floating controls only exist in the desktop layout, and the footer already carries a scroll to top link everywhere else
+    a#floating-scroll-to-top {
+      display: none;
+    }
+
     button[commandfor="nav"] {
       position: absolute;
       left: 0;
@@ -118,7 +123,7 @@ html, html.light { // default styles; light theme is also the default
     }
 
     dialog {
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.5);
+      box-shadow: 0 8px 16px rgb(0 0 0 / 50%);
       border: none;
       border-radius: 15px;
       padding: 0 10px;
@@ -155,7 +160,6 @@ html, html.light { // default styles; light theme is also the default
 
     pre {
       white-space: pre-wrap;
-      word-wrap: break-word;
       overflow-wrap: break-word;
       word-break: break-all;
       max-width: 100%;
@@ -184,7 +188,6 @@ html, html.light { // default styles; light theme is also the default
       background-color: #e3e3e3;
       border-radius: 5px;
       display: inline-block;
-      word-wrap: break-word;
       overflow-wrap: break-word;
       word-break: break-all;
     }
@@ -232,7 +235,7 @@ html, html.light { // default styles; light theme is also the default
           margin: 0 0 0 35px;
           font-size: 175%;
           flex: 1 1 450px; // variable width, minimum of 450px
-          word-wrap: break-word; // ensure text wraps if it overflows
+          overflow-wrap: break-word; // ensure text wraps if it overflows
           max-width: 100%; // prevent overflow
           align-self: center; // vertically center the h2 within the header
         }
@@ -241,6 +244,7 @@ html, html.light { // default styles; light theme is also the default
           display: grid;
           grid-template-columns: auto auto; // two columns: one for nav and one for search
           max-width: 100%; // prevent overflow
+          padding-bottom: 10px;
 
           // fix for semantic forms pushing a horizontal scrollbar
           form.semanticForms .floatLabelForm div {
@@ -286,7 +290,7 @@ html, html.light { // default styles; light theme is also the default
               font-size: 80%;
               background: #fff;
               border: 1px #c0c0c0 solid;
-              margin-top: -11px;
+              margin-top: 0;
               border-radius: 15px;
               max-height: calc(70vh);
               overflow-y: scroll;
@@ -302,7 +306,6 @@ html, html.light { // default styles; light theme is also the default
                 list-style: none;
                 margin-top: 10px;
                 white-space: pre-wrap;
-                word-wrap: break-word;
                 overflow-wrap: break-word;
 
                  strong {
@@ -331,7 +334,6 @@ html, html.light { // default styles; light theme is also the default
         > nav#pages {
           background-color: #ccc;
           min-height: calc(100vh - 70px);
-          flex-shrink: 0;
           flex: 0 0 auto;
           width: max-content;
           font-weight: bold;
@@ -356,7 +358,7 @@ html, html.light { // default styles; light theme is also the default
             list-style: none;
 
             ul {
-              margin: 10px 0 35px 0;
+              margin: 10px 0 35px;
 
               li::before {
                 content: "↳";
@@ -381,7 +383,7 @@ html, html.light { // default styles; light theme is also the default
           }
 
           details#theme {
-            margin: 0 5px 35px 5px;
+            margin: 0 5px 35px;
           }
         }
 
@@ -562,7 +564,7 @@ html.dark {
 }
 
 @media (prefers-color-scheme: dark) {
-  html:not(.dark):not(.light) {
+  html:not(.dark, .light) {
     @include dark-mode;
   }
 }
@@ -625,8 +627,61 @@ html.dark {
 @media (min-width: 960px) {
   html, html.light, html.dark {
     body {
+      // right aligned in the gray column, on the same row as the nav button
+      // the column is sized to its widest link rather than to a set number, so its measured width is handed over in a custom property and the link is placed from the right edge of the viewport inward by whatever is left over
+      a#floating-scroll-to-top {
+        display: none;
+
+        &.nav-scrolled-away {
+          display: block;
+          position: fixed;
+          z-index: 3;
+          bottom: 8px;
+          right: calc(100% - var(--nav-column-width, 213px) + 21px);
+          padding: 4px 8px;
+          border-radius: 15px;
+          font-size: 80%;
+          white-space: nowrap;
+
+          // an underline set on a link is inherited by everything inside it and cannot be turned off from within, which is why the no-underline helper appears to do nothing here
+          // taking the emoji out of the inline flow gives it its own decoration to not have
+          .no-underline {
+            display: inline-block;
+          }
+        }
+      }
+
       button[commandfor="nav"] {
         display: none;
+
+        // the nav column is stretched to the height of the page, so its links scroll away while the column stays, leaving a tall empty area with no way back to the nav
+        // once they have gone, the same hamburger mobile uses is floated over the column so the nav stays one click away
+        &.nav-scrolled-away {
+          display: block;
+          position: fixed;
+          z-index: 3;
+          left: 15px;
+          bottom: 8px;
+        }
+      }
+
+      // opening it puts this same element in the top layer, so the reset below has to be undone for that state alone
+      dialog#nav:modal {
+        display: block;
+        position: fixed;
+        width: max-content;
+        max-width: 90vw;
+        max-height: 90vh;
+        overflow: auto;
+        margin: auto;
+        padding: 0 10px;
+        border-radius: 15px;
+        background-color: #fff;
+        box-shadow: 0 8px 16px rgb(0 0 0 / 50%);
+
+        form[method="dialog"] {
+          display: block;
+        }
       }
 
       dialog {
@@ -659,6 +714,38 @@ html.dark {
             nav {
               margin: 0 0 0 10px;
             }
+
+            // the search field lives in the header, so it scrolls away along with the nav links; once they have gone it is floated over the column above the nav button, which sits at the very bottom
+            // it belongs with the other two floating controls rather than in a wider media query, because none of them should appear once the nav is a modal the hamburger opens
+            // this is nested rather than written as a standalone rule so that it outranks the `top` the field is given further up, which would otherwise pin it to the top of the viewport instead
+            > search.nav-scrolled-away {
+              position: fixed;
+              z-index: 3;
+              top: auto;
+              left: 11px;
+              bottom: 48px;
+              margin: 0;
+              padding: 4px 8px;
+
+              // results have to open upward from a field sitting at the bottom of the viewport
+              output {
+                top: auto;
+                bottom: calc(100% + 4px);
+              }
+            }
+          }
+        }
+
+        // the search field and version picker drop onto their own line when the header runs out of room for them
+        // that line starts below the whole logo row rather than below the page title, which leaves a gap above the fields and carries them past the gray background, so the line is pulled up and the nudge the fields are given on the first line is dropped
+        > header.controls-wrapped {
+          > div#nav-search-wrapper {
+            margin-top: -10px;
+
+            nav,
+            search {
+              top: 0;
+            }
           }
         }
 
@@ -666,6 +753,10 @@ html.dark {
           > article::before {
             display: block;
           }
+        }
+
+        > footer {
+          padding: 5px 215px !important;
         }
       }
     }

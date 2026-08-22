@@ -1,0 +1,43 @@
+<include src="layouts/main">
+<arg pageTitle>Configuration — HTTP</arg>
+<arg pageId>roosevelt-configuration-—-http</arg>
+<arg pageContent><article><h1 id="httpoptions">HTTP options</h1>
+<ul>
+<li><code>http</code> <em>[Object]</em>: Parameters for configuring the HTTP server.<ul>
+<li><code>enable</code> <em>[Boolean]</em>: Enable HTTP server.</li>
+<li><code>port</code> <em>[Number]</em>: The HTTP port your app will run on.</li></ul></li>
+</ul>
+<p>Default when an app is created manually: <em>[Object]</em></p>
+<pre><code class="javascript language-javascript">{
+  enable: true,
+  port: 43763
+}</code></pre>
+<p>Default when an app is created with the app generator: <em>[Object]</em></p>
+<pre><code class="javascript language-javascript">{
+  enable: false,
+  port: 43763
+}</code></pre>
+<ul>
+<li><code>https</code> <em>[Object]</em>: Parameters for configuring the HTTPS server.<ul>
+<li><code>enable</code> <em>[Boolean]</em>: Enable HTTPS server.</li>
+<li><code>port</code> <em>[Number]</em>: The port your app will run the HTTPS server on.</li>
+<li><code>autoCert</code> <em>[Boolean]</em>: Will create self-signed HTTPS certificates in development mode as long as they don't already exist.</li>
+<li><code>options</code> <em>[Object]</em>: Configuration that gets passed directly to the HTTPS server instance. Accepts <a href="https://nodejs.org/api/tls.html#tlscreatesecurecontextoptions">all native settings</a>. For convenience, the <code>ca</code>, <code>cert</code>, <code>key</code>, and <code>pfx</code> params can take file path strings or arrays of file path strings relative to your <code>secretsPath</code> in addition to the native strings and buffers.</li></ul></li>
+</ul>
+<p>Default when an app is created manually: <em>[Object]</em></p>
+<pre><code class="javascript language-javascript">{
+  enable: false,
+  port: 43711,
+  autoCert: true,
+  options: {}
+}</code></pre>
+<p>Default when an app is created with the app generator: <em>[Object]</em></p>
+<pre><code class="javascript language-javascript">{
+  enable: true,
+  port: 43711,
+  autoCert: true,
+  options: {
+    cert: 'cert.pem',
+    key: 'key.pem'
+  }
+}</code></pre></article></arg></include>

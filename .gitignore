@@ -39,3 +39,8 @@ node_modules/
 .npm-cache
 .build
 secrets
+
+# etag cache used by contributors.js
+.contributors-cache.json
+
+sessions.sqlite*

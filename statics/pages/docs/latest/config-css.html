@@ -1,0 +1,93 @@
+<include src="layouts/main">
+<arg pageTitle>Configuration — CSS</arg>
+<arg pageId>roosevelt-configuration-—-css</arg>
+<arg pageContent><article><h1 id="cssoptions">CSS options</h1>
+<ul>
+<li><code>css</code> <em>[Object]</em>: How you want Roosevelt to configure your CSS preprocessor:<ul>
+<li><code>sourcePath</code> <em>[String]</em>: Subdirectory within <code>staticsRoot</code> where your CSS files are located. This folder is not made public. When a preprocessor is enabled, the files here are compiled, minified, and written to the <code>public</code> folder when the app starts. When one is not, see <a href="#shipping-css-without-a-preprocessor">shipping CSS without a preprocessor</a> below.</li>
+<li><code>compiler</code> <em>[Object]</em>: Which CSS preprocessor (if any) to use.<ul>
+<li><code>enable</code> <em>[Boolean]</em>: Whether or not to use a preprocessor.</li>
+<li><code>module</code> <em>[String]</em>: Node module name of the CSS preprocessor you wish to use.<ul>
+<li>Currently <a href="https://sass-lang.com/">sass</a>, <a href="http://lesscss.org/">less</a>, and <a href="http://stylus-lang.com/">stylus</a> are supported.</li>
+<li>Your chosen CSS preprocessor module must also be marked as a dependency in your app's <code>package.json</code>.</li></ul></li>
+<li><code>options</code> <em>[Object]</em>: Parameters to send to the CSS preprocessor if it accepts any.</li></ul></li>
+<li><code>minifier</code> <em>[Object]</em>: Params pertaining to CSS minifcation.<ul>
+<li><code>enable</code> <em>[Boolean]</em>: Whether or not to minify CSS. Can also be disabled by the <code>minify</code> param.</li>
+<li><code>options</code> <em>[Object]</em>: Parameters to pass to the CSS minifier <a href="https://www.npmjs.com/package/clean-css">clean-css</a>, a list of which can be found in the <a href="https://github.com/jakubpawlowicz/clean-css#constructor-options">clean-css docs</a>.</li></ul></li>
+<li><code>allowlist</code> <em>[Array of Strings]</em>: List of CSS files to allow for compiling. Leave undefined to compile all files. Supply a <code>:</code> character after each file name to delimit an alternate file path and/or file name for the minified file.<ul>
+<li>Example array member: <code>"example.less:example.min.css"</code> compiles <code>example.less</code> into <code>example.min.css</code>.</li></ul></li>
+<li><code>output</code> <em>[String]</em>: Subdirectory within <code>publicFolder</code> where compiled CSS files will be written to.</li>
+<li><code>versionFile</code> <em>[Object]</em>: If enabled, Roosevelt will create a CSS file which declares a CSS variable containing your app's version number from <code>package.json</code>. Enable this option by supplying an object with the member variables <code>fileName</code> and <code>varName</code>. Versioning your static files is useful for resetting your users' browser cache when you release a new version of your app.<ul>
+<li>Example usage (with SASS): <code>{ "fileName": "_version.scss", "varName": "appVersion" }</code><ul>
+<li>Assuming the default Roosevelt configuration otherwise, this will result in a file <code>statics/css/_version.scss</code> with the following content: <code>/* do not edit; generated automatically by Roosevelt */ $appVersion: '0.1.0';</code></li></ul></li>
+<li>Some things to note:<ul>
+<li>If there is already a file there with that name, this will overwrite it, so be careful!</li>
+<li>It's generally a good idea to add this file to .gitignore, since it is a build artifact.</li></ul></li></ul></li></ul></li>
+</ul>
+<p>Default: <em>[Object]</em></p>
+<pre><code class="javascript language-javascript">{
+  sourcePath: 'css',
+  compiler: {
+    enable: false,
+    module: 'sass',
+    options: {}
+  },
+  minifier: {
+    enable: true,
+    options: {}
+  },
+  allowlist: null,
+  output: 'css',
+  versionFile: null
+}</code></pre>
+<ul>
+<li><code>cssCompiler</code> <em>[Function]</em>: Use this param to supply a custom CSS preprocessor function.<ul>
+<li>To do so, supply a function which accepts argument <code>app</code>, which is a reference to the <a href="http://expressjs.com/api.html#express">Express app</a> created by Roosevelt.</li>
+<li>The function should return an object with the following members:<ul>
+<li><code>versionCode(app)</code> <em>[Function]</em>: Function to return the version of your app. This is needed to support the <code>versionFile</code> feature of Roosevelt's CSS preprocessor API.<ul>
+<li><code>app</code> <em>[Object]</em>: The <a href="http://expressjs.com/api.html#express">Express app</a> created by Roosevelt.</li></ul></li>
+<li><code>parse(app, fileName)</code> <em>[Function]</em>: Function to preprocess CSS.<ul>
+<li><code>app</code> <em>[Object]</em>: The <a href="http://expressjs.com/api.html#express">Express app</a> created by Roosevelt.</li>
+<li><code>filePath</code> <em>[String]</em>: The path to the file being preprocessed.</li></ul></li></ul></li>
+<li>When a custom preprocessor is defined in this way it will override the selected preprocessor specified in <code>css.compiler.module</code>.</li></ul></li>
+</ul>
+<p>This param can only set via Roosevelt's constructor, like this:</p>
+<pre><code class="js language-js">(async () =&gt; {
+  await require('roosevelt')({
+    cssCompiler: app =&gt; {
+      return {
+        versionCode: app =&gt; {
+          // write code to return the version of your app here
+          // generally you should return a css variable with your app version
+        },
+        parse: (app, filePath) =&gt; {
+          // write code to preprocess CSS here
+          return {
+            css: 'write code to output css here',
+            sourceMap: 'write code to output source map here (optional)'
+          }
+        }
+      }
+    }
+  }).startServer()
+})()</code></pre>
+<h2 id="shippingcsswithoutapreprocessor">Shipping CSS without a preprocessor</h2>
+<p>Preprocessing is off by default, so an app that writes plain CSS and loads it with <code>&lt;link&gt;</code> tags does not need to switch anything off. It only needs its CSS to reach the public folder, which either <code>symlinks</code> or <code>copy</code> will do:</p>
+<pre><code class="javascript language-javascript">{
+  symlinks: [
+    {
+      source: rooseveltConfig.ref(param =&gt; param.css.sourcePath),
+      dest: rooseveltConfig.ref(param =&gt; path.join(param.publicFolder, 'css'))
+    }
+  ]
+}</code></pre>
+<p>A file at <code>statics/css/main.css</code> is then served at <code>/css/main.css</code>. Use <code>copy</code> instead of <code>symlinks</code> if you would rather have real files, which also avoids needing permission to create symlinks on Windows:</p>
+<pre><code class="javascript language-javascript">{
+  copy: [
+    {
+      source: 'statics/css',
+      dest: 'public/css'
+    }
+  ]
+}</code></pre>
+<p>Note that Roosevelt minifies CSS as part of preprocessing it, so an app with no preprocessor ships its CSS as written. The <code>minify</code> and <code>css.minifier</code> params have nothing to act on, since nothing is reading your CSS on the way to the public folder. They still cover your HTML either way. If you want minified CSS without writing any preprocessor syntax, enabling a preprocessor is still the way to get it: Less and Sass both accept plain CSS as valid input, so you can turn one on without changing a single stylesheet.</p></article></arg></include>

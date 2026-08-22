@@ -129,7 +129,7 @@ html, html.light {
 }
 
 @media (prefers-color-scheme: dark) {
-  html:not(.dark):not(.light) {
+  html:not(.dark, .light) {
     @include dark-mode;
   }
 }

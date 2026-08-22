@@ -8,7 +8,22 @@
 <ul>
   <li><a href="/docs/{currentVersion.roosevelt}/get-started">Get started</a></li>
   <li><a href="/docs/{currentVersion.roosevelt}/coding-apps">Coding apps</a></li>
-  <li><a href="/docs/{currentVersion.roosevelt}/configuration">Configuration</a></li>
+  <if splitConfigDocs>
+    <li>
+      <details if-currentPageIsConfig true="open">
+        <summary><a href="/docs/{currentVersion.roosevelt}/configuration">Configuration</a></summary>
+        <ul>
+          <loop through="configSubpages" val="subpage">
+            <li><a href="/docs/{currentVersion.roosevelt}/{subpage.page}">{subpage.navLabel}</a></li>
+          </loop>
+        </ul>
+      </details>
+    </li>
+  </if>
+  <else>
+    <!--! versions before 0.32.0 had all of the configuration params on one page, so there are no subpages to offer -->
+    <li><a href="/docs/{currentVersion.roosevelt}/configuration">Configuration</a></li>
+  </else>
   <li><a href="/docs/{currentVersion.roosevelt}/deployment">Deployment</a></li>
   <li><a href="https://github.com/orgs/rooseveltframework/discussions">Discussion forum</a></li>
   <li><a href="/docs/{currentVersion.roosevelt}/changelog">Changelog</a></li>
