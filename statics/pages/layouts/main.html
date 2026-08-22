@@ -9,7 +9,7 @@
       <title>{titleOverride}</title>
     </if>
     <else>
-      <title>Roosevelt web framework — {pageTitle}</title>
+      <title>Roosevelt Web Framework — {pageTitle}</title>
     </else>
     <meta name="description" content="The easiest web framework to learn and build apps with — Roosevelt is a web framework for Node.js based on Express that aims to reduce the complexity of your code as much as possible.">
 
@@ -48,8 +48,6 @@
       <link rel="stylesheet" href="/css/highlight.js.dark.css" media="(prefers-color-scheme: dark)">
       <script src="/js/main.js" defer></script>
     </else>
-
-    <script src="/js/siteTexts.js" defer></script>
   </head>
 
   <body class="no-js" if-pageId true='id="{pageId}"'>
@@ -87,6 +85,8 @@
         <button command="show-modal" commandfor="nav" hidden>
           Site navigation
         </button>
+        <!--! only shown as part of the floating controls that appear once the nav links have scrolled away, so the css keeps it out of sight until the class lands on it -->
+        <a href="#" id="floating-scroll-to-top"><span class="no-underline">🔝&nbsp;</span>Scroll to top</a>
       </header>
 
       <div class="content">

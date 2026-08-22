@@ -1,0 +1,96 @@
+<include src="layouts/main">
+<arg pageTitle>Configuration — JS</arg>
+<arg pageId>roosevelt-configuration-—-js</arg>
+<arg pageContent><article><h1 id="jsoptions">JS options</h1>
+<ul>
+<li><code>js</code> <em>[Object]</em>: How you want Roosevelt to handle module bundling your frontend JS:<ul>
+<li><code>sourcePath</code> <em>[String]</em>: Subdirectory within <code>staticsRoot</code> where your JS files are located. By default this folder will not be made public, but is instead meant to store unbundled JS source files which will be bundled and written to the <code>public</code> folder when the app is started.</li>
+<li><code>bundler</code> <em>[Object]</em>: Which JS bundler (if any) to use.<ul>
+<li><code>enable</code> <em>[Boolean]</em>: Whether or not to use a bundler.</li>
+<li><code>module</code> <em>[String]</em>: Node module name of the JS bundler you wish to use.<ul>
+<li>Currently <a href="https://webpack.js.org/">webpack</a>, <a href="https://rspack.dev/">rspack</a>, <a href="https://esbuild.github.io/">esbuild</a>, and <a href="https://rollupjs.org/">rollup</a> are supported.</li>
+<li>Your chosen JS bundler module must also be marked as a dependency in your app's <code>package.json</code>. Roosevelt does not install one for you, the same as with CSS preprocessors.</li></ul></li></ul></li>
+<li><code>bundles</code>: <em>[Array of Objects]</em> Declare one or more JavaScript bundle files.<ul>
+<li><code>env</code>: <em>[String]</em> Bundle only in development or production mode.<ul>
+<li>Accepted values:<ul>
+<li><code>"development"</code>: Development mode.</li>
+<li><code>"production"</code>: Production mode.</li>
+<li>If no value is set, it will bundle in both modes.</li></ul></li></ul></li>
+<li><code>config</code>: <em>[Object or String]</em> The config to send to your bundler, in whatever format that bundler expects. Can also be a path to a config file relative to the app directory.</li></ul></li>
+<li><code>customBundlerFunction</code>: <em>[Function]</em> An async function to run instead of one of the bundlers above. Supply this if you want to use a bundler Roosevelt does not support natively.<ul>
+<li>Arguments provided:<ul>
+<li><code>bundle</code>: The bundle object supplied by Roosevelt.</li>
+<li><code>config</code>: The config object after it has been postprocessed by Roosevelt.</li>
+<li><code>app</code>: The Roosevelt app.</li></ul></li>
+<li>Return an object with <code>outputs</code> and <code>sources</code> (arrays of file paths it wrote and read) and Roosevelt will skip the bundle on the next start when none of those files changed. Return nothing and it will bundle every time.</li></ul></li>
+<li><code>verbose</code> <em>[String]</em>: Enable verbose error handling.<ul>
+<li>Accepted values:<ul>
+<li><code>true</code>: Will print verbose logs to the console.</li>
+<li><code>"file"</code>: Will print verbose logs to the console and write them to a file for debugging.</li></ul></li></ul></li></ul></li>
+</ul>
+<p>Default when an app is created manually: <em>[Object]</em></p>
+<pre><code class="javascript language-javascript">{
+  sourcePath: 'js',
+  bundler: {
+    enable: false,
+    module: 'webpack'
+  },
+  bundles: [],
+  customBundlerFunction: null,
+  verbose: false
+}</code></pre>
+<p>Default when an app is created with the app generator: <em>[Object]</em></p>
+<pre><code class="javascript language-javascript">{
+  sourcePath: 'js',
+  bundler: {
+    enable: true,
+    module: 'webpack'
+  },
+  bundles: [
+    {
+      config: {
+        entry: rooseveltConfig.ref(param =&gt; path.join(param.js.sourcePath, 'main.js')),
+        output: {
+          path: rooseveltConfig.ref(param =&gt; path.join(param.publicFolder, 'js'))
+        }
+      }
+    }
+  ],
+  customBundlerFunction: null,
+  verbose: false
+}</code></pre>
+<p>If you're using webpack or rspack, Roosevelt will also postprocess your config to do the following things:</p>
+<ul>
+<li>If your config does not set <code>mode</code>, then Roosevelt will set <code>mode</code> to <code>development</code> if Roosevelt is in development mode.</li>
+<li>If your config does not set <code>devtool</code>, then Roosevelt will set <code>devtool</code> to <code>source-map</code> if Roosevelt is in development mode.</li>
+<li>If Roosevelt's <code>prodSourceMaps</code> feature is enabled, then Roosevelt will set <code>devtool</code> to <code>source-map</code> if Roosevelt is in production mode.</li>
+</ul>
+<p>If you're using esbuild or rollup, Roosevelt will enable source maps in development mode, and enable them in production mode when <code>prodSourceMaps</code> is set. It will also switch esbuild's minifier on outside of development mode. Set any of those yourself in your config and Roosevelt will leave your choice alone.</p>
+<h3 id="whichbundlersminifyyourproductionbuild">Which bundlers minify your production build</h3>
+<p>Minifying is the bundler's job rather than Roosevelt's, and the four supported bundlers do not all handle it the same way:</p>
+<ul>
+<li><strong>webpack</strong> and <strong>rspack</strong> minify in production without being asked. Roosevelt only sets their <code>mode</code> to <code>development</code> when your app is in development mode, so in production they fall back to their own default of <code>production</code>, which turns their built-in minifier on. You do not need a minifier plugin, and you do not need <code>terser-webpack-plugin</code>.</li>
+<li><strong>esbuild</strong> minifies because Roosevelt switches its <code>minify</code> option on outside development mode.</li>
+<li><strong>rollup</strong> does not minify at all unless you add a plugin, because it has no minifier of its own. Without one your production bundle ships as written. Add <a href="https://www.npmjs.com/package/@rollup/plugin-terser">@rollup/plugin-terser</a> to your bundle's <code>plugins</code> if you want it minified.</li>
+</ul>
+<p>In every case, setting the option yourself leaves your choice alone.</p>
+<h2 id="shippingfrontendjswithoutabundler">Shipping frontend JS without a bundler</h2>
+<p>Bundling is off by default, so an app that writes plain JS and loads it with <code>&lt;script&gt;</code> tags does not need to switch anything off. It only needs its JS to reach the public folder, which either <code>symlinks</code> or <code>copy</code> will do:</p>
+<pre><code class="javascript language-javascript">{
+  symlinks: [
+    {
+      source: rooseveltConfig.ref(param =&gt; param.js.sourcePath),
+      dest: rooseveltConfig.ref(param =&gt; path.join(param.publicFolder, 'js'))
+    }
+  ]
+}</code></pre>
+<p>A file at <code>statics/js/main.js</code> is then served at <code>/js/main.js</code>. Use <code>copy</code> instead of <code>symlinks</code> if you would rather have real files, which also avoids needing permission to create symlinks on Windows:</p>
+<pre><code class="javascript language-javascript">{
+  copy: [
+    {
+      source: 'statics/js',
+      dest: 'public/js'
+    }
+  ]
+}</code></pre>
+<p>Note that Roosevelt does not minify JS on its own. Minifying JS is the bundler's job, so an app with no bundler ships its JS as written. The <code>minify</code> param has nothing to do with JS: it covers HTML, and CSS when a preprocessor is enabled.</p></article></arg></include>

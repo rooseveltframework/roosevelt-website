@@ -1,5 +1,5 @@
-@use "pages/design-philosophy.scss";
-@use "pages/etc.scss";
+@use "pages/design-philosophy";
+@use "pages/etc";
 
 html, html.light {
   body {
@@ -38,7 +38,7 @@ html, html.light {
             list-style: none;
 
             ul {
-              margin: 10px 0 35px 0;
+              margin: 10px 0 35px;
 
               li::before {
                 content: "↳";
@@ -122,7 +122,7 @@ html, html.light {
     form.teddy-live-demo {
       iframe {
         border: 2px #999 dashed;
-        background-color: rgba(255, 255, 255, 0.1);
+        background-color: rgb(255 255 255 / 10%);
       }
     }
 
@@ -149,7 +149,7 @@ html.dark {
 }
 
 @media (prefers-color-scheme: dark) {
-  html:not(.dark):not(.light) {
+  html:not(.dark, .light) {
     @include dark-mode;
   }
 }

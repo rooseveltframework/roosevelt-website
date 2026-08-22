@@ -1,6 +1,3 @@
-// adds support for commandfor attribute https://developer.chrome.com/blog/command-and-commandfor
-import { isSupported as invokersSupported, apply as invokersPolyfill } from 'invokers-polyfill/fn'
-
 // this will stop the JS from executing if CSS is disabled or a CSS file fails to load; it will also remove any existing CSS from the DOM
 require('check-if-css-is-disabled')()
 window.addEventListener('cssDisabled', (event) => {
@@ -12,13 +9,33 @@ window.addEventListener('cssDisabled', (event) => {
 // replace no-js class with js class which allows us to write css that targets non-js or js enabled users separately
 document.body.classList.replace('no-js', 'js')
 
-// add support for commandfor attribute if it is not natively supported
-if (!invokersSupported()) invokersPolyfill()
-
 // unhide nav button
 // the nav button is hidden by default if js is disabled and revealed only if js is enabled
 // if js is disabled and the user is on a small screen, the secondary nav in the footer is used exclusively
 document.querySelectorAll('[commandfor]').forEach((el) => { el.removeAttribute('hidden') })
+
+// on wide screens the nav sits in a column that the layout stretches to the height of the page, so on a long page its links scroll away while the column stays behind as empty space
+// once the links have gone, the nav button is floated over that space, which is what the .nav-scrolled-away class styles; the css only acts on it above the mobile breakpoint, so this does nothing on a small screen where the button is on screen anyway
+// the element measured is the one holding the links, not the column around it, because the column itself never leaves the viewport
+const navLinks = document.querySelector('dialog#nav')
+// the nav button and the search field both live above the fold, so both are floated over the column once the links have gone; the css only acts on this class above the mobile breakpoint, where they are on screen anyway
+const floatOnceNavScrolls = [document.querySelector('button[commandfor="nav"]'), document.querySelector('search'), document.getElementById('floating-scroll-to-top')].filter(Boolean)
+
+// the column is sized to its widest link rather than to a set width, so the css that right aligns the floating controls inside it is told how wide it actually is
+const navColumn = document.getElementById('pages')
+if (navColumn) {
+  const reportNavColumnWidth = () => document.documentElement.style.setProperty('--nav-column-width', `${navColumn.getBoundingClientRect().width}px`)
+  window.addEventListener('resize', reportNavColumnWidth, { passive: true })
+  reportNavColumnWidth()
+}
+// an observer rather than a scroll handler, so nothing is measured while the page is merely being scrolled through
+if (navLinks && floatOnceNavScrolls.length && 'IntersectionObserver' in window) {
+  new window.IntersectionObserver(([entry]) => {
+    // the links have to have left the top of the viewport, not merely be absent from it: on a viewport too short to show them all they are still partly on screen the whole way down, and being cut off is not the same as having scrolled past
+    const scrolledAway = !entry.isIntersecting && entry.boundingClientRect.bottom < 0
+    for (const element of floatOnceNavScrolls) element.classList.toggle('nav-scrolled-away', scrolledAway)
+  }).observe(navLinks)
+}
 
 // activate semantic forms ui library js support https://github.com/rooseveltframework/semantic-forms
 require('semantic-forms')()
@@ -27,6 +44,18 @@ require('semantic-forms')()
 // TODO: update above comment
 document.querySelector('search').removeAttribute('hidden')
 document.querySelector('search').insertAdjacentHTML('beforeend', '<output hidden><ul></ul></output>')
+
+// the search field and version picker drop onto their own line when the header runs out of room, which happens at one width on pages that have a version picker and at another on pages that do not, shifted again by however wide the scrollbar is
+// css has no way to ask whether a flex item wrapped, so it is measured here and handed over as a class
+// this has to come after the search field is revealed above, or the header would be measured while it is still a field narrower than it ends up
+const pageHeader = document.querySelector('main > header')
+const headerControls = pageHeader && pageHeader.querySelector('#nav-search-wrapper')
+if (headerControls) {
+  // the class only moves the line vertically, so it can never change the answer and set this oscillating
+  const reportHeaderWrap = () => pageHeader.classList.toggle('controls-wrapped', headerControls.offsetTop > 0)
+  window.addEventListener('resize', reportHeaderWrap, { passive: true })
+  reportHeaderWrap()
+}
 document.getElementById('search').addEventListener('focus', performSearch)
 document.getElementById('search').addEventListener('input', performSearch)
 document.getElementById('searchForm').addEventListener('submit', (event) => {
@@ -37,11 +66,61 @@ document.getElementById('search').addEventListener('blur', (event) => {
     document.querySelector('search output').setAttribute('hidden', 'hidden')
   }, 1000)
 })
-function performSearch () {
+// the search index is fetched the first time the user shows interest in searching rather than on page load because most visitors never search and the index is much larger than the rest of the site's js combined
+let searchIndex
+function loadSearchIndex () {
+  if (!searchIndex) {
+    searchIndex = (async () => {
+      const [currentPages, versionedPages] = await Promise.all([fetchSearchIndex('/js/search/latest.json'), fetchSearchIndex(versionedSearchIndexUrl())])
+
+      // pages in an old version of the docs that are identical to their counterpart in the current docs are stored as pointers to that counterpart, so restore their text from it
+      const currentPagesByFile = {}
+      for (const page of currentPages) currentPagesByFile[page.file] = page
+      const unchangedPages = new Set()
+      for (const page of versionedPages) {
+        if (!page.sameAs) continue
+        page.text = currentPagesByFile[page.sameAs]?.text || ''
+        unchangedPages.add(page.sameAs) // there's no reason to also list the current docs version of a page that hasn't changed since the version being viewed
+      }
+
+      // the version being viewed goes first so that its pages rank above the current docs in the results
+      return [...versionedPages, ...currentPages.filter(page => !unchangedPages.has(page.file))]
+    })()
+  }
+  return searchIndex
+}
+
+// if the current page is documentation for a specific version of a module, that version's slice of the search index is searched too; roosevelt's own docs are at /docs/[version] while the other modules' docs are at /docs/[repo-name]/[version]
+function versionedSearchIndexUrl () {
+  const match = window.location.pathname.match(/^\/docs\/(?:([^/]+)\/)?(\d+\.\d+\.\d+)(?:\/|$)/)
+  if (!match) return null
+  return `/js/search/${match[1] || 'roosevelt'}/${match[2]}.json`
+}
+
+// search is a progressive enhancement, so a slice of the index that can't be fetched is simply not searched rather than being treated as an error
+async function fetchSearchIndex (url) {
+  if (!url) return []
+  try {
+    const response = await window.fetch(url)
+    if (!response.ok) return []
+    return await response.json()
+  } catch (error) {
+    return []
+  }
+}
+
+async function performSearch () {
+  loadSearchIndex() // begin fetching the index as soon as the search box is focused so that it is ready by the time the user finishes typing
   const searchTerm = document.getElementById('search').value.toLowerCase().trim()
   document.querySelector('search output ul').innerHTML = ''
   if (searchTerm.replace(/\s/g, '').length) {
-    for (const file of window.siteTexts) {
+    const pages = await loadSearchIndex()
+
+    // the user can keep typing while the index is being fetched, in which case a later call to this function renders the results for what they typed instead
+    if (document.getElementById('search').value.toLowerCase().trim() !== searchTerm) return
+    document.querySelector('search output ul').innerHTML = ''
+
+    for (const file of pages) {
       if (file.text.toLowerCase().includes(searchTerm)) {
         // extract context around the search term
         const regex = new RegExp(`(.{0,30})(${searchTerm})(.{0,30})`, 'i') // match with up to n characters before and after
