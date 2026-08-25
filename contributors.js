@@ -1,5 +1,4 @@
 (async () => {
-  const axios = require('axios')
   const fs = require('fs')
   const path = require('path')
   const org = 'rooseveltframework'
@@ -82,8 +81,8 @@
       Object.assign(contributors, repoContributors)
     }
   } catch (err) {
-    if ((err.response?.status === 403 || err.response?.status === 429) && err.response.headers['x-ratelimit-remaining'] === '0') {
-      const reset = err.response.headers['x-ratelimit-reset']
+    if ((err.status === 403 || err.status === 429) && err.headers?.get('x-ratelimit-remaining') === '0') {
+      const reset = err.headers.get('x-ratelimit-reset')
       const resetsAt = reset ? new Date(Number(reset) * 1000).toLocaleTimeString() : 'an unknown time'
       console.error(`❌  Hit the GitHub API rate limit after ${requests} request(s). It resets at ${resetsAt}. Set the GITHUB_TOKEN environment variable to a GitHub personal access token to get a much higher rate limit.`)
     } else console.error(err.message || err)
@@ -104,11 +103,20 @@
   async function get (url) {
     const results = []
     while (url) {
-      const res = await axios.get(url, { headers })
+      const res = await fetch(url, { headers })
       requests++
-      rateLimitRemaining = res.headers['x-ratelimit-remaining'] ?? rateLimitRemaining
-      results.push(...res.data)
-      url = (res.headers.link || '').split(',').map(entry => entry.match(/<([^>]+)>;\s*rel="next"/)).find(match => match)?.[1]
+      rateLimitRemaining = res.headers.get('x-ratelimit-remaining') ?? rateLimitRemaining
+
+      // fetch only rejects when the request itself fails, so an error status has to be turned into a throw by hand for the handler below to see it
+      if (!res.ok) {
+        const err = new Error(`GitHub responded ${res.status} ${res.statusText} for ${url}`)
+        err.status = res.status
+        err.headers = res.headers
+        throw err
+      }
+
+      results.push(...await res.json())
+      url = (res.headers.get('link') || '').split(',').map(entry => entry.match(/<([^>]+)>;\s*rel="next"/)).find(match => match)?.[1]
     }
     return results
   }
