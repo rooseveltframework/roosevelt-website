@@ -1,6 +1,6 @@
 {
   "name": "roosevelt-website",
-  "description": "🧸🕸 Website for Roosevelt MVC web framework.",
+  "description": "\ud83e\uddf8\ud83d\udd78 Website for Roosevelt MVC web framework.",
   "author": "Roosevelt Framework Team <rooseveltframework@gmail.com>",
   "contributors": [
     {
@@ -8,17 +8,16 @@
       "url": "https://github.com/rooseveltframework/roosevelt-website/graphs/contributors"
     }
   ],
-  "version": "0.31.1",
+  "version": "0.33.1",
   "homepage": "https://rooseveltframework.org",
   "license": "CC-BY-4.0",
-  "main": "build.js",
+  "main": "test-server.js",
   "readmeFilename": "README.md",
   "engines": {
-    "node": ">=20.0.0"
+    "node": ">=22.20.0"
   },
   "dependencies": {
     "@colors/colors": "1.6.0",
-    "axios": "1.19.0",
     "check-if-css-is-disabled": "2.0.2",
     "cheerio": "1.2.0",
     "docs-check-if-css-is-disabled": "https://github.com/rooseveltframework/check-if-CSS-is-disabled",
@@ -38,21 +37,19 @@
     "docs-teddy": "https://github.com/rooseveltframework/teddy",
     "express": "5.2.1",
     "highlight.js": "11.12.0",
-    "roosevelt": "0.32.0",
+    "roosevelt": "0.33.1",
     "sass": "1.103.1",
     "semantic-forms": "5.3.5",
     "showdown": "2.1.0",
-    "teddy": "1.1.4",
+    "teddy": "1.2.0",
     "terser-webpack-plugin": "5.6.1",
     "tippy.js": "6.3.7",
     "webpack": "5.109.2"
   },
   "devDependencies": {
-    "http-server": "14.1.1",
     "standard": "17.1.2",
     "stylelint": "17.14.1",
-    "stylelint-config-standard-scss": "17.0.0",
-    "watcher": "2.3.1"
+    "stylelint-config-standard-scss": "17.0.0"
   },
   "standard": {
     "ignore": [
@@ -78,17 +75,17 @@
     "development": "node test-server.js",
     "df": "node test-server.js --fast-mode",
     "dev-fast": "node test-server.js --fast-mode",
-    "serve": "node build.js --development-mode && http-server docs/",
-    "p": "node build.js --production-mode && http-server docs/",
-    "prod": "node build.js --production-mode && http-server docs/",
-    "production": "node build.js --production-mode && http-server docs/",
-    "build": "node build.js --production-mode",
-    "build-dev": "node build.js --development-mode",
+    "p": "node test-server.js --production-mode",
+    "prod": "node test-server.js --production-mode",
+    "production": "node test-server.js --production-mode",
+    "build": "node test-server.js --build --production-mode",
+    "build-dev": "node test-server.js --build --development-mode",
     "lint": "npm run standard && npm run stylelint",
     "standard": "./node_modules/.bin/standard",
     "stylelint": "./node_modules/.bin/stylelint \"statics/css/**/*.scss\"",
-    "start": "node build.js --production-mode && http-server docs/",
-    "test": "npm run lint"
+    "start": "node test-server.js --production-mode",
+    "test": "npm run lint && npm run build && npm run test-site",
+    "test-site": "node --test \"test/*.js\""
   },
   "funding": "https://www.paypal.com/donate/?hosted_button_id=2L2X8GRXZCGJ6"
 }
