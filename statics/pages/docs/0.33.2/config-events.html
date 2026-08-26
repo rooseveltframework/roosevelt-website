@@ -1,0 +1,84 @@
+<include src="layouts/main">
+<arg pageTitle>Configuration — Events & Express vars</arg>
+<arg pageId>roosevelt-configuration-—-events-&-express-vars</arg>
+<arg pageContent><article><h1 id="eventsandexpressvariables">Events and Express variables</h1>
+<h2 id="events">Events</h2>
+<p>Roosevelt provides a series of events you can attach code to by passing a function to the desired event as a parameter to Roosevelt's constructor like so:</p>
+<pre><code class="js language-js">(async () =&gt; {
+  await require('roosevelt')({
+    onServerStart: (app) =&gt; { /* do something */ }
+  }).startServer()
+})()</code></pre>
+<h3 id="eventlist">Event list</h3>
+<p>These are sorted in order of when they are executed during the lifecycle of a Roosevelt app.</p>
+<ul>
+<li><p><code>onBeforeMiddleware(app)</code>: Fired when the app begins initializing, prior to any middleware being loaded into the app.</p>
+<ul>
+<li><code>app</code>: The <a href="http://expressjs.com/api.html#express">Express app</a> created by Roosevelt.</li></ul></li>
+<li><p><code>onBeforeControllers(app)</code>: Fired during initialization, prior to any routes being loaded.</p>
+<ul>
+<li><code>app</code>: The <a href="http://expressjs.com/api.html#express">Express app</a> created by Roosevelt.</li></ul></li>
+<li><p><code>onBeforeStatics(app)</code>: Fired during initialization, prior to any statics being written. Also fired again before each rebuild when the <code>watchStatics</code> feature rebuilds your static files.</p>
+<ul>
+<li><code>app</code>: The <a href="http://expressjs.com/api.html#express">Express app</a> created by Roosevelt.</li></ul></li>
+<li><p><code>onStaticsRebuilt(app, files)</code>: Fired after the <code>watchStatics</code> feature rebuilds your static files, and before the browser is told to reload. Use it for build work of your own that Roosevelt knows nothing about, such as writing a search index.</p>
+<ul>
+<li><code>app</code>: The <a href="http://expressjs.com/api.html#express">Express app</a> created by Roosevelt.</li>
+<li><code>files</code>: An array of the absolute paths of the files whose edits triggered the rebuild.</li></ul></li>
+<li><p><code>onClientViewsProcess(template)</code>: Fired to preprocess templates before being exposed to the client.</p>
+<ul>
+<li><code>template</code>: A string containing a template written in any JS-based templating engine (e.g. Teddy, Pug, ejs, etc).</li></ul></li>
+<li><p><code>onServerInit(app)</code>: Fired when the server is fully initialized and all middleware has been loaded but before the server has started.</p>
+<ul>
+<li><code>app</code>: The <a href="http://expressjs.com/api.html#express">Express app</a> created by Roosevelt.</li></ul></li>
+<li><p><code>onServerStart(app)</code>: Fired when the server starts.</p>
+<ul>
+<li><code>app</code>: The <a href="http://expressjs.com/api.html#express">Express app</a> created by Roosevelt.</li></ul></li>
+<li><p><code>onAppExit(app)</code>: Fired when the app recieves a kill signal.</p>
+<ul>
+<li><code>app</code>: The <a href="http://expressjs.com/api.html#express">Express app</a> created by Roosevelt.</li></ul></li>
+</ul>
+<h2 id="expressvariablesexposedbyroosevelt">Express variables exposed by Roosevelt</h2>
+<p>Roosevelt supplies several variables to Express that you may find handy. Access them using <code>app.get('variableName')</code>.</p>
+<ul>
+<li><code>appDir</code>: The directory the main module is in.</li>
+<li><code>appName</code>: The name of your app derived from <code>package.json</code>. Uses "Roosevelt Express" if no name is supplied.</li>
+<li><code>appVersion</code>: The version number of your app derived from <code>package.json</code>.</li>
+<li><code>controllersPath</code>: Full path on the file system to where your app's controllers folder is located.</li>
+<li><code>clientControllersBundledOutput</code>: Full path on the file system to where your app's client-exposed controllers folder is located.</li>
+<li><code>clientViewsBundledOutput</code>: Full path on the file system to where your app's client-exposed views folder is located.</li>
+<li><code>cssCompiledOutput</code>: Full path on the file system to where your app's minified CSS files are located.</li>
+<li><code>cssPath</code>: Full path on the file system to where your app's CSS source files are located.</li>
+<li><code>debugMarkup</code>: HTML you can add to your custom error pages if you define any that will print server errors if any exist, display the route list, and add some inline JavaScript that will serialize the request's <code>err</code>, <code>req</code>, and <code>res</code> objects so you can interactively examine them in the browser's developer tools. Only available in development mode.</li>
+<li><code>env</code>: Either <code>development</code> or <code>production</code>.</li>
+<li><code>express</code>: The Express module.</li>
+<li><code>expressSession</code>: The <a href="https://github.com/expressjs/session">express-session</a> module Roosevelt uses internally. Session middleware.</li>
+<li><code>expressSessionStore</code>: The session store instance used by <a href="https://github.com/expressjs/session">express-session</a> module Roosevelt uses internally.</li>
+<li><code>htmlPath</code>: Full path on the file system to where your app's HTML static page source files are located.</li>
+<li><code>htmlRenderedOutput</code>: Full path on the file system to where your app's rendered and minified static HTML files are located.</li>
+<li><code>httpServer</code>: The <a href="https://nodejs.org/api/http.html#http_class_http_server">http server</a> created by Roosevelt.</li>
+<li><code>httpsServer</code>: The <a href="https://nodejs.org/api/https.html#https_class_https_server">https server</a> created by Roosevelt.</li>
+<li><code>jsPath</code>: Full path on the file system to where your app's JS source files are located.</li>
+<li><code>logger</code>: The <a href="https://rooseveltframework.org/docs/roosevelt-logger">roosevelt-logger</a> module Roosevelt uses internally. Used for console logging.</li>
+<li><code>modelsPath</code>: Full path on the file system to where your app's models folder is located.</li>
+<li><code>package</code>: The contents of <code>package.json</code>.</li>
+<li><code>params</code>: The parameters you sent to Roosevelt.</li>
+<li><code>preprocessedStaticsPath</code> or <code>preprocessedStatics</code>: Full path on the file system to where your app's preprocessed statics folder is located.</li>
+<li><code>preprocessedViewsPath</code> or <code>preprocessedViews</code>: Full path on the file system to where your app's preprocessed views folder is located.</li>
+<li><code>publicFolder</code>: Full path on the file system to where your app's public folder is located.</li>
+<li><code>roosevelt:state</code>: Application state, e.g. <code>disconnecting</code> if the app is currently being shut down.</li>
+<li><code>router</code>: Instance of router module used by Roosevelt.</li>
+<li><code>routePrefix</code>: Prefix appended to routes via the <code>routePrefix</code> param. Will be <code>''</code> if not set.</li>
+<li><code>routes</code>: List of all routes in the app.</li>
+<li><code>staticsRoot</code>: Full path on the file system to where your app's statics folder is located.</li>
+<li><code>view engine</code>: Default view engine file extension, e.g. <code>.html</code>.</li>
+<li><em>viewEngine</em> e.g. <code>teddy</code> by default: Any view engine(s) you define will be exposed as an Express variable. For instance, the default view engine is teddy. So by default <code>app.get('teddy')</code> will return the <code>teddy</code> module.</li>
+<li><code>viewsPath</code> or <code>views</code>: Full path on the file system to where your app's views folder is located.</li>
+</ul>
+<p>Additionally the Roosevelt constructor returns the following object:</p>
+<ul>
+<li><code>expressApp</code> <em>[Object]</em>: The <a href="http://expressjs.com/api.html#express">Express app</a> created by Roosevelt.</li>
+<li><code>initServer(callback)</code> or <code>init(callback)</code> <em>[async Function]</em>: Starts the HTML validator, sets up some middleware, runs the CSS and JS preprocessors, and maps routes, but does not start the HTTP server. Call this method manually first instead of <code>startServer</code> if you need to setup the Express app, but still need to do additional setup before the HTTP server is started. This method is automatically called by <code>startServer</code> once per instance if it has not yet already been called. Takes an optional callback.</li>
+<li><code>startServer()</code> or <code>start()</code> <em>[async Function]</em>: Calls the <code>listen</code> method of <code>http</code>, <code>https</code>, or both (depending on your configuration) to start the web server with Roosevelt's config.</li>
+<li><code>stopServer(params)</code> or <code>stop(params)</code> <em>[Function]</em>: Stops the server from accepting new connections before exiting and takes an optional argument <code>stopServer({ persistProcess: true })</code> which will allow the process to remain active after the server has closed.</li>
+</ul></article></arg></include>

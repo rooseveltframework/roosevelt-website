@@ -1,0 +1,151 @@
+<include src="layouts/main">
+<arg pageTitle>Configuration — App behavior</arg>
+<arg pageId>roosevelt-configuration-—-app-behavior</arg>
+<arg pageContent><article><h1 id="appbehavioroptions">App behavior options</h1>
+<ul>
+<li><code>bodyParser</code> <em>[Object]</em>: Parameters to supply to the <a href="https://github.com/expressjs/body-parser">body-parser</a> module which handles POST requests.<ul>
+<li><code>urlEncoded</code> <em>[Object]</em>: Parameters to supply to <a href="https://github.com/expressjs/body-parser#bodyparserurlencodedoptions">body-parser.urlencoded</a>.</li>
+<li><code>json</code> <em>[Object]</em>: Parameters to supply to <a href="https://github.com/expressjs/body-parser#bodyparserjsonoptions">body-parser.json</a>.</li></ul></li>
+</ul>
+<p>Default: <em>[Object]</em></p>
+<pre><code class="javascript language-javascript">{
+  urlEncoded: {
+    extended: true
+  },
+  json: {}
+}</code></pre>
+<ul>
+<li><code>csrfProtection</code> <em>[Boolean or Object]</em>: Whether to enable <a href="https://en.wikipedia.org/wiki/Cross-site_request_forgery">Cross-Site Request Forgery</a> protection. Roosevelt asks the browser where each request came from and refuses any request that changes data unless the browser says it came from your own site, which browsers <a href="https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Sec-Fetch-Site">report themselves</a> and page scripts cannot forge. Default: <code>true</code>.<ul>
+<li>To disable the feature entirely, set it to false. To configure it, supply an object.</li>
+<li>In the object:<ul>
+<li><code>blockCrossSiteRequests</code> <em>[Boolean]</em>: Whether to ask the browser where each request came from and refuse any request that changes data unless the browser says it came from your own site. Default: <code>true</code>.<ul>
+<li>Requests that arrive without the browser saying where they came from are also refused. Anything that is not a browser, such as a mobile app or another server, does not send that information, so add those routes to <code>exemptions</code>.</li>
+<li>This cannot stop an untrusted request coming from another subdomain of your own site, because browsers report those the same way they report your own pages. Use CSRF tokens via <code>requireTokens</code> to add protection against untrusted subdomains.</li>
+<li>Setting this param to <code>false</code> leaves your app protected only by whatever <code>requireTokens</code> is set to.</li></ul></li>
+<li><code>requireTokens</code> <em>[Boolean or String]</em>: Whether requests that change data must carry a CSRF token. Default: <code>false</code>.<ul>
+<li><code>false</code>: no token is needed, which is fine for most apps. Note that <code>req.csrfToken()</code> is not available when set to <code>false</code>, since there are no tokens to generate.</li>
+<li><code>true</code>: always require a token. Set to <code>true</code> if anything untrusted is hosted on a subdomain you share, such as user uploaded content or a separate app someone else runs. That is the only way to stop an untrusted request coming from another subdomain of your own site, because browsers report those the same way they report your own pages. See the <a href="https://rooseveltframework.org/docs/latest/coding-apps/#examplepostroutewithcsrftokens">coding apps</a> section for examples.</li>
+<li><code>"whenHeaderMissing"</code>: require a token only from browsers too old to report where a request came from, since they are otherwise refused. This does not stop an untrusted request coming from another subdomain of your own site either, because browsers that do report where a request came from are trusted without a token.</li></ul></li>
+<li><code>trustedOrigins</code> <em>[Array of Strings]</em>: Other sites you expect requests from, such as a payment provider posting back to your app. Default: <code>[]</code>.<ul>
+<li>Example: <code>["https://accounts.someplace.somedomain"]</code>. Matched against the request's <code>Origin</code> header.</li>
+<li>This only helps callers that send an <code>Origin</code> header, which means browsers. Use <code>exemptions</code> for anything else.</li></ul></li>
+<li><code>exemptions</code> <em>[Array of Strings]</em>: Routes to skip all of these checks on. Supports wildcard matching. Use this for routes called by anything that is not a browser, such as a mobile app or another server.</li></ul></li></ul></li>
+</ul>
+<p>Example of exemptions list: <em>[Object]</em></p>
+<pre><code class="javascript language-javascript">{
+  exemptions: [
+    '/foo',
+    '/bar',
+    '/baz'
+  ]
+}</code></pre>
+<ul>
+<li><code>expressSession</code> <em>[Boolean or Object]</em>: Parameters to pass to the <a href="https://github.com/expressjs/session">express-session</a> module. Default: <code>true</code>.</li>
+</ul>
+<p>Default if <code>expressSession</code> is set to <code>true</code>: <em>[Object]</em></p>
+<pre><code class="javascript language-javascript">{
+  secret, // an auto-generated secret, read from your secrets folder
+  resave: false, // usually a bad idea to set to true
+  saveUninitialized: false, // usually a bad idea to set to true
+  cookie: {
+    secure: 'auto', // marks the cookie HTTPS only on any request that reached your app over HTTPS, whether the app served it or a web server in front did
+    sameSite: 'strict', // adds same site enforcement
+    maxAge: 347126472000 // sets expiration very far in the future (~11 years) to basically never expire
+  },
+  store // the expressSessionStore.instance Roosevelt param
+}</code></pre>
+<p>If you supply your own config, note what <code>cookie.sameSite</code> does before leaving it out: Setting it to <code>"strict"</code> tells the browser not to send the session cookie along with any request that came from another site. A forged request from another site therefore arrives with nobody logged in, which is one of the protections that stops another site from making requests as your logged in users. Roosevelt warns at startup if your config leaves it unset, since a hand written config can drop it without meaning to.</p>
+<p>It does not stop a request coming from another subdomain of your own site, because browsers count those as the same site. Only setting <code>csrfProtection.requireTokens</code> to <code>true</code> does that.</p>
+<p>One side effect of <code>"strict"</code> is that a user following a link to your app from somewhere else, such as an email or a chat message, arrives without their session on that first page load and appears logged out. Reloading the page or clicking any link within your app restores it, since those requests come from your own site.</p>
+<p>If that matters for your app, set <code>cookie.sameSite</code> to <code>"lax"</code> instead. The browser will then send the session cookie when a user navigates to your app from elsewhere, while still withholding it from a form or script on another site that tries to change data.</p>
+<p>Whichever you choose, <code>csrfProtection.blockCrossSiteRequests</code> still refuses requests that change data unless the browser says they came from your own site, so relaxing this setting does not give up your CSRF protection.</p>
+<ul>
+<li><code>expressSessionStore</code> <em>[Object]</em>: Define a custom session store to use with <code>express-session</code> instead of the default one provided by Roosevelt. Roosevelt's default store keeps sessions in a file on the server running the app, so you need this if you run your app on more than one server. See <a href="/docs/{currentVersion.roosevelt}/deployment#scale-across-several-servers">scaling across several servers</a>.<ul>
+<li><code>filename</code> <em>[String]</em>: Name of the session file.</li>
+<li><code>instance</code>: <em>[Object]</em> A store instance. See <a href="https://expressjs.com/en/resources/middleware/session.html#compatible-session-stores">this list</a> for compatible stores.</li>
+<li><code>preset</code> <em>[String]</em>: Available presets provided by Roosevelt. Only used if <code>instance</code> is not provided.<ul>
+<li>Available options:<ul>
+<li><code>"default"</code>: Use Roosevelt's default session store, which is <a href="https://github.com/attestate/better-sqlite3-session-store">better-sqlite3-session-store</a>, which we hard forked into Roosevelt to continue its regular maintenance since it is no longer maintained.</li>
+<li><code>"express-session-default"</code>: Use <code>express-session</code>'s own default store, which keeps sessions in memory. Not recommended: every session is lost when the process restarts, so a deploy signs everyone out, and memory use grows without bound. <code>express-session</code> itself advises against it outside development.</li></ul></li></ul></li>
+<li><code>presetOptions</code>  <em>[Object]</em>: Options to pass to the preset session store if one is selected. Only used if <code>instance</code> is not provided.<ul>
+<li><code>checkPeriod</code> <em>[Number]</em>: How often, in milliseconds, Roosevelt clears sessions that have gone past <code>maxInactivity</code> out of the session store.</li></ul></li>
+<li>Either <code>instance</code> or <code>preset</code> must be set for this param to work properly.</li>
+<li><code>maxInactivity</code> <em>[Number]</em>: How long, in milliseconds, a session may go unused before Roosevelt deletes it from the session store. Default: <code>7889238000</code> (about 3 months). Only applies to Roosevelt's default session store.<ul>
+<li>This is separate from <code>expressSession.cookie.maxAge</code>, which decides how long a user stays logged in. Roosevelt sets that very far in the future by default so that active users are never logged out, which would otherwise mean abandoned sessions sat in the session store for just as long. <code>maxInactivity</code> lets you keep long-lived logins while still clearing out sessions nobody has come back to.</li>
+<li>The clock resets every time a session is used, so a session belonging to an active user is never deleted no matter how old it is.</li>
+<li>Sessions are swept on the interval set by <code>presetOptions.checkPeriod</code>. When a browser turns up with a cookie for a session that has since been deleted, Roosevelt clears that cookie so it does not linger until its own far off expiry.</li>
+<li>If you prefer or your app depends on sessions pretty much never expiring, set this to <code>347126472000</code> (about 11 years) to match the <code>expressSession.cookie.maxAge</code> default.</li></ul></li></ul></li>
+</ul>
+<p>Default: <em>[Object]</em></p>
+<pre><code class="javascript language-javascript">{
+  filename: 'sessions.sqlite',
+  instance: null,
+  preset: 'default',
+  presetOptions: {
+    checkPeriod: 86400000 // one day
+  },
+  maxInactivity: 7889238000 // three months
+}</code></pre>
+<ul>
+<li><code>formidable</code>: Parameters to pass to <a href="https://github.com/felixge/node-formidable">formidable</a> using <a href="https://github.com/felixge/node-formidable#api">formidable's API</a> for multipart form processing (file uploads). Access files uploaded in your controllers by examining the <code>req.files</code> object. Roosevelt will remove any files uploaded to the upload directory when the request ends automatically. To keep any, be sure to move them before the request ends.</li>
+</ul>
+<p>Default: <em>[Object]</em></p>
+<pre><code class="javascript language-javascript">{
+  multiples: true // enables multiple files to be uploaded simultaneously
+}</code></pre>
+<p>To disable multipart forms entirely, set <code>formidable</code> to <code>false</code>.</p>
+<ul>
+<li><p><code>helmet</code> <em>[Object]</em>: Parameters to pass to the <a href="https://github.com/helmetjs/helmet">helmet</a> module. This module helps secure Express apps by setting HTTP response headers.</p>
+<ul>
+<li>The default options are specified in the <a href="https://helmetjs.github.io/">helmet docs</a>, with the following exceptions that Roosevelt makes to the default <code>Content-Security-Policy</code> settings:<ul>
+<li>The <code>upgrade-insecure-requests</code> directive has been removed. This change prevents <a href="https://github.com/rooseveltframework/roosevelt/issues/964">this bug</a>.</li>
+<li>The <code>script-src</code> directive has been set to <code>"unsafe-inline"</code>. This makes it possible to use inline scripts.</li>
+<li>The <code>form-action</code> directive has been set to <code>null</code>. This makes it possible to submit forms to other domains.</li>
+<li>You can reverse any of these changes by configuring helmet yourself.</li></ul></li>
+<li>To disable helmet entirely, set the param to <code>false</code>.</li></ul></li>
+<li><p><code>logging</code>: Parameters to pass to <a href="https://rooseveltframework.org/docs/roosevelt-logger">roosevelt-logger</a>. See <a href="https://rooseveltframework.org/docs/roosevelt-logger/latest/configuration.html">roosevelt-logger parameters documentation</a> for configuration options.</p></li>
+</ul>
+<p>Default: <em>[Object]</em></p>
+<pre><code class="javascript language-javascript">{
+  quieterStartup: false,
+  methods: {
+    http: true,
+    info: true,
+    warn: true,
+    error: true,
+    verbose: false
+  }
+}</code></pre>
+<ul>
+<li><code>logging.quieterStartup</code> <em>[Boolean]</em>: Show notices that repeat on every start at most once a day instead of every time. Default: <code>false</code>.<ul>
+<li>Some notices simply restate how the app is configured, such as which folder is being hosted or that build artifacts are switched off. Nothing is wrong, so seeing them on every restart while developing gets noisy.</li>
+<li>Only those repeating notices are held back. Anything reporting an actual problem, such as a missing favicon or a file that failed to compile, always prints.</li>
+<li>Roosevelt remembers which notices it has shown in your system's temp directory, so restarting the app does not bring them all back. Rebooting, or waiting a day, does.</li>
+<li>Can also be set with the <code>--quieter-startup</code> or <code>-q</code> command line flags, or the <code>QUIETER_STARTUP</code> environment variable.</li></ul></li>
+<li><code>makeBuildArtifacts</code> <em>[Boolean or String]</em>: When enabled Roosevelt will generate user-specified directories, CSS/JS bundles, etc.<ul>
+<li>Defaults to <code>false</code> for apps created manually.</li>
+<li>Will be set to <code>true</code> in apps generated with the app generator.</li>
+<li>Can also accept a value of <code>"staticsOnly"</code> which will allow Roosevelt to create static files but skip the creation of the MVC directories.</li></ul></li>
+<li><code>buildOnly</code> <em>[Boolean]</em>: When enabled <code>startServer</code> builds the app and stops there rather than listening for requests. Use it for a build step in CI or a deploy, which has to finish and exit rather than sit on a port. Default: <code>false</code>.<ul>
+<li>Set by the <code>--build</code> and <code>-b</code> command line flags, which also set <code>makeBuildArtifacts</code> to <code>"staticsOnly"</code>.</li>
+<li>Calling <code>initServer</code> (<code>init</code>) instead of <code>startServer</code> has the same effect, and is the better fit when your build script drives Roosevelt directly rather than being handed command line flags.</li></ul></li>
+<li><code>incrementalBuilds</code> <em>[Boolean]</em>: When enabled Roosevelt will skip regenerating a static file if none of the source files it was built from have changed since the last build. This applies to files declared in the <code>copy</code> param too, which are left alone when neither the source nor the copy has changed. Default: <code>true</code>.<ul>
+<li>Set to <code>false</code> to disable the feature and rebuild everything on every start. Deleting your <code>buildFolder</code> has the same one-time effect.</li></ul></li>
+<li><code>routePrefix</code> <em>[String]</em>: A prefix prepended to your application's routes. Applies to all routes and static files. Default: <code>null</code>.<ul>
+<li>Example: When set to <code>"foo"</code> a route bound to <code>/</code> will be instead be bound to <code>/foo/</code>.</li>
+<li>This prefix is exposed via the <code>routePrefix</code> Express variable which should be used for resolving the absolute paths to statics programmatically.<ul>
+<li>Example: An image located at <code>/images/teddy.jpg</code> can be resolved in a prefix-agnostic way via <code>${app.get('routePrefix')}/images/teddy.jpg</code>.</li></ul></li></ul></li>
+<li><code>viewEngine</code> <em>[String]</em>: What templating engine to use, formatted as <code>"fileExtension: nodeModule"</code>.<ul>
+<li>Defaults to <code>"none"</code> for apps created manually.</li>
+<li>Will be set to <code>"html: teddy"</code> in apps generated with the app generator.</li>
+<li>Also by default when using the app generator, the <a href="https://rooseveltframework.org/docs/teddy">teddy</a> module is marked as a dependency in <code>package.json</code>.</li>
+<li>To use multiple templating systems, supply an array of engines to use in the same string format. Each engine you use must also be marked as a dependency in your app's <code>package.json</code>. Whichever engine you supply first with this parameter will be considered the default.</li></ul></li>
+</ul>
+<p>Example configuration using multiple templating systems: <em>[Object]</em></p>
+<pre><code class="javascript language-javascript">{
+  viewEngine: [
+    'html: teddy',
+    'php: php',
+    'ejs: ejs'
+  ]
+}</code></pre></article></arg></include>
