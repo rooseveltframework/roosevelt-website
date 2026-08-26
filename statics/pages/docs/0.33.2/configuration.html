@@ -1,0 +1,60 @@
+<include src="layouts/main">
+<arg pageTitle>Configuration</arg>
+<arg pageId>roosevelt-configuration</arg>
+<arg pageContent><article><h2 id="appname">App name</h2>
+<p>Roosevelt will determine your app's name by examining <code>"name"</code> in <code>package.json</code>. If none is provided, it will use <code>Roosevelt Express</code> instead.</p>
+<h2 id="rooseveltconfig"><code>rooseveltConfig</code></h2>
+<p>Roosevelt is highly configurable and you can configure it from the following hierarchy of sources in increasing order of precedence:</p>
+<ul>
+<li>A <code>roosevelt.config.js</code> file.</li>
+<li>A <code>rooseveltConfig.js</code> file.</li>
+<li>Constructor parameters.</li>
+<li>Environment variables.</li>
+<li>Command line flags.</li>
+</ul>
+<p>What "increasing order of precedence" means is that command line flags will override environment variables, environment variables will override constructor parameters, constructor parameters will override the config file, etc.</p>
+<p>The config file is a JavaScript file that exports your params. Here's a very simple example that sets one param:</p>
+<pre><code class="javascript language-javascript">module.exports = {
+  http: {
+    port: 4000
+  }
+}</code></pre>
+<h3 id="settingpartofaparam">Setting part of a param</h3>
+<p>Params that hold an object can be set a piece at a time. Anything you leave out keeps its default, so this turns off request logging without disturbing the other logging settings:</p>
+<pre><code class="javascript language-javascript">module.exports = {
+  logging: {
+    methods: {
+      http: false
+    }
+  }
+}</code></pre>
+<p>Params that pass their options along to another module, such as <code>helmet</code> and <code>formidable</code>, accept any option that module takes, whether or not Roosevelt documents it.</p>
+<h3 id="referringtootherparamsinyourparams">Referring to other params in your params</h3>
+<p>Use <code>ref</code> when you need to reference the value of another param. It takes a function that receives the finished params:</p>
+<pre><code class="javascript language-javascript">const rooseveltConfig = require('roosevelt/config')
+const path = require('path')
+
+module.exports = {
+  symlinks: [
+    {
+      source: rooseveltConfig.ref(param =&gt; param.js.sourcePath),
+      dest: rooseveltConfig.ref(param =&gt; path.join(param.publicFolder, 'js'))
+    }
+  ]
+}</code></pre>
+<h3 id="therooseveltconfigapi">The <code>rooseveltConfig</code> API</h3>
+<nav class="toc">
+  <ul>
+      <li><a href="/docs/{currentVersion.roosevelt}/config-file-paths">File paths</a></li>
+      <li><a href="/docs/{currentVersion.roosevelt}/config-http">HTTP</a></li>
+      <li><a href="/docs/{currentVersion.roosevelt}/config-app-behavior">App behavior</a></li>
+      <li><a href="/docs/{currentVersion.roosevelt}/config-static-files">Static files</a></li>
+      <li><a href="/docs/{currentVersion.roosevelt}/config-css">CSS</a></li>
+      <li><a href="/docs/{currentVersion.roosevelt}/config-js">JS</a></li>
+      <li><a href="/docs/{currentVersion.roosevelt}/config-isomorphic">Isomorphic (single page app)</a></li>
+      <li><a href="/docs/{currentVersion.roosevelt}/config-dev-mode">Development mode</a></li>
+      <li><a href="/docs/{currentVersion.roosevelt}/config-deployment">Deployment</a></li>
+      <li><a href="/docs/{currentVersion.roosevelt}/config-events">Events and Express variables</a></li>
+      <li><a href="/docs/{currentVersion.roosevelt}/config-cli">Environment variables and command line usage</a></li>
+  </ul>
+</nav></article></arg></include>

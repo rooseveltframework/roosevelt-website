@@ -1,0 +1,144 @@
+<include src="layouts/main">
+<arg pageTitle>Configuration — Env vars & CLI usage</arg>
+<arg pageId>roosevelt-configuration-—-env-vars-&-cli-usage</arg>
+<arg pageContent><article><h1 id="environmentvariablesandcommandlineusage">Environment variables and command line usage</h1>
+<h2 id="recognizedenvironmentvariables">Recognized environment variables</h2>
+<p>The following is a list of <a href="https://en.wikipedia.org/wiki/Environment_variable">environment variables</a> that Roosevelt listens for.</p>
+<ul>
+<li><code>NODE_ENV</code>:<ul>
+<li>Set to <code>production</code> to force the app into production mode.</li>
+<li>Set to <code>development</code> to force the app into development mode.</li></ul></li>
+<li><code>NODE_PORT</code>: Default HTTPS port to run your app on.<ul>
+<li>Will set HTTP port instead if HTTPS is disabled.</li></ul></li>
+<li><code>HTTP_PORT</code>: Default HTTP port to run your app on. Takes precedence over <code>NODE_PORT</code>.</li>
+<li><code>HTTPS_PORT</code>: Default HTTPS port to run your app on.</li>
+<li><code>DISABLE_HTTP</code>: When set to <code>true</code>, the HTTP server will be disabled regardless of what is set in the <code>rooseveltConfig</code>.</li>
+<li><code>DISABLE_HTTPS</code>: When set to <code>true</code>, the HTTPS server will be disabled regardless of what is set in the <code>rooseveltConfig</code>.</li>
+<li><code>SWAP_HTTPS_TO_HTTP</code>: When set to <code>true</code>, the server will switch from using HTTPS to HTTP if <code>rooseveltConfig</code> is currently configured to use HTTPS.</li>
+<li><code>MAKE_BUILD_ARTIFACTS</code>: Lets you set Roosevelt's <code>makeBuildArtifacts</code> param via environment variable.</li>
+</ul>
+<p>Environment variable precedence:</p>
+<ul>
+<li>Environment variables supersede your app's <code>rooseveltConfig</code>.</li>
+<li>Environment variables can be overridden with command line arguments.</li>
+</ul>
+<h2 id="commandlineusage">Command line usage</h2>
+<h3 id="availablenpmscripts">Available npm scripts</h3>
+<p>Roosevelt apps created with the app generator come with the following notable <a href="https://docs.npmjs.com/misc/scripts">npm scripts</a> prepopulated in <a href="https://docs.npmjs.com/files/package.json">package.json</a>:</p>
+<ul>
+<li><p><code>npm run production</code>: Runs the app in production mode.</p>
+<ul>
+<li>Default shorthands:<ul>
+<li><code>npm run prod</code></li>
+<li><code>npm run p</code></li>
+<li><code>npm start</code></li></ul></li>
+<li>Script is short for: <code>nodemon app.js --production-mode</code></li></ul></li>
+<li><p><code>npm run development</code>: Runs the app in development mode.</p>
+<ul>
+<li>Default shorthands:<ul>
+<li><code>npm run dev</code></li>
+<li><code>npm run d</code></li></ul></li>
+<li>Script is short for: <code>nodemon app.js --development-mode</code></li></ul></li>
+<li><p><code>npm run production-proxy</code>: Runs the app in production mode, but with <code>localhostOnly</code> set to true and <code>hostPublic</code> set to false. This mode will make it so your app only listens to requests coming from localhost and does not serve anything in the public folder. This mode is useful when you want to host your app behind a reverse proxy from a web server like Apache or nginx and <a href="https://expressjs.com/en/advanced/best-practice-performance.html#use-a-reverse-proxy">is considered a best practice for Node.js deployments</a>.</p>
+<ul>
+<li>Default shorthands:<ul>
+<li><code>npm run prodproxy</code></li>
+<li><code>npm run x</code></li></ul></li>
+<li>Script is short for: <code>nodemon app.js --production-proxy-mode</code></li></ul></li>
+</ul>
+<p>Roosevelt also ships a few commands of its own. They are available in any app that depends on Roosevelt, so you do not need a <code>scripts</code> entry in your <code>package.json</code> to use them:</p>
+<ul>
+<li><p><code>npx roosevelt-generate-certs</code>: Generates self-signed HTTPS certs for your app.</p>
+<ul>
+<li>Supports command line flags <code>--appDir somewhere</code> <code>--secretsPath somewhere</code> to override those default locations.</li>
+<li>Writes the cert and key named by your <code>https.options</code> params, so it does nothing if you have not set those.</li></ul></li>
+<li><p><code>npx roosevelt-generate-session-secret</code>: Generates a secret key for the <code>express-session</code> module.</p>
+<ul>
+<li>Supports command line flags <code>--appDir somewhere</code> <code>--secretsPath somewhere</code> to override those default locations.</li></ul></li>
+<li><p><code>npx roosevelt-generate-secrets</code>: Runs both of the above.</p>
+<ul>
+<li>Supports command line flags <code>--appDir somewhere</code> <code>--secretsPath somewhere</code> to override those default locations.</li></ul></li>
+<li><p><code>npx roosevelt-migrate-config</code>: Converts an old JSON config into a <code>roosevelt.config.js</code> file.</p>
+<ul>
+<li>Takes the app directory as an argument, and uses the current directory if you do not supply one.</li></ul></li>
+</ul>
+<h3 id="availablecommandlinearguments">Available command line arguments</h3>
+<ul>
+<li><p><code>node app.js --production-mode</code>: Runs the app in production mode.</p>
+<ul>
+<li>Default shorthands:<ul>
+<li><code>--prod</code></li>
+<li><code>-p</code></li></ul></li></ul></li>
+<li><p><code>node app.js --development-mode</code>: Runs the app in development mode.</p>
+<ul>
+<li>Default shorthands:<ul>
+<li><code>--dev</code></li>
+<li><code>-d</code></li></ul></li></ul></li>
+<li><p><code>node app.js --build</code>: Only runs the build scripts and doesn't start the app.</p>
+<ul>
+<li>Default shorthands:<ul>
+<li><code>-b</code></li></ul></li></ul></li>
+<li><p><code>node app.js --jsbundler=verbose</code>: Prints verbose errors from the JS bundler to the console.</p>
+<ul>
+<li>Default shorthands:<ul>
+<li><code>--jsb=verbose</code></li>
+<li><code>-j=verbose</code></li></ul></li></ul></li>
+<li><p><code>node app.js --jsbundler=verbose-file</code>: Prints verbose errors from the JS bundler to the console as well as write a jsBundlerError.txt file to the app's root directory containing the full error.</p>
+<ul>
+<li>Default shorthands:<ul>
+<li><code>--jsb=verbose-file</code></li>
+<li><code>-j=verbose-file</code></li></ul></li></ul></li>
+<li><p><code>node app.js --production-proxy-mode</code>: Runs the app in production mode, but with <code>localhostOnly</code> set to true and <code>hostPublic</code> set to false. This mode will make it so your app only listens to requests coming from localhost and does not serve anything in the public folder. This mode is useful when you want to host your app behind a reverse proxy from a web server like Apache or nginx and <a href="https://expressjs.com/en/advanced/best-practice-performance.html#use-a-reverse-proxy">is considered a best practice for Node.js deployments</a>.</p>
+<ul>
+<li>Default shorthands:<ul>
+<li><code>--prodproxy</code></li>
+<li><code>-x</code></li></ul></li></ul></li>
+<li><p><code>node app.js --quieter-startup</code>: Shows notices that repeat on every start at most once a day.</p>
+<ul>
+<li>Default shorthands:<ul>
+<li><code>-q</code></li></ul></li></ul></li>
+<li><p><code>node app.js --enable-validator</code>: Forces the HTML validator to be enabled.</p>
+<ul>
+<li>Default shorthands:<ul>
+<li><code>--html-validator</code></li>
+<li><code>-h</code></li></ul></li></ul></li>
+<li><p><code>node app.js --disable-validator</code>: Forces the HTML validator to be disabled.</p>
+<ul>
+<li>Default shorthands:<ul>
+<li><code>--raw</code></li>
+<li><code>-r</code></li></ul></li></ul></li>
+</ul>
+<h3 id="overridingrecognizedcommandlineflagsandenvironmentvariables">Overriding recognized command line flags and environment variables</h3>
+<p>You can rename the command line flags and environment variables Roosevelt listens for by passing a schema as the second argument to the Roosevelt constructor, with a <code>"rooseveltConfig"</code> section naming the params you want to change.</p>
+<p>For example, by default, the <code>mode</code> param is set to development by <code>--development-mode</code>, <code>--dev</code>, or <code>-d</code>. To change it to <code>--dev-mode</code> or <code>-D</code> for that instead:</p>
+<pre><code class="javascript language-javascript">const schemaOverride = {
+  rooseveltConfig: { // we are overriding the Roosevelt config
+    mode: { // we are overriding the mode param
+      commandLineArg: {
+        development: ['--dev-mode', '-D'] // these flags now set mode to development, replacing --development-mode, --dev, and -d
+      }
+    }
+  }
+}
+const params = {} // set any Roosevelt parameters here
+require('roosevelt')(params, schemaOverride).startServer()</code></pre>
+<p>The <code>mode</code> param has a set of flags for each value it accepts, so they are listed by value. Only the value you list is changed: after the override above, <code>--production-mode</code>, <code>--prod</code>, and <code>-p</code> still set mode to production.</p>
+<p>Environment variables are overridden the same way, using <code>envVar</code>. By default, the <code>http.port</code> param is read from the <code>HTTP_PORT</code> environment variable. To read it from <code>MY_APP_PORT</code> instead:</p>
+<pre><code class="javascript language-javascript">const schemaOverride = {
+  rooseveltConfig: {
+    http: { // we are overriding the http.port param
+      port: {
+        envVar: ['MY_APP_PORT'] // now read from MY_APP_PORT, replacing HTTP_PORT
+      }
+    }
+  }
+}</code></pre>
+<p>Tips:</p>
+<ul>
+<li>Once a flag or environment variable is renamed, the default no longer works. Include the default in your list if you want to keep it.</li>
+<li>You can also add a flag or environment variable to a param that does not have one by default, using the same syntax.</li>
+<li>Avoid flag names beginning with <code>--no-</code>, since the command line parser treats <code>--no-example</code> as setting <code>example</code> to false rather than as a flag named <code>no-example</code>.</li>
+</ul>
+<h3 id="combiningnpmscriptsandcommandlinearguments">Combining npm scripts and command line arguments</h3>
+<p>The npm scripts can be combined with the command line flags.</p>
+<p>For example, running <code>npm run dev -- --disable-validator</code> will run your app in development mode and force the HTML validator to be disabled.</p></article></arg></include>

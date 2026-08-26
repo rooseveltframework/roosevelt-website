@@ -1,0 +1,97 @@
+<include src="layouts/main">
+<arg pageTitle>Configuration — Static files</arg>
+<arg pageId>roosevelt-configuration-—-static-files</arg>
+<arg pageContent><article><h1 id="staticfileoptions">Static file options</h1>
+<ul>
+<li><p><code>copy</code> <em>[Array of Objects]</em>: Declare one or more files or folders to copy at runtime. Default: <code>[]</code>.</p>
+<ul>
+<li><code>source</code> <em>[String]</em>: Path to be copied from.<ul>
+<li>Roosevelt will not attempt to copy files or folders that do not exist.</li></ul></li>
+<li><code>dest</code> <em>[String]</em>: Path to place the copy.<ul>
+<li>If this destination path already exists <strong>it will be overwritten</strong>.</li>
+<li>Unless the <code>incrementalBuilds</code> param is disabled, the copy is skipped when neither the source nor the destination has changed since the last start.</li></ul></li></ul></li>
+<li><p><code>html</code> <em>[Object]</em>: Generate static HTML pages:</p>
+<ul>
+<li><code>sourcePath</code> <em>[String]</em>: Subdirectory within <code>staticsRoot</code> where your static HTML files are located. By default this folder will not be made public, but is instead meant to store unminified / unprocessed HTML template source files which will be rendered by your templating system, minified, and written to the <code>public</code> folder when the app is started.</li>
+<li><code>allowlist</code>: <em>[Array of Strings]</em> List of templates to render, minify, and write to the <code>public</code> folder when the app is started. If the list is empty, all templates in your <code>sourcePath</code> will be sourced. Supports wildcard matching, e.g. <code>dir/*</code>.</li>
+<li><code>blocklist</code>: <em>[Array of Strings]</em> List of templates in your <code>sourcePath</code> to skip. Supports wildcard matching, e.g. <code>dir/*</code>.<ul>
+<li>You can also block a file from being exposed by adding a comment on the first line of the file with the string <code>roosevelt-blocklist</code> anywhere on the line.</li></ul></li>
+<li><code>models</code> <em>[Object]</em>: Data to pass to templates by file path / file name.<ul>
+<li>Example: <code>{ "index.html": { "some": "data" } }</code></li>
+<li>You can also pass a global model using a <code>*</code> catch-all character: <code>{ "*": { "some": "data" } }</code></li>
+<li>If this data is not supplied by configuration, Roosevelt will try to automatically load a model from a JS file with the same name alongside the template if it exists instead. For example if an index.js file exists next to index.html and the model is not defined by configuration like in the example above, then the index.js file will be used to set the model so long as it exports either an object or a function that returns an object.</li></ul></li>
+<li><code>output</code> <em>[String]</em>: Subdirectory within <code>publicFolder</code> where parsed and minified HTML files will be written to.</li>
+<li><code>folderPerPage</code> <em>[Boolean or String]</em>: Make a folder for each page and place the page within it.<ul>
+<li>Example values:<ul>
+<li><code>true</code>: Given a page called example.html, this feature will create a folder called "example" in the public folder and place "example.html" within it.</li>
+<li><code>"index.html"</code>: Given a page called example.html, this feature will create a folder called "example" in the public folder and place "index.html" within it. This is useful for creating "pretty URLs" with static sites.</li>
+<li><code>false</code>: Disables the feature.</li></ul></li></ul></li>
+<li><code>minifier</code> <em>[Object]</em>: How you want Roosevelt to minify your HTML:<ul>
+<li><code>enable</code> <em>[Boolean]</em>: Whether or not to minify HTML.<ul>
+<li>Can also be disabled by the <code>minify</code> param.</li>
+<li>Minification is automatically disabled in development mode.</li></ul></li>
+<li><code>exceptionRoutes</code> <em>[Array of Strings]</em>: List of controller routes that will skip minification entirely. Set to <code>false</code> to minify all URLs.</li>
+<li><code>options</code> <em>[Object]</em>: Parameters to supply to <a href="https://github.com/kangax/html-minifier#options-quick-reference">html-minifier</a>'s API.</li></ul></li></ul></li>
+</ul>
+<p>Default: <em>[Object]</em></p>
+<pre><code class="javascript language-javascript">{
+  sourcePath: 'pages',
+  allowlist: null,
+  blocklist: null,
+  models: {},
+  output: '',
+  folderPerPage: false,
+  minifier: {
+    enable: true,
+    exceptionRoutes: false,
+    options: {
+      removeComments: true,
+      collapseWhitespace: true,
+      collapseBooleanAttributes: true,
+      removeAttributeQuotes: true,
+      removeEmptyAttributes: true
+    }
+  }
+}</code></pre>
+<ul>
+<li><p><code>favicon</code> <em>[String]</em>: Location of your <a href="https://en.wikipedia.org/wiki/Favicon">favicon</a> file. Default: <code>"none"</code>.</p>
+<ul>
+<li>Will be set to <code>"images/favicon.ico"</code> in apps generated with the app generator.</li></ul></li>
+<li><p><code>minify</code> <em>[Boolean]</em>: Enables HTML and CSS minification. This feature is automatically disabled during development mode. Minifying JS is handled by whichever bundler you choose in the <a href="/docs/{currentVersion.roosevelt}/config-js">JS options</a>, if any. Default: <code>true</code>.</p></li>
+<li><p><code>minifyHtmlAttributes</code> <em>[Object]</em>: Settings to pass to <a href="https://rooseveltframework.org/docs/minify-html-attributes">minify-html-attributes</a>.</p>
+<ul>
+<li><code>enable</code> <em>[Boolean or String]</em>: Whether or not to enable <code>minify-html-attributes</code>.<ul>
+<li>Available options:<ul>
+<li><code>"production"</code>: Enable only in production mode.</li>
+<li><code>"development"</code>: Enable in all modes.</li>
+<li><code>true</code>: Will be taken to mean <code>"production"</code>.</li></ul></li></ul></li>
+<li><code>minifyHtmlAttributesParams</code>: Params to pass to <code>minify-html-attributes</code>.<ul>
+<li>Note: Roosevelt will always override 3 params from <code>minify-html-attributes</code>:<ul>
+<li><code>htmlDir</code> will always be set to Roosevelt's <code>preprocessedViewsPath</code>.</li>
+<li><code>cssDir</code> will always be set to Roosevelt's <code>preprocessedStaticsPath</code>.</li>
+<li><code>jsDir</code> will always be set to Roosevelt's <code>preprocessedStaticsPath</code>.</li></ul></li></ul></li></ul></li>
+</ul>
+<p>Default: <em>[Object]</em></p>
+<pre><code class="javascript language-javascript">{
+  enable: false,
+  minifyHtmlAttributesParams: {}
+}</code></pre>
+<ul>
+<li><p><code>prodSourceMaps</code> <em>[Boolean]</em>: Enables source maps for minified CSS and JS files in production mode. Default: <code>false</code>.</p></li>
+<li><p><code>symlinks</code> <em>[Array of Objects]</em>: Declare one or more symlinks to be generated at runtime. Default: <code>[]</code>.</p>
+<ul>
+<li><code>source</code> <em>[String]</em>: Path to be linked to.<ul>
+<li>Roosevelt will not attempt to generate a symlink to a source path that does not exist.</li></ul></li>
+<li><code>dest</code> <em>[String]</em>: Path to place symlink.<ul>
+<li>If this destination path already exists it will not be overwritten.</li></ul></li></ul></li>
+</ul>
+<p>Will be set to the following in apps generated with the app generator:</p>
+<pre><code class="javascript language-javascript">[
+  {
+    source: rooseveltConfig.ref(param =&gt; path.join(param.staticsRoot, 'images')),
+    dest: rooseveltConfig.ref(param =&gt; path.join(param.publicFolder, 'images'))
+  }
+]</code></pre>
+<ul>
+<li><code>versionedPublic</code> <em>[Boolean]</em>: If set to true, Roosevelt will prepend your app's version number from <code>package.json</code> to your public folder. Versioning your public folder is useful for resetting your users' browser cache when you release a new version. Default: <code>false</code>.</li>
+</ul></article></arg></include>
