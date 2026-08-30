@@ -24,10 +24,6 @@ if (document.getElementById('fancy-version-picker')) {
   document.getElementById('basic-version-picker').setAttribute('hidden', 'true')
 }
 
-// enable syntax highlighting
-const hljs = require('highlight.js')
-hljs.highlightAll()
-
 // add copy code button to code blocks
 document.querySelectorAll('pre code').forEach((codeBlock) => {
   codeBlock.insertAdjacentHTML('beforeend', '<form class="semanticForms"><button>Copy</button></form>')

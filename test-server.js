@@ -613,7 +613,45 @@ function finishBuild () {
   // create CNAME for github pages
   fs.writeFileSync('docs/CNAME', 'rooseveltframework.org')
 
+  highlightCodeBlocks()
   buildSearchIndex()
+}
+
+// apply syntax highlighting to the rendered docs/ templates
+const highlightLanguageAliases = { js: 'javascript', html: 'xml' } // highlight.js names the html grammar xml, and does not know js
+const codeBlockRegex = /(<pre[^>]*>\s*<code([^>]*)>)([\s\S]*?)(<\/code>)/gi
+function highlightCodeBlocks () {
+  const hljs = require('highlight.js')
+
+  for (const fileName of fs.readdirSync('docs', { recursive: true })) {
+    if (!fileName.endsWith('.html')) continue
+    const file = path.join('docs', fileName)
+    const html = fs.readFileSync(file, 'utf8')
+    if (!html.includes('<pre')) continue
+
+    // only the code blocks are rewritten
+    const highlighted = html.replace(codeBlockRegex, (block, openTags, codeAttributes, contents, closeTag) => {
+      // skip pages that are already done
+      if (/\bhljs\b/.test(codeAttributes)) return block
+
+      // the class carries the language for every block the markdown converter wrote, e.g. class="language-javascript"
+      const languageMatch = codeAttributes.match(/language-([\w+-]+)/i)
+      const language = languageMatch && (highlightLanguageAliases[languageMatch[1].toLowerCase()] || languageMatch[1].toLowerCase())
+
+      // the class goes on either way so that the blocks with no language on them still get the theme's background rather than the one inline code uses
+      const highlightedAttributes = /\bclass=/i.test(codeAttributes)
+        ? codeAttributes.replace(/class="([^"]*)"|class='([^']*)'|class=([^\s>]+)/i, (attribute, doubleQuoted, singleQuoted, unquoted) => `class="${(doubleQuoted ?? singleQuoted ?? unquoted).trim()} hljs"`)
+        : codeAttributes + ' class="hljs"'
+      const openTagsWithClass = openTags.replace(`<code${codeAttributes}>`, `<code${highlightedAttributes}>`)
+      if (!language || !hljs.getLanguage(language)) return openTagsWithClass + contents + closeTag
+
+      // the contents are entity encoded in the page, and highlight.js wants the source it was encoded from and does the encoding again itself
+      const source = cheerio.load(contents, null, false).text()
+      return openTagsWithClass + hljs.highlight(source, { language }).value + closeTag
+    })
+
+    if (highlighted !== html) fs.writeFileSync(file, highlighted)
+  }
 }
 
 // fired after roosevelt rebuilds the static files, which it does as they are edited
@@ -622,7 +660,10 @@ function finishBuild () {
 // it is redone in full rather than patched, because editing one page can change whether pages in every older version of the docs are stored as pointers to it
 function onStaticsRebuilt (app, files) {
   const touchedAPage = files.some(file => path.relative(path.join(__dirname, 'statics'), file).split(path.sep)[0] === 'pages')
-  if (touchedAPage) buildSearchIndex()
+  if (touchedAPage) {
+    highlightCodeBlocks() // the rerendered pages came back out of the templates unhighlighted
+    buildSearchIndex()
+  }
 }
 
 function buildSearchIndex () {
@@ -692,6 +733,7 @@ module.exports = {
   repos,
   onBeforeStatics,
   prebuild,
+  highlightCodeBlocks,
   build,
   serve,
   compareVersions,

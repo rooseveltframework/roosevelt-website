@@ -1,5 +1,10 @@
 This project's versioning tracks Roosevelt's versioning. When some version numbers are skipped, it's because the website was not updated for that version of Roosevelt.
 
+## 0.33.2
+
+- Added support for syntax highlighting in non-JS scenario and reduced frontend JS bundle size.
+- Updated dependencies.
+
 ## 0.33.1
 
 - Improved developer experience in various ways.
