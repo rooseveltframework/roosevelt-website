@@ -8,7 +8,7 @@
       "url": "https://github.com/rooseveltframework/roosevelt-website/graphs/contributors"
     }
   ],
-  "version": "0.33.1",
+  "version": "0.33.2",
   "homepage": "https://rooseveltframework.org",
   "license": "CC-BY-4.0",
   "main": "test-server.js",
@@ -18,7 +18,7 @@
   },
   "dependencies": {
     "@colors/colors": "1.6.0",
-    "check-if-css-is-disabled": "2.0.2",
+    "check-if-css-is-disabled": "2.1.0",
     "cheerio": "1.2.0",
     "docs-check-if-css-is-disabled": "https://github.com/rooseveltframework/check-if-CSS-is-disabled",
     "docs-crossplatform-killport": "https://github.com/rooseveltframework/crossplatform-killport",
@@ -41,10 +41,10 @@
     "sass": "1.103.1",
     "semantic-forms": "5.3.5",
     "showdown": "2.1.0",
-    "teddy": "1.2.0",
+    "teddy": "1.2.1",
     "terser-webpack-plugin": "5.6.1",
     "tippy.js": "6.3.7",
-    "webpack": "5.109.2"
+    "webpack": "5.110.2"
   },
   "devDependencies": {
     "standard": "17.1.2",
