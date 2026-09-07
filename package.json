@@ -17,7 +17,7 @@
     "node": ">=22.20.0"
   },
   "dependencies": {
-    "@colors/colors": "1.6.0",
+    "@colors/colors": "1.6.1",
     "check-if-css-is-disabled": "2.1.0",
     "cheerio": "1.2.0",
     "docs-check-if-css-is-disabled": "https://github.com/rooseveltframework/check-if-CSS-is-disabled",
