@@ -103,6 +103,7 @@ html, html.light { // default styles; light theme is also the default
     }
 
     // hamburger menu
+    //
     // the floating controls only exist in the desktop layout, and the footer already carries a scroll to top link everywhere else
     a#floating-scroll-to-top {
       display: none;
@@ -194,6 +195,37 @@ html, html.light { // default styles; light theme is also the default
 
     code:not(pre code) {
       padding: 3px 8px;
+    }
+
+    // tables in docs content; semantic forms tables are styled by semantic forms
+    table:not(.semanticForms, .semanticForms table) {
+      display: block; // allows wide tables to scroll horizontally instead of overflowing the page
+      width: max-content;
+      max-width: 100%;
+      overflow-x: auto;
+      border-collapse: collapse;
+      margin: 1em 0;
+      font-variant-numeric: tabular-nums; // line up digits in numeric columns
+
+      th, td {
+        border: 1px #c0c0c0 solid;
+        padding: 6px 12px;
+        vertical-align: top;
+      }
+
+      th {
+        background-color: #ddd;
+        text-align: left;
+      }
+
+      tbody tr:nth-child(even) {
+        background-color: #eee;
+      }
+
+      // hide header rows that have no content, e.g. key/value tables generated from markdown
+      thead:not(:has(th:not(:empty))) {
+        display: none;
+      }
     }
 
     main {
@@ -506,6 +538,20 @@ html, html.light { // default styles; light theme is also the default
       background-color: #333 !important;
     }
 
+    table:not(.semanticForms, .semanticForms table) {
+      th, td {
+        border-color: #555;
+      }
+
+      th {
+        background-color: #444;
+      }
+
+      tbody tr:nth-child(even) {
+        background-color: #1a1a1a;
+      }
+    }
+
     main {
       > header {
         background-color: #333;
@@ -628,6 +674,7 @@ html.dark {
   html, html.light, html.dark {
     body {
       // right aligned in the gray column, on the same row as the nav button
+      //
       // the column is sized to its widest link rather than to a set number, so its measured width is handed over in a custom property and the link is placed from the right edge of the viewport inward by whatever is left over
       a#floating-scroll-to-top {
         display: none;
@@ -644,6 +691,7 @@ html.dark {
           white-space: nowrap;
 
           // an underline set on a link is inherited by everything inside it and cannot be turned off from within, which is why the no-underline helper appears to do nothing here
+          //
           // taking the emoji out of the inline flow gives it its own decoration to not have
           .no-underline {
             display: inline-block;
@@ -655,6 +703,7 @@ html.dark {
         display: none;
 
         // the nav column is stretched to the height of the page, so its links scroll away while the column stays, leaving a tall empty area with no way back to the nav
+        //
         // once they have gone, the same hamburger mobile uses is floated over the column so the nav stays one click away
         &.nav-scrolled-away {
           display: block;
@@ -716,7 +765,9 @@ html.dark {
             }
 
             // the search field lives in the header, so it scrolls away along with the nav links; once they have gone it is floated over the column above the nav button, which sits at the very bottom
+            //
             // it belongs with the other two floating controls rather than in a wider media query, because none of them should appear once the nav is a modal the hamburger opens
+            //
             // this is nested rather than written as a standalone rule so that it outranks the `top` the field is given further up, which would otherwise pin it to the top of the viewport instead
             > search.nav-scrolled-away {
               position: fixed;
@@ -737,6 +788,7 @@ html.dark {
         }
 
         // the search field and version picker drop onto their own line when the header runs out of room for them
+        //
         // that line starts below the whole logo row rather than below the page title, which leaves a gap above the fields and carries them past the gray background, so the line is pulled up and the nudge the fields are given on the first line is dropped
         > header.controls-wrapped {
           > div#nav-search-wrapper {

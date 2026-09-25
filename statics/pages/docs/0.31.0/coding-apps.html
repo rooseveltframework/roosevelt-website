@@ -1,7 +1,7 @@
 <include src="layouts/main">
 <arg pageTitle>web framework — coding apps</arg>
 <arg pageId>roosevelt-web-framework-—-coding-apps</arg>
-<arg pageContent><article><h2 id="makingmodelfiles">Making model files</h2>
+<arg pageContent><article><h2 id="making-model-files">Making model files</h2>
 <p>Place a file named <code>dataModel.js</code> in <code>mvc/models</code>.</p>
 <p>Here's a simple example <code>dataModel.js</code> data model:</p>
 <pre><code class="js language-js">// dataModel.js
@@ -9,10 +9,10 @@ module.exports = () =&gt; {
   return { some: 'data' }
 }</code></pre>
 <p>In more complex apps, you might query a database to get your data instead.</p>
-<h2 id="makingviewfiles">Making view files</h2>
+<h2 id="making-view-files">Making view files</h2>
 <p>Views by default are <a href="https://rooseveltframework.org/docs/teddy">Teddy</a> templates. See the Teddy documentation for information about how to write Teddy templates.</p>
 <p>You can also configure Roosevelt to use any templating system supported by Express for your views.</p>
-<h2 id="makingcontrollerfiles">Making controller files</h2>
+<h2 id="making-controller-files">Making controller files</h2>
 <p>Controller files are places to write <a href="https://expressjs.com/en/api.html#router">Express routes</a>. A route is the term Express uses for URL endpoints, such as <code>https://yoursite/blog</code> or <code>https://yoursite/about</code>.</p>
 <p>Controllers bind models and views together.</p>
 <p>To make a new controller, make a new file in the controllers directory. For example:</p>
@@ -59,7 +59,7 @@ module.exports = (router, app) =&gt; {
   })
 }</code></pre>
 <p>Any controller file that has no arguments or more than two arguments will be considered a reusable controller.</p>
-<h2 id="makingstaticpages">Making static pages</h2>
+<h2 id="making-static-pages">Making static pages</h2>
 <p>You can also generate static files from templates and models as well.</p>
 <p>Templates for static pages go in your statics folder (<code>staticsRoot</code>) under the HTML source path (<code>html.sourcePath</code>), which is <code>statics/pages</code> by default.</p>
 <p>Data models for the templates will be merged from different possible locations to source them from in the following order of precedence:</p>
@@ -68,7 +68,7 @@ module.exports = (router, app) =&gt; {
 <li>File-level override in <code>htmlModels</code>.</li>
 <li>Model file.</li>
 </ol>
-<h3 id="settingstaticpagemodels">Setting static page models</h3>
+<h3 id="setting-static-page-models">Setting static page models</h3>
 <p>To declare a global model in <code>htmlModels</code>, use the <code>*</code> character:</p>
 <pre><code class="javascript language-javascript">// build.js
 (async () =&gt; {

@@ -1,7 +1,7 @@
 <include src="layouts/main">
 <arg pageTitle>Configuration — CSS</arg>
 <arg pageId>roosevelt-configuration-—-css</arg>
-<arg pageContent><article><h1 id="cssoptions">CSS options</h1>
+<arg pageContent><article><h1 id="css-options">CSS options</h1>
 <ul>
 <li><code>css</code> <em>[Object]</em>: How you want Roosevelt to configure your CSS preprocessor:<ul>
 <li><code>sourcePath</code> <em>[String]</em>: Subdirectory within <code>staticsRoot</code> where your CSS files are located. This folder is not made public. When a preprocessor is enabled, the files here are compiled, minified, and written to the <code>public</code> folder when the app starts. When one is not, see <a href="#shipping-css-without-a-preprocessor">shipping CSS without a preprocessor</a> below.</li>
@@ -71,7 +71,7 @@
     }
   }).startServer()
 })()</code></pre>
-<h2 id="shippingcsswithoutapreprocessor">Shipping CSS without a preprocessor</h2>
+<h2 id="shipping-css-without-a-preprocessor">Shipping CSS without a preprocessor</h2>
 <p>Preprocessing is off by default, so an app that writes plain CSS and loads it with <code>&lt;link&gt;</code> tags does not need to switch anything off. It only needs its CSS to reach the public folder, which either <code>symlinks</code> or <code>copy</code> will do:</p>
 <pre><code class="javascript language-javascript">{
   symlinks: [

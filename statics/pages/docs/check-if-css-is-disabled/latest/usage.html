@@ -38,7 +38,7 @@ if (cssIsDisabled) {
   // do things if CSS is disabled
 }</code></pre>
 <p><em>(The <code>cssDisabled</code> event will be emitted regardless of whether the <code>justCheck</code> flag is set to true or not.)</em></p>
-<h2 id="restoringtheinitialmarkup">Restoring the initial markup</h2>
+<h2 id="restoring-the-initial-markup">Restoring the initial markup</h2>
 <p>If CSS fails, any JS enhancements that already applied can leave the page in a worse state than no JS at all, because the enhanced DOM was designed for styles that aren't there. To help with that, this module can keep a copy of the markup exactly as the server sent it and hand you a function that puts it back.</p>
 <p>This is opt-in, and restoring never happens automatically. Set the <code>snapshot</code> flag to <code>params</code> e.g. <code>{ snapshot: true }</code> to capture the markup, then call <code>restoreInitialMarkup()</code> yourself from your <code>cssDisabled</code> listener:</p>
 <pre><code class="javascript language-javascript">const checkIfCssIsDisabled = require('check-if-css-is-disabled')

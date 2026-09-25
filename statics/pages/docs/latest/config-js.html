@@ -1,7 +1,7 @@
 <include src="layouts/main">
 <arg pageTitle>Configuration — JS</arg>
 <arg pageId>roosevelt-configuration-—-js</arg>
-<arg pageContent><article><h1 id="jsoptions">JS options</h1>
+<arg pageContent><article><h1 id="js-options">JS options</h1>
 <ul>
 <li><code>js</code> <em>[Object]</em>: How you want Roosevelt to handle module bundling your frontend JS:<ul>
 <li><code>sourcePath</code> <em>[String]</em>: Subdirectory within <code>staticsRoot</code> where your JS files are located. By default this folder will not be made public, but is instead meant to store unbundled JS source files which will be bundled and written to the <code>public</code> folder when the app is started.</li>
@@ -66,7 +66,7 @@
 <li>If Roosevelt's <code>prodSourceMaps</code> feature is enabled, then Roosevelt will set <code>devtool</code> to <code>source-map</code> if Roosevelt is in production mode.</li>
 </ul>
 <p>If you're using esbuild or rollup, Roosevelt will enable source maps in development mode, and enable them in production mode when <code>prodSourceMaps</code> is set. It will also switch esbuild's minifier on outside of development mode. Set any of those yourself in your config and Roosevelt will leave your choice alone.</p>
-<h3 id="whichbundlersminifyyourproductionbuild">Which bundlers minify your production build</h3>
+<h3 id="which-bundlers-minify-your-production-build">Which bundlers minify your production build</h3>
 <p>Minifying is the bundler's job rather than Roosevelt's, and the four supported bundlers do not all handle it the same way:</p>
 <ul>
 <li><strong>webpack</strong> and <strong>rspack</strong> minify in production without being asked. Roosevelt only sets their <code>mode</code> to <code>development</code> when your app is in development mode, so in production they fall back to their own default of <code>production</code>, which turns their built-in minifier on. You do not need a minifier plugin, and you do not need <code>terser-webpack-plugin</code>.</li>
@@ -74,7 +74,7 @@
 <li><strong>rollup</strong> does not minify at all unless you add a plugin, because it has no minifier of its own. Without one your production bundle ships as written. Add <a href="https://www.npmjs.com/package/@rollup/plugin-terser">@rollup/plugin-terser</a> to your bundle's <code>plugins</code> if you want it minified.</li>
 </ul>
 <p>In every case, setting the option yourself leaves your choice alone.</p>
-<h2 id="shippingfrontendjswithoutabundler">Shipping frontend JS without a bundler</h2>
+<h2 id="shipping-frontend-js-without-a-bundler">Shipping frontend JS without a bundler</h2>
 <p>Bundling is off by default, so an app that writes plain JS and loads it with <code>&lt;script&gt;</code> tags does not need to switch anything off. It only needs its JS to reach the public folder, which either <code>symlinks</code> or <code>copy</code> will do:</p>
 <pre><code class="javascript language-javascript">{
   symlinks: [

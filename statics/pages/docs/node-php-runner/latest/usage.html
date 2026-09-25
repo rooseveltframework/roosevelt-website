@@ -2,28 +2,28 @@
 <arg pageTitle>Node.js PHP runner — Usage</arg>
 <arg pageId>node-php-runner-node.js-php-runner-—-usage</arg>
 <arg pageContent><article><p>To use this module, you must have PHP installed and in your PATH.</p>
-<h2 id="runaphpscriptinnodejs">Run a PHP script in Node.js</h2>
+<h2 id="run-a-php-script-in-nodejs">Run a PHP script in Node.js</h2>
 <pre><code class="javascript language-javascript">const php = require('php')
 const output = php.run('some_php_script.php')</code></pre>
-<h2 id="runaphpscriptinnodejsandpassitdata">Run a PHP script in Node.js and pass it data</h2>
+<h2 id="run-a-php-script-in-nodejs-and-pass-it-data">Run a PHP script in Node.js and pass it data</h2>
 <pre><code class="javascript language-javascript">const php = require('php')
 const output = php.runWithData('some_php_script.php', { hello: 'world' })</code></pre>
 <p>Then, assuming your <code>some_php_script.php</code> file looks like this:</p>
 <pre><code class="php language-php">&lt;p&gt;&lt;?=$hello?&gt;&lt;/p&gt;</code></pre>
 <p>The output will be:</p>
 <pre><code class="html language-html">&lt;p&gt;world&lt;/p&gt;</code></pre>
-<h2 id="runphpcodefrommemoryinnodejs">Run PHP code from memory in Node.js</h2>
+<h2 id="run-php-code-from-memory-in-nodejs">Run PHP code from memory in Node.js</h2>
 <p>If you have PHP code in a string rather than in a file, you can execute it without writing it to disk first:</p>
 <pre><code class="javascript language-javascript">const php = require('php')
 const output = php.runCode('&lt;?php echo "&lt;p&gt;world&lt;/p&gt;"; ?&gt;')</code></pre>
 <p>Like a PHP file, the code can mix HTML and PHP:</p>
 <pre><code class="javascript language-javascript">const output = php.runCode('&lt;?php $hello = "world"; ?&gt;&lt;p&gt;&lt;?=$hello?&gt;&lt;/p&gt;')</code></pre>
-<h2 id="runphpcodefrommemoryinnodejsandpassitdata">Run PHP code from memory in Node.js and pass it data</h2>
+<h2 id="run-php-code-from-memory-in-nodejs-and-pass-it-data">Run PHP code from memory in Node.js and pass it data</h2>
 <pre><code class="javascript language-javascript">const php = require('php')
 const output = php.runCodeWithData('&lt;p&gt;&lt;?=$hello?&gt;&lt;/p&gt;', { hello: 'world' })</code></pre>
 <p>The output will be:</p>
 <pre><code class="html language-html">&lt;p&gt;world&lt;/p&gt;</code></pre>
-<h2 id="usewithexpress">Use with Express</h2>
+<h2 id="use-with-express">Use with Express</h2>
 <pre><code class="js language-js">const express = require('express')
 const app = express()
 const php = require('php')

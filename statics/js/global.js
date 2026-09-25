@@ -10,12 +10,16 @@ window.addEventListener('cssDisabled', (event) => {
 document.body.classList.replace('no-js', 'js')
 
 // unhide nav button
+//
 // the nav button is hidden by default if js is disabled and revealed only if js is enabled
+//
 // if js is disabled and the user is on a small screen, the secondary nav in the footer is used exclusively
 document.querySelectorAll('[commandfor]').forEach((el) => { el.removeAttribute('hidden') })
 
 // on wide screens the nav sits in a column that the layout stretches to the height of the page, so on a long page its links scroll away while the column stays behind as empty space
+//
 // once the links have gone, the nav button is floated over that space, which is what the .nav-scrolled-away class styles; the css only acts on it above the mobile breakpoint, so this does nothing on a small screen where the button is on screen anyway
+//
 // the element measured is the one holding the links, not the column around it, because the column itself never leaves the viewport
 const navLinks = document.querySelector('dialog#nav')
 // the nav button and the search field both live above the fold, so both are floated over the column once the links have gone; the css only acts on this class above the mobile breakpoint, where they are on screen anyway
@@ -41,12 +45,15 @@ if (navLinks && floatOnceNavScrolls.length && 'IntersectionObserver' in window) 
 require('semantic-forms')()
 
 // display search box that does an advanced github search that displays only when js is enabled; this can only work when js is enabled because of how github search works
+//
 // TODO: update above comment
 document.querySelector('search').removeAttribute('hidden')
 document.querySelector('search').insertAdjacentHTML('beforeend', '<output hidden><ul></ul></output>')
 
 // the search field and version picker drop onto their own line when the header runs out of room, which happens at one width on pages that have a version picker and at another on pages that do not, shifted again by however wide the scrollbar is
+//
 // css has no way to ask whether a flex item wrapped, so it is measured here and handed over as a class
+//
 // this has to come after the search field is revealed above, or the header would be measured while it is still a field narrower than it ends up
 const pageHeader = document.querySelector('main > header')
 const headerControls = pageHeader && pageHeader.querySelector('#nav-search-wrapper')
@@ -155,6 +162,18 @@ document.querySelectorAll('div.content > article h1[id], div.content > article h
     el.querySelector('small').style.opacity = 0
   })
 })
+
+// headings used to be given ids with their hyphens squashed out, e.g. #usehttps rather than #use-https, so a link someone saved or shared back then names an id that is no longer on the page
+//
+// such a link is sent on to the heading whose id reads the same once its hyphens are dropped, rather than leaving the reader at the top of the page
+if (window.location.hash && !document.getElementById(decodeURIComponent(window.location.hash.slice(1)))) {
+  const squashed = decodeURIComponent(window.location.hash.slice(1))
+  const heading = [...document.querySelectorAll('article h1[id], article h2[id], article h3[id], article h4[id], article h5[id], article h6[id]')].find(el => el.id.replaceAll('-', '') === squashed)
+  if (heading) {
+    window.history.replaceState(null, '', `#${heading.id}`)
+    heading.scrollIntoView()
+  }
+}
 
 // add light/dark mode picker
 document.querySelector('dialog#nav')?.insertAdjacentHTML('beforeend', `<details id="theme">

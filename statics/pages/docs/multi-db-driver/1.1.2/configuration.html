@@ -1,9 +1,9 @@
 <include src="layouts/main">
 <arg pageTitle>Multi-DB Driver — configuration</arg>
 <arg pageId>multi-db-driver-multi-db-driver-—-configuration</arg>
-<arg pageContent><article><h2 id="creatingamultidbdriverconfig">Creating a Multi-DB Driver config</h2>
+<arg pageContent><article><h2 id="creating-a-multi-db-driver-config">Creating a Multi-DB Driver config</h2>
 <p>The following params are available when creating your Multi-DB Driver config file or passing params via the constructor:</p>
-<h3 id="requiredparams">Required params</h3>
+<h3 id="required-params">Required params</h3>
 <ul>
 <li><p><code>default</code> <em>[String]</em>: Which database your app will use by default.</p>
 <ul>
@@ -20,7 +20,7 @@
 <li>If the credentials you specify do not exist, they can be created from the CLI scripts, which will use the <code>adminConfig</code> to connect in order to create the less privileged credentials.</li></ul></li>
 <li><code>adminConfig</code> <em>[Object]</em>:  Same as <code>config</code> but you should configure it to use more privileged credentials, e.g. an account that is authorized to create tables, drop tables, administrate other users, etc. This config will be used for the CLI scripts for setup and teardown tasks. The regular, typically less-privileged config will be used for your app's business logic.</li></ul></li>
 </ul>
-<h3 id="optionalparams">Optional params</h3>
+<h3 id="optional-params">Optional params</h3>
 <ul>
 <li><p><code>admin</code> <em>[Boolean]</em>: Force the use of <code>adminConfig</code> for your database instead of the regular <code>config</code>. Default: <code>false</code>.</p></li>
 <li><p><code>schema</code> <em>[String]</em>: Relative path to a file with what set of SQL statements you want to execute against your database when it is freshly created, if any. Default: <code>undefined</code>.</p></li>
@@ -36,7 +36,7 @@
 <li><p><code>questionMarkParamsForPostgres</code> <em>[Boolean]</em>: Automatically convert parameterized query placeholders from <code>?</code> to <code>$ + number</code> within Multi-DB Driver for PostgreSQL queries so you can use the <code>?</code> syntax in PostgreSQL queries, which isn't possible in native PostgreSQL queries. Default: <code>true</code>.</p></li>
 <li><p><code>mergeConfig</code> <em>[Boolean]</em>: Merge config values passed via constructor or environment variable with any <code>.multi-db-config.json</code> or <code>.multi-db-driver-config.json</code> file detected in your app's directory structure. Default: <code>true</code>.</p></li>
 </ul>
-<h3 id="exampleconfigs">Example configs</h3>
+<h3 id="example-configs">Example configs</h3>
 <p>Example for MariaDB:</p>
 <pre><code class="json language-json">{
   "default": "mariadb",
@@ -121,7 +121,7 @@
   }
 }</code></pre>
 <p>You could also create a single config that has configs for multiple databases or all of them if you like, but only one can be connected to per instance of Multi-DB Driver.</p>
-<h2 id="multidbdriverapi">Multi-DB Driver API</h2>
+<h2 id="multi-db-driver-api">Multi-DB Driver API</h2>
 <p>When you connect to a database using Multi-DB Driver like in the below example, the constructor will return a <code>db</code> object.</p>
 <pre><code class="javascript language-javascript">const db = await require('multi-db-driver')(config)</code></pre>
 <p>This is the structure of the <code>db</code> object that Multi-DB Driver returns:</p>

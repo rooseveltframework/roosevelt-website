@@ -3,9 +3,8 @@ const path = require('path')
 
 const docsDir = path.join(__dirname, '..', '..', 'docs')
 
-// these tests check the site that was built rather than building one themselves: a build writes into docs/, which is the
-// committed output of this repo, so a test that built its own copy would either dirty the working tree or have to undo
-// itself afterwards
+// these tests check the site that was built rather than building one themselves: a build writes into docs/, which is the committed output of this repo, so a test that built its own copy would either dirty the working tree or have to undo itself afterwards
+//
 // `npm test` does a production build first, so what gets checked is the site as it ships
 function builtSite () {
   if (!fs.existsSync(path.join(docsDir, 'index.html'))) {

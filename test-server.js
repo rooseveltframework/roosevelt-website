@@ -12,6 +12,7 @@ const fs = require('fs')
 const path = require('path')
 
 // the --fast-mode cli flag builds only the current version of each module's docs, skipping the old versions, which are the large majority of the pages on the site
+//
 // it's meant for development; the old versions of the docs that are already in the docs folder are left alone rather than rebuilt or deleted, so the site remains browsable
 const fastMode = process.argv.includes('--fast-mode')
 
@@ -102,19 +103,23 @@ const repos = {
     'CONFIGURATION.md': 'configuration.html'
   },
   teddy: {
-    'CHANGELOG.md': 'changelog.html'
+    'CHANGELOG.md': 'changelog.html',
+    'benchmarker/BENCHMARKS.md': 'benchmarks.html' // it sits beside the benchmarker that produces it rather than at the root of the repo
   }
 }
 
-// roosevelt's configuration docs are an index page plus a set of subpages, and the details element in CONFIGURATION.md is the list of them reading that list rather than repeating it here means adding, renaming, or reordering a configuration page in roosevelt needs no change to this site
+// a couple of these projects document one topic across a set of subpages, and each one publishes the list of them somewhere this site can read: roosevelt in the details element in CONFIGURATION.md, semantic forms in the navigation of its own docs site
 //
-// a few of the labels in that list are too long to sit comfortably in the navigation
+// reading those lists rather than repeating them here means adding, renaming, or reordering one of those pages needs no change to this site
+//
+// a few of the labels in those lists are too long to sit comfortably in the navigation
 //
 // only the navigation uses these: the page's own title and the table of contents keep the fuller wording, which is more descriptive in search results and matches how the docs read on github
 const shortNavLabels = {
   'Isomorphic (single page app)': 'SPA support',
   'Events and Express variables': 'Events & Express vars',
-  'Environment variables and command line usage': 'Env vars & CLI usage'
+  'Environment variables and command line usage': 'Env vars & CLI usage',
+  'Checkboxes, radios and switches': 'Checkboxes & friends'
 }
 
 function harvestConfigSubpages () {
@@ -140,6 +145,46 @@ function harvestConfigSubpages () {
 const configSubpages = harvestConfigSubpages()
 for (const subpage of configSubpages) repos.roosevelt[subpage.file] = `${subpage.page}.html`
 
+// semantic forms 5.3.6 split the bulk of its usage page out into a page per topic, which its own docs site lists in the navigation it nests under that page's link
+//
+// that nested list is where the pages are read from; this site's navigation lays them out flat, as siblings of the usage page they came out of, since they read as topics of their own rather than as parts of it
+//
+// those pages arrive as teddy templates rather than markdown, so unlike roosevelt's configuration subpages they are already being copied in; only the list of them is needed here
+function harvestSemanticFormsSubpages () {
+  let layout
+  try {
+    layout = fs.readFileSync(path.join('node_modules', 'docs-semantic-forms', 'docs', 'statics', 'pages', 'layouts', 'main.html'), 'utf8')
+  } catch {
+    return [] // no layout to read, so there is no list of subpages to build
+  }
+
+  // the subpages are the list nested inside the usage page's own entry, which is what tells them apart from the rest of that navigation
+  const nested = layout.match(/<a href="\/usage\.html"[^>]*>[\s\S]*?<\/a>\s*<ul>([\s\S]*?)<\/ul>/i)
+  if (!nested) return [] // this version of semantic forms had not split its usage page up yet
+
+  return [...nested[1].matchAll(/<a href="\/([^"]+)\.html"[^>]*>([^<]+)<\/a>/g)].map(match => ({
+    label: match[2],
+    navLabel: shortNavLabels[match[2]] || match[2],
+    // the file name decides the url, the same way it does for the rest of the templates copied out of that repo
+    page: match[1]
+  }))
+}
+
+const semanticFormsSubpages = harvestSemanticFormsSubpages()
+
+// a release that shipped without the markdown this site builds its pages from has no docs to offer, so it is left out of the version history rather than published as a version whose pages are missing or, worse, left holding the previous release's text
+//
+// minify-html-attributes 1.1.0 added a files allowlist to its package.json without listing its markdown, so npm packed the module without CHANGELOG.md, USAGE.md, or CONFIGURATION.md; 1.1.1 puts them back, and this entry can go once it is out
+//
+// the skip covers both writing the version's folder and listing it, so a copy left on disk from an earlier build is not offered either
+const skippedVersions = {
+  'minify-html-attributes': ['1.1.0']
+}
+
+function versionIsSkipped (repo, version) {
+  return (skippedVersions[repo] || []).includes(version)
+}
+
 // compares two version numbers the way semver does, e.g. 1.2.10 is newer than 1.2.9 rather than older than it like a default alphabetical sort would conclude
 function compareVersions (a, b) {
   // split the version number away from its prerelease tag, e.g. the "-beta.1" in "1.0.0-beta.1"
@@ -161,6 +206,7 @@ function compareVersions (a, b) {
 }
 
 // this function executes before the roosevelt static site generator does its things
+//
 // its main purpose is to create teddy templates from markdown files and import templates from other repos to assemble the full list of pages to run through the static site generator
 function onBeforeStatics (app) {
   app.get('teddy').clearTemplates()
@@ -177,6 +223,7 @@ function onBeforeStatics (app) {
     // see if the file is a folder named for a version number
     for (const file of files) {
       if (!numbers.includes(file.charAt(0))) continue // it's not a version folder
+      if (versionIsSkipped(repo, file)) continue // this release has no docs to show, so it is kept out of the version history
       if (!versions[repo]) versions[repo] = []
       versions[repo].push(file) // add this version to the list
     }
@@ -216,10 +263,9 @@ function onBeforeStatics (app) {
         // the configuration subpages only exist from 0.32.0 onward, so picking an older version from one of them lands on the single configuration page those docs had rather than on a page that was never built
         if (thisRepo === 'roosevelt' && lastPart.startsWith('config-') && compareVersions(versionWithoutLatest, '0.32.0') < 0) newUrl = newUrl.replace(/\/config-[^/]*$/, '/configuration')
 
-        // a module gains and loses doc pages between releases, so the page this link corresponds to may not exist in the
-        // version being linked to; that version's index is somewhere real, which a 404 is not
-        // this is the general form of the configuration special case above, which stays because it lands somewhere better
-        // than the index for the pages it covers
+        // a module gains and loses doc pages between releases, so the page this link corresponds to may not exist in the version being linked to; that version's index is somewhere real, which a 404 is not
+        //
+        // this is the general form of the configuration special case above, which stays because it lands somewhere better than the index for the pages it covers
         if (version !== 'Older...') {
           const source = path.normalize(`statics/pages${newUrl}`)
           if (!fs.existsSync(`${source}.html`) && !fs.existsSync(path.join(source, 'index.html'))) {
@@ -242,9 +288,14 @@ function onBeforeStatics (app) {
       if (currentPage.endsWith('/index')) currentPage = currentPage.slice(0, -6)
 
       // the roosevelt version whose docs this page's navigation links to, which is the page's own version on a roosevelt page and the newest one everywhere else
+      //
       // the redirect pages that sit above the version folders have no version of their own, so they are treated as the newest one too
       const newestRoosevelt = versions.roosevelt[0].replace(' (latest)', '')
       const rooseveltVersion = !localCurrentVersion.roosevelt || localCurrentVersion.roosevelt === 'latest' ? newestRoosevelt : localCurrentVersion.roosevelt
+
+      // the same for semantic forms, whose usage docs this page's navigation links to
+      const newestSemanticForms = versions['semantic-forms'][0].replace(' (latest)', '')
+      const semanticFormsVersion = !localCurrentVersion['semantic-forms'] || localCurrentVersion['semantic-forms'] === 'latest' ? newestSemanticForms : localCurrentVersion['semantic-forms']
 
       // set the model for this file
       const model = {
@@ -254,6 +305,7 @@ function onBeforeStatics (app) {
         versions: versionLinks,
 
         // roosevelt 0.32.0 split its configuration docs into an index plus a page per group of params
+        //
         // pages that link to an older version have to keep the navigation those docs had, which was a single configuration link, or they would offer subpages that do not exist for that version
         splitConfigDocs: compareVersions(rooseveltVersion, '0.32.0') >= 0,
 
@@ -261,8 +313,27 @@ function onBeforeStatics (app) {
         configSubpages,
 
         // the configuration section of the navigation stays open while the visitor is somewhere inside it, the same way each module's section opens on its own pages
+        //
         // it is limited to roosevelt's own pages because several other modules have a configuration page of their own, and being on one of those is no reason to open this section
-        currentPageIsConfig: thisRepo === 'roosevelt' && /^(configuration|config-)/.test(path.basename(file, '.html'))
+        currentPageIsConfig: thisRepo === 'roosevelt' && /^(configuration|config-)/.test(path.basename(file, '.html')),
+
+        // semantic forms 5.3.6 split the bulk of its usage page out into a page per topic, which the navigation lists alongside it
+        //
+        // a page linking to an older version keeps the lone usage link those docs had, the same way the configuration links above keep theirs
+        splitSemanticFormsDocs: semanticFormsSubpages.length > 0 && compareVersions(semanticFormsVersion, '5.3.6') >= 0,
+
+        // the navigation builds its semantic forms subpage links from this, so it stays in step with whatever that project's own navigation lists
+        semanticFormsSubpages,
+
+        // the demo page arrived in 5.1.1, so the older docs have no demo to offer
+        //
+        // which versions happen to carry one is not a documented change the way the usage split is, so this asks the built pages rather than naming a version to compare against
+        hasSemanticFormsFullDemo: fs.existsSync(path.join('statics/pages/docs/semantic-forms', localCurrentVersion['semantic-forms'], 'fullDemo.html')),
+
+        // the older versions of teddy shipped no benchmark results, so their docs have no benchmarks page to link to
+        //
+        // this asks the built pages for the same reason the demo page check above does
+        hasTeddyBenchmarks: fs.existsSync(path.join('statics/pages/docs/teddy', localCurrentVersion.teddy, 'benchmarks.html'))
       }
 
       /*
@@ -285,11 +356,16 @@ function onBeforeStatics (app) {
   }
 
   // the * model will apply to all pages and will be overridden by a more specific model if one exists for that page when the static site is built
+  //
   // the pages outside the docs tree, such as the splash page and the contributors list, link to the newest docs, so their navigation is built the way those docs' own pages build theirs
   app.get('htmlModels')['*'] = {
     currentVersion,
     splitConfigDocs: compareVersions(versions.roosevelt[0].replace(' (latest)', ''), '0.32.0') >= 0,
-    configSubpages
+    configSubpages,
+    splitSemanticFormsDocs: semanticFormsSubpages.length > 0 && compareVersions(versions['semantic-forms'][0].replace(' (latest)', ''), '5.3.6') >= 0,
+    semanticFormsSubpages,
+    hasSemanticFormsFullDemo: fs.existsSync(path.join('statics/pages/docs/semantic-forms', 'latest', 'fullDemo.html')),
+    hasTeddyBenchmarks: fs.existsSync(path.join('statics/pages/docs/teddy', 'latest', 'benchmarks.html'))
   }
 }
 
@@ -308,7 +384,8 @@ async function prebuild () {
     simplifiedAutoLink: true, // parse links even if they're not enclosed in markdown syntax
     excludeTrailingPunctuationFromURLs: true, // another natural language link parsing option, e.g. www.example.com! doesn't add the excalamation point to the link
     strikethrough: true, // supports markdown strikethroughs
-    tables: true // add support for tables
+    tables: true, // add support for tables
+    ghCompatibleHeaderId: true // give headings the ids github gives them, which is what the markdown's own anchor links were written against; showdown's default drops the hyphens, so "use https" becomes #usehttps and every #use-https link in the markdown points at nothing
   })
 
   // fix bug in showdown related to disableForced4SpacesIndentedSublists not working correctly; this forces all lists to be 4 spaces per indentation level before running it through the markdown to html converter
@@ -326,14 +403,37 @@ async function prebuild () {
   }
 
   // the templates some repos ship are copied in as they are, and they title their pages in lower case
+  //
   // rather than copying them byte for byte, the page title is capitalized on the way through so that every page on the site is titled the same way
-  function copyTemplate (from, to) {
-    const template = fs.readFileSync(from, 'utf8').replace(/(<arg pageTitle>)(.*?)(<\/arg>)/, (match, open, title, close) => {
+  function copyTemplate (from, to, repo, siblingPages = []) {
+    let template = fs.readFileSync(from, 'utf8').replace(/(<arg pageTitle>)(.*?)(<\/arg>)/, (match, open, title, close) => {
       const parts = title.split(' — ')
       parts[parts.length - 1] = parts[parts.length - 1].charAt(0).toUpperCase() + parts[parts.length - 1].slice(1)
       return open + parts.join(' — ') + close
     })
+    template = rewriteTemplateLinks(template, repo, siblingPages)
     fs.writeFileSync(to, template)
+  }
+
+  // a repo that keeps its docs as teddy templates also publishes them as its own site, where the pages sit at the root and link to each other as /page.html, which points at nothing here
+  //
+  // each one is redirected to the copy of that page this site builds, with the version left as a teddy variable so the same html serves both the latest and the numbered copy of a page
+  //
+  // only a link naming a page that was actually copied is rewritten, which leaves the rest of the markup alone, including the placeholder links the demo forms are built from
+  function rewriteTemplateLinks (html, repo, siblingPages) {
+    html = html.replace(/href="\/([A-Za-z0-9-]+\.html)(#[^"]*)?"/g, (match, file, anchor) => {
+      if (!siblingPages.includes(file)) return match
+      const page = file === 'index.html' ? '' : file.replace(/\.html$/, '')
+      return `href="/docs/${repo}/{currentVersion.${repo}}/${page}${anchor || ''}"`
+    })
+
+    // a few of those pages reach a sibling by spelling out this site's address instead, which works but names the version as it does so, so an older copy of the page sends the reader to the newest one rather than to the version they were reading
+    //
+    // the version becomes the same teddy variable as above, which also keeps the link inside whatever host the site is being served from rather than jumping to production
+    return html.replace(/href="https:\/\/rooseveltframework\.org\/docs\/[^/"]+\/[^/"]+\/([A-Za-z0-9-]+)\/?(#[^"]*)?"/g, (match, page, anchor) => {
+      if (!siblingPages.includes(`${page}.html`)) return match
+      return `href="/docs/${repo}/{currentVersion.${repo}}/${page}${anchor || ''}"`
+    })
   }
 
   function markdownToHTML (text) {
@@ -341,7 +441,9 @@ async function prebuild () {
   }
 
   // markdown files link to each other by file name, which works when reading them on github and points at nothing here
+  //
   // each one is redirected to the page this site builds from it, with the version left as a teddy variable so the same html serves both the latest and the numbered copy of a page
+  //
   // a link to a file this site does not build is left alone, since a broken link that still says where it meant to go is better than one pointing at a page that was never made
   function rewriteDocLinks (html, repo) {
     return html.replace(/href="\.\/([A-Za-z0-9-]+\.md)(#[^"]*)?"/g, (match, file, anchor) => {
@@ -384,71 +486,31 @@ async function prebuild () {
     const version = pkg.version
 
     // copy preexisting templates from repos that already have some of their docs as teddy templates
-    if (repo === 'semantic-forms') {
-      if (!fs.existsSync(`statics/pages/docs/${repo}`)) {
-        fs.mkdirSync(path.normalize(`statics/pages/docs/${repo}`))
-        logger.log('📁', `roosevelt-website making new directory statics/pages/docs/${repo}`.yellow)
+    //
+    // every html file in such a repo's pages directory is one of its docs pages, so reading that directory rather than listing the pages here means a repo that adds, renames, or drops a page needs no change to this site
+    const templatesDir = path.normalize(`./node_modules/docs-${repo}/docs/statics/pages`)
+    if (fs.existsSync(templatesDir)) {
+      const templates = fs.readdirSync(templatesDir).filter(file => file.endsWith('.html'))
+      const whichVersions = versionIsSkipped(repo, version) ? ['latest'] : ['latest', version]
+      for (const dir of [`statics/pages/docs/${repo}`, ...whichVersions.map(whichVersion => `statics/pages/docs/${repo}/${whichVersion}`)]) {
+        if (!fs.existsSync(dir)) {
+          fs.mkdirSync(path.normalize(dir))
+          logger.log('📁', `roosevelt-website making new directory ${dir}`.yellow)
+        }
       }
-      if (!fs.existsSync(`statics/pages/docs/${repo}/latest`)) {
-        fs.mkdirSync(path.normalize(`statics/pages/docs/${repo}/latest`))
-        logger.log('📁', `roosevelt-website making new directory statics/pages/docs/${repo}/latest`.yellow)
+      for (const template of templates) {
+        for (const whichVersion of whichVersions) {
+          const destination = path.normalize(`statics/pages/docs/${repo}/${whichVersion}/${template}`)
+          copyTemplate(path.normalize(`${templatesDir}/${template}`), destination, repo, templates)
+          logger.log('📝', `roosevelt-website writing new HTML file ${destination}`.green)
+        }
       }
-      if (!fs.existsSync(`statics/pages/docs/${repo}/${version}`)) {
-        fs.mkdirSync(path.normalize(`statics/pages/docs/${repo}/${version}`))
-        logger.log('📁', `roosevelt-website making new directory statics/pages/docs/${repo}/${version}`.yellow)
-      }
-      copyTemplate(path.normalize(`./node_modules/docs-${repo}/docs/statics/pages/index.html`), path.normalize(`statics/pages/docs/${repo}/latest/index.html`))
-      logger.log('📝', `roosevelt-website writing new HTML file statics/pages/docs/${repo}/latest/index.html`.green)
-      copyTemplate(path.normalize(`./node_modules/docs-${repo}/docs/statics/pages/index.html`), path.normalize(`statics/pages/docs/${repo}/${version}/index.html`))
-      logger.log('📝', `roosevelt-website writing new HTML file statics/pages/docs/${repo}/${version}/index.html`.green)
-
-      copyTemplate(path.normalize(`./node_modules/docs-${repo}/docs/statics/pages/usage.html`), path.normalize(`statics/pages/docs/${repo}/latest/usage.html`))
-      logger.log('📝', `roosevelt-website writing new HTML file statics/pages/docs/${repo}/latest/usage.html`.green)
-      copyTemplate(path.normalize(`./node_modules/docs-${repo}/docs/statics/pages/usage.html`), path.normalize(`statics/pages/docs/${repo}/${version}/usage.html`))
-      logger.log('📝', `roosevelt-website writing new HTML file statics/pages/docs/${repo}/${version}/usage.html`.green)
-
-      copyTemplate(path.normalize(`./node_modules/docs-${repo}/docs/statics/pages/fullDemo.html`), path.normalize(`statics/pages/docs/${repo}/latest/fullDemo.html`))
-      logger.log('📝', `roosevelt-website writing new HTML file statics/pages/docs/${repo}/latest/fullDemo.html`.green)
-      copyTemplate(path.normalize(`./node_modules/docs-${repo}/docs/statics/pages/fullDemo.html`), path.normalize(`statics/pages/docs/${repo}/${version}/fullDemo.html`))
-      logger.log('📝', `roosevelt-website writing new HTML file statics/pages/docs/${repo}/${version}/fullDemo.html`.green)
-
-      copyTemplate(path.normalize(`./node_modules/docs-${repo}/docs/statics/pages/reservedKeyboardShortcuts.html`), path.normalize(`statics/pages/docs/${repo}/latest/reservedKeyboardShortcuts.html`))
-      logger.log('📝', `roosevelt-website writing new HTML file statics/pages/docs/${repo}/latest/reservedKeyboardShortcuts.html`.green)
-      copyTemplate(path.normalize(`./node_modules/docs-${repo}/docs/statics/pages/reservedKeyboardShortcuts.html`), path.normalize(`statics/pages/docs/${repo}/${version}/reservedKeyboardShortcuts.html`))
-      logger.log('📝', `roosevelt-website writing new HTML file statics/pages/docs/${repo}/${version}/reservedKeyboardShortcuts.html`.green)
-    } else if (repo === 'teddy') {
-      if (!fs.existsSync(`statics/pages/docs/${repo}`)) {
-        fs.mkdirSync(path.normalize(`statics/pages/docs/${repo}`))
-        logger.log('📁', `roosevelt-website making new directory statics/pages/docs/${repo}`.yellow)
-      }
-      if (!fs.existsSync(`statics/pages/docs/${repo}/latest`)) {
-        fs.mkdirSync(path.normalize(`statics/pages/docs/${repo}/latest`))
-        logger.log('📁', `roosevelt-website making new directory statics/pages/docs/${repo}/latest`.yellow)
-      }
-      if (!fs.existsSync(`statics/pages/docs/${repo}/${version}`)) {
-        fs.mkdirSync(path.normalize(`statics/pages/docs/${repo}/${version}`))
-        logger.log('📁', `roosevelt-website making new directory statics/pages/docs/${repo}/${version}`.yellow)
-      }
-      copyTemplate(path.normalize(`./node_modules/docs-${repo}/docs/statics/pages/index.html`), path.normalize(`statics/pages/docs/${repo}/latest/index.html`))
-      logger.log('📝', `roosevelt-website writing new HTML file statics/pages/docs/${repo}/latest/index.html`.green)
-      copyTemplate(path.normalize(`./node_modules/docs-${repo}/docs/statics/pages/index.html`), path.normalize(`statics/pages/docs/${repo}/${version}/index.html`))
-      logger.log('📝', `roosevelt-website writing new HTML file statics/pages/docs/${repo}/${version}/index.html`.green)
-
-      copyTemplate(path.normalize(`./node_modules/docs-${repo}/docs/statics/pages/usage.html`), path.normalize(`statics/pages/docs/${repo}/latest/usage.html`))
-      logger.log('📝', `roosevelt-website writing new HTML file statics/pages/docs/${repo}/latest/usage.html`.green)
-      copyTemplate(path.normalize(`./node_modules/docs-${repo}/docs/statics/pages/usage.html`), path.normalize(`statics/pages/docs/${repo}/${version}/usage.html`))
-      logger.log('📝', `roosevelt-website writing new HTML file statics/pages/docs/${repo}/${version}/usage.html`.green)
-
-      copyTemplate(path.normalize(`./node_modules/docs-${repo}/docs/statics/pages/configuration.html`), path.normalize(`statics/pages/docs/${repo}/latest/configuration.html`))
-      logger.log('📝', `roosevelt-website writing new HTML file statics/pages/docs/${repo}/latest/configuration.html`.green)
-      copyTemplate(path.normalize(`./node_modules/docs-${repo}/docs/statics/pages/configuration.html`), path.normalize(`statics/pages/docs/${repo}/${version}/configuration.html`))
-      logger.log('📝', `roosevelt-website writing new HTML file statics/pages/docs/${repo}/${version}/configuration.html`.green)
     }
 
     // convert markdown files in this repo to html
     for (const fileToConvert in repos[repo]) {
       let fileContents
-      let fileToWrite = fileToConvert.split('.md')[0] + '.html'
+      let fileToWrite = path.basename(fileToConvert, '.md') + '.html'
       try {
         fileContents = fs.readFileSync(`./node_modules/docs-${repo}/${fileToConvert}`, 'utf8')
       } catch (err) {
@@ -458,6 +520,7 @@ async function prebuild () {
       let html = markdownToHTML(fileContents)
 
       // the configuration index is the one page whose details element is worth keeping: everywhere else it exists only to give github a table of contents, but here it is the table of contents the page needs
+      //
       // so rather than being dropped it is rewritten to point at this site's own pages, with the version left as a teddy variable so the same html serves both the latest and the numbered copy of the page
       if (repo === 'roosevelt' && fileToConvert === 'CONFIGURATION.md' && configSubpages.length) {
         const links = configSubpages.map(subpage => `      <li><a href="/docs/{currentVersion.roosevelt}/${subpage.page}">${subpage.label}</a></li>`).join('\n')
@@ -469,7 +532,7 @@ async function prebuild () {
       html = rewriteDocLinks(html, repo)
 
       // postprocess the generated html
-      let pageTitle = fileToConvert.split('.md')[0]
+      let pageTitle = path.basename(fileToConvert, '.md') // the file name alone, since a file kept in a subfolder of its repo is published alongside the rest of that repo's pages
       if (pageTitle === 'README') {
         pageTitle = prettyNames[repo] // so the page title is not README
         fileToWrite = 'index.html' // so the file is not README.html
@@ -491,6 +554,9 @@ async function prebuild () {
       } else if (pageTitle === 'DEPLOYMENT') {
         pageTitle = 'Deployment' // so the page title is not DEPLOYMENT
         fileToWrite = 'deployment.html' // so the file is not DEPLOYMENT.html
+      } else if (pageTitle === 'BENCHMARKS') {
+        pageTitle = 'Benchmarks' // so the page title is not BENCHMARKS
+        fileToWrite = 'benchmarks.html' // so the file is not BENCHMARKS.html
       } else if (pageTitle.startsWith('CONFIG-')) {
         // a subpage of the configuration docs; the label comes from the index's details element so it reads the same here as it does there
         const subpage = configSubpages.find(candidate => candidate.file === fileToConvert)
@@ -535,18 +601,20 @@ async function prebuild () {
           fs.writeFileSync(path.normalize('statics/pages/docs/latest/index.html'), redirectHtml)
           logger.log('📝', 'roosevelt-website writing new HTML file statics/pages/docs/latest/index.html'.green)
         }
-        if (!fs.existsSync(`statics/pages/docs/${version}`)) {
+        if (!versionIsSkipped(repo, version) && !fs.existsSync(`statics/pages/docs/${version}`)) {
           fs.mkdirSync(path.normalize(`statics/pages/docs/${version}`))
           logger.log('📁', `roosevelt-website making new directory statics/pages/docs/${version}`.yellow)
         }
-        if (!fs.existsSync(`statics/pages/docs/${version}/index.html`)) {
+        if (!versionIsSkipped(repo, version) && !fs.existsSync(`statics/pages/docs/${version}/index.html`)) {
           fs.writeFileSync(path.normalize(`statics/pages/docs/${version}/index.html`), redirectHtml)
           logger.log('📝', `roosevelt-website writing new HTML file statics/pages/docs/${version}/index.html`.green)
         }
         fs.writeFileSync(path.normalize(`statics/pages/docs/latest/${fileToWrite}`), html)
         logger.log('📝', `roosevelt-website writing new HTML file statics/pages/docs/latest/${fileToWrite}`.green)
-        fs.writeFileSync(path.normalize(`statics/pages/docs/${version}/${fileToWrite}`), html)
-        logger.log('📝', `roosevelt-website writing new HTML file statics/pages/docs/${version}/${fileToWrite}`.green)
+        if (!versionIsSkipped(repo, version)) {
+          fs.writeFileSync(path.normalize(`statics/pages/docs/${version}/${fileToWrite}`), html)
+          logger.log('📝', `roosevelt-website writing new HTML file statics/pages/docs/${version}/${fileToWrite}`.green)
+        }
       } else { // the other projects' docs get deposited into statics/pages/docs/[repo-name]
         if (!fs.existsSync(`statics/pages/docs/${repo}`)) {
           fs.mkdirSync(path.normalize(`statics/pages/docs/${repo}`))
@@ -571,14 +639,16 @@ async function prebuild () {
           fs.mkdirSync(path.normalize(`statics/pages/docs/${repo}/latest`))
           logger.log('📁', `roosevelt-website making new directory statics/pages/docs/${repo}/latest`.yellow)
         }
-        if (!fs.existsSync(`statics/pages/docs/${repo}/${version}`)) {
+        if (!versionIsSkipped(repo, version) && !fs.existsSync(`statics/pages/docs/${repo}/${version}`)) {
           fs.mkdirSync(path.normalize(`statics/pages/docs/${repo}/${version}`))
           logger.log('📁', `roosevelt-website making new directory statics/pages/docs/${repo}/${version}`.yellow)
         }
         fs.writeFileSync(path.normalize(`statics/pages/docs/${repo}/latest/${fileToWrite}`), html)
         logger.log('📝', `roosevelt-website writing new HTML file statics/pages/docs/${repo}/latest/${fileToWrite}`.green)
-        fs.writeFileSync(path.normalize(`statics/pages/docs/${repo}/${version}/${fileToWrite}`), html)
-        logger.log('📝', `roosevelt-website writing new HTML file statics/pages/docs/${repo}/${version}/${fileToWrite}`.green)
+        if (!versionIsSkipped(repo, version)) {
+          fs.writeFileSync(path.normalize(`statics/pages/docs/${repo}/${version}/${fileToWrite}`), html)
+          logger.log('📝', `roosevelt-website writing new HTML file statics/pages/docs/${repo}/${version}/${fileToWrite}`.green)
+        }
       }
     }
   }
@@ -602,6 +672,7 @@ async function build () {
 }
 
 // builds the site, serves it, and rebuilds it as it is edited
+//
 // roosevelt does the watching, and works out which pages each edit affects, so there is nothing here that has to see the site's own structure to decide what to render
 async function serve () {
   await require('roosevelt')(rooseveltParams()).startServer()
@@ -657,6 +728,7 @@ function highlightCodeBlocks () {
 // fired after roosevelt rebuilds the static files, which it does as they are edited
 //
 // the index is derived from the rendered pages, so it only needs redoing when one of them changed
+//
 // it is redone in full rather than patched, because editing one page can change whether pages in every older version of the docs are stored as pointers to it
 function onStaticsRebuilt (app, files) {
   const touchedAPage = files.some(file => path.relative(path.join(__dirname, 'statics'), file).split(path.sep)[0] === 'pages')
@@ -668,6 +740,7 @@ function onStaticsRebuilt (app, files) {
 
 function buildSearchIndex () {
   // build the search index for client-side search
+  //
   // it is split into one file for the current docs plus one file per old version of each module so that visitors only download the pages they can actually search from wherever they are, rather than every version of every module's docs on every page load
   const searchIndexDir = path.join('docs', 'js', 'search')
   if (!fastMode) fs.rmSync(searchIndexDir, { recursive: true, force: true }) // wipe it first so that deleted versions don't leave stale index files behind; in fast mode the old versions weren't rebuilt, so their index files are left alone too
@@ -743,12 +816,15 @@ module.exports = {
 // running this file is what starts a build; requiring it does not, so the tests can read the helpers above without one
 if (require.main === module) {
   // roosevelt writes the mode it resolved into NODE_ENV, and it reads NODE_ENV at a higher priority than the params it is constructed with
+  //
   // so whichever roosevelt runs first in a process decides the mode for every one after it, which is why this is set before anything else rather than passed to the server below
+  //
   // a --production-mode flag still wins, because roosevelt reads command line flags at a higher priority again
   process.env.NODE_ENV = process.env.NODE_ENV || 'development'
 
   ;(async () => {
     // this writes the templates the site's pages are built from, reading the docs out of each module's own repo
+    //
     // it only needs doing once rather than on every rebuild, which is why it is here and not in a roosevelt event
     await prebuild()
 

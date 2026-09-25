@@ -138,13 +138,23 @@
         <li><a href="/docs/progressively-enhance-web-components/{currentVersion.progressively-enhance-web-components}/changelog">Changelog</a></li>
         <li><a href="https://github.com/rooseveltframework/progressively-enhance-web-components">GitHub</a></li>
       </ul>
-    </summary>
+    </details>
   </li>
   <li>
     <details if-currentRepo="semantic-forms" true="open">
       <summary><a href="/docs/semantic-forms/{currentVersion.semantic-forms}/">Semantic Forms</a></summary>
       <ul>
         <li><a href="/docs/semantic-forms/{currentVersion.semantic-forms}/usage">Usage</a></li>
+        <if splitSemanticFormsDocs>
+          <!--! versions before 5.3.6 had the whole of the usage docs on one page, so there are no subpages to list alongside it -->
+          <loop through="semanticFormsSubpages" val="subpage">
+            <li><a href="/docs/semantic-forms/{currentVersion.semantic-forms}/{subpage.page}">{subpage.navLabel}</a></li>
+          </loop>
+        </if>
+        <if hasSemanticFormsFullDemo>
+          <!--! versions before 5.1.1 shipped no demo page, so there is nothing to link to on those -->
+          <li><a href="/docs/semantic-forms/{currentVersion.semantic-forms}/fullDemo">Full demo</a></li>
+        </if>
         <li><a href="/docs/semantic-forms/{currentVersion.semantic-forms}/changelog">Changelog</a></li>
         <li><a href="https://github.com/rooseveltframework/semantic-forms">GitHub</a></li>
       </ul>
@@ -178,6 +188,10 @@
       <ul>
         <li><a href="/docs/teddy/{currentVersion.teddy}/usage">Usage</a></li>
         <li><a href="/docs/teddy/{currentVersion.teddy}/configuration">Configuration</a></li>
+        <if hasTeddyBenchmarks>
+          <!--! older versions shipped no benchmark results, so there is nothing to link to on those -->
+          <li><a href="/docs/teddy/{currentVersion.teddy}/benchmarks">Benchmarks</a></li>
+        </if>
         <li><a href="/docs/teddy/{currentVersion.teddy}/changelog">Changelog</a></li>
         <li><a href="https://github.com/rooseveltframework/teddy">GitHub</a></li>
       </ul>
