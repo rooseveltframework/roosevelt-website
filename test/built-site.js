@@ -78,12 +78,11 @@ describe('the built site', () => {
     assert.deepStrictEqual(brokenLinksIn(own), [], 'these links point at files that were not built')
   })
 
-  // the pages under docs/ are markdown imported from each module's own repo, and some of that markdown links to files in
-  // the repo that the site does not publish, such as a readme or a demo page, plus a placeholder in the sample app docs
+  // the pages under docs/ are markdown imported from each module's own repo, and some of that markdown links to files in the repo that the site does not publish, such as a readme or a demo page, plus a placeholder in the sample app docs
+  //
   // those are the module's own text and cannot be fixed from here
   //
-  // links the site generates are deliberately not on this list: the version picker used to produce hundreds of dead links
-  // and now produces none, so any that come back are a regression rather than something to tolerate
+  // links the site generates are deliberately not on this list: the version picker used to produce hundreds of dead links and now produces none, so any that come back are a regression rather than something to tolerate
   const arrivesBroken = [
     /(^|\/)(README|MIGRATION_GUIDE)\.md$/,
     /(^|\/)fullDemo\.html$/,
@@ -100,9 +99,51 @@ describe('the built site', () => {
     assert.deepStrictEqual(unexpected.slice(0, 10), [], `${unexpected.length} broken link(s) of a kind that is not already known about`)
   })
 
+  // the markdown's anchor links are written against the ids github gives its headings, so a page whose headings were given ids some other way leaves every one of them pointing at nothing, and nothing else in a build notices
+  //
+  // an anchor is checked against the page it lands on, whether that is the page it sits on or another one on the site; a link to a page that was not built is the test above's to report
+  const anchorsArriveBroken = [
+    // roosevelt's configuration docs linked to a csrf protection section before they had one
+    /^docs\/0\.31\.\d+\/configuration\/index\.html -> #csrf-protection$/
+  ]
+
+  it('should not link to a part of a page that is not there, beyond what the imported markdown arrives with', () => {
+    const idsOn = {}
+    function ids (page) {
+      if (!idsOn[page]) {
+        const $ = cheerio.load(read(page))
+        idsOn[page] = new Set($('[id]').map((index, element) => $(element).attr('id')).get())
+      }
+      return idsOn[page]
+    }
+
+    const broken = []
+    for (const page of allPages) {
+      const $ = cheerio.load(read(page))
+      $('a[href*="#"]').each((index, element) => {
+        const href = $(element).attr('href')
+        if (/^(https?:)?\/\//.test(href) || href.startsWith('mailto:')) return
+        const [link, anchor] = href.split('#')
+        if (!anchor) return
+
+        let target = page
+        if (link) {
+          const file = (link.startsWith('/') ? link.slice(1) : path.posix.join(path.posix.dirname(page), link)).replace(/\/$/, '')
+          target = [file, `${file}/index.html`, file || 'index.html'].find(candidate => allPages.includes(candidate))
+          if (!target) return
+        }
+
+        const entry = `${page} -> ${href}`
+        if (!ids(target).has(decodeURIComponent(anchor)) && !anchorsArriveBroken.some(pattern => pattern.test(entry))) broken.push(entry)
+      })
+    }
+
+    // only the first few are shown, since a change to how headings get their ids breaks these on every version of the docs at once
+    assert.deepStrictEqual(broken.slice(0, 10), [], `${broken.length} anchor link(s) name an id their page does not have`)
+  })
+
   it('should not carry a docs folder that no longer belongs to any module it builds', () => {
-    // a folder left behind by a renamed module keeps being rendered, and its pages get the wrong module's version list,
-    // which is how one stale folder produced hundreds of dead links
+    // a folder left behind by a renamed module keeps being rendered, and its pages get the wrong module's version list, which is how one stale folder produced hundreds of dead links
     const { repos } = require('../test-server')
     const known = new Set(Object.keys(repos))
     const orphans = fs.readdirSync(path.join(__dirname, '..', 'statics/pages/docs'), { withFileTypes: true })

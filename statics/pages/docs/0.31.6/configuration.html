@@ -1,9 +1,9 @@
 <include src="layouts/main">
 <arg pageTitle>web framework — configuration</arg>
 <arg pageId>roosevelt-web-framework-—-configuration</arg>
-<arg pageContent><article><h2 id="appname">App name</h2>
+<arg pageContent><article><h2 id="app-name">App name</h2>
 <p>Roosevelt will determine your app's name by examining <code>"name"</code> in <code>package.json</code>. If none is provided, it will use <code>Roosevelt Express</code> instead.</p>
-<h2 id="therooseveltconfigapi">The <code>rooseveltConfig</code> API</h2>
+<h2 id="the-rooseveltconfig-api">The <code>rooseveltConfig</code> API</h2>
 <p>Roosevelt is highly configurable and you can configure it from the following hierarchy of sources in increasing order of precedence:</p>
 <ul>
 <li>A <code>rooseveltConfig</code> section in your package.json.</li>
@@ -14,7 +14,7 @@
 <li>Command line flags.</li>
 </ul>
 <p>What "increasing order of precedence" means is that command line flags will override environment variables, environment variables will override constructor parameters, constructor parameters will override config files, etc.</p>
-<h3 id="filepathoptions">File path options</h3>
+<h3 id="file-path-options">File path options</h3>
 <ul>
 <li><p><code>appDir</code> <em>[String]</em>: Root directory of your application. Default: The directory where your app's <code>package.json</code> is located.</p></li>
 <li><p><code>buildFolder</code> <em>[String]</em>: Where build artifacts will be placed such as the output from preprocessed views, preprocessed statics, the views bundler feature, or the controllers bundler feature. Default: <code>".build"</code>.</p>
@@ -41,7 +41,7 @@
 <li><p><code>staticsRoot</code> <em>[String]</em>: Relative path on filesystem to where your source static assets are located. By default this folder will not be made public, but is instead meant to store unprocessed or uncompressed source assets that will later be preprocessed and exposed in <code>public</code>. Default: <code>"statics"</code>.</p></li>
 <li><p><code>viewsPath</code> <em>[String]</em>: Relative path on filesystem to where your view files are located. Default: <code>"mvc/views"</code>.</p></li>
 </ul>
-<h3 id="developmentmodeoptions">Development mode options</h3>
+<h3 id="development-mode-options">Development mode options</h3>
 <p>These features are only available in development mode.</p>
 <ul>
 <li><code>frontendReload</code> <em>[Object]</em>: Settings to use for the browser reload feature which automatically reloads your browser when your frontend code changes.<ul>
@@ -79,7 +79,7 @@
   },
   "validatorConfig": {}
 }</code></pre>
-<h3 id="httpoptions">HTTP options</h3>
+<h3 id="http-options">HTTP options</h3>
 <ul>
 <li><code>http</code> <em>[Object]</em>: Parameters for configuring the HTTP server.<ul>
 <li><code>enable</code> <em>[Boolean]</em>: Enable HTTP server.</li>
@@ -119,7 +119,7 @@
     "key": "key.pem"
   }
 }</code></pre>
-<h3 id="appbehavioroptions">App behavior options</h3>
+<h3 id="app-behavior-options">App behavior options</h3>
 <ul>
 <li><p><code>deprecationChecks</code>: <em>[String]</em> or <em>[Boolean]</em>: Whether or not to run the deprecation checker in Roosevelt. The deprecation checker is a script that runs when your app starts to determine if you have code targeting an older version of Roosevelt that needs to be refactored. Default: <code>'developmemnt-mode'</code> which will run the checks in development mode only. Set to <code>false</code> to disable it entirely.</p></li>
 <li><p><code>expressVersion</code>: <em>[Number]</em>: Which version of <a href="https://expressjs.com">Express</a> to use. Choose between either <code>4</code> or <code>5</code>. This option exists because there are <a href="https://expressjs.com/en/guide/migrating-5.html">significant differences</a> between Express 4 and Express 5. Default: <code>5</code>.</p></li>
@@ -244,7 +244,7 @@
     "ejs: ejs"
   ]
 }</code></pre>
-<h3 id="isomorphicsinglepageappoptions">Isomorphic (single page app) options</h3>
+<h3 id="isomorphic-single-page-app-options">Isomorphic (single page app) options</h3>
 <ul>
 <li><code>clientControllers</code> <em>[Object]</em>: Allows you to expose controller (route) file code to frontend JS for client-side routing.<ul>
 <li><code>enable</code> <em>[Boolean]</em>: Whether or not to bundle controller files.</li>
@@ -293,7 +293,7 @@
   "minify": false,
   "minifyOptions": {}
 }</code></pre>
-<h3 id="staticfileoptions">Static file options</h3>
+<h3 id="static-file-options">Static file options</h3>
 <ul>
 <li><p><code>copy</code> <em>[Array of Objects]</em>: Declare one or more files or folders to copy at runtime. Default: <code>[]</code>.</p>
 <ul>
@@ -544,13 +544,13 @@
 <ul>
 <li><code>versionedPublic</code> <em>[Boolean]</em>: If set to true, Roosevelt will prepend your app's version number from <code>package.json</code> to your public folder. Versioning your public folder is useful for resetting your users' browser cache when you release a new version. Default: <code>false</code>.</li>
 </ul>
-<h3 id="deploymentoptions">Deployment options</h3>
+<h3 id="deployment-options">Deployment options</h3>
 <ul>
 <li><code>hostPublic</code> <em>[Boolean]</em>: Whether or not to allow Roosevelt to host the public folder. By default in <code>production-proxy</code> mode Roosevelt will not expose the public folder. It's recommended instead that you host the public folder through another web server, such as Apache or nginx that is better optimized for hosting static files. Default: <code>false</code>.</li>
 <li><code>localhostOnly</code> <em>[Boolean]</em>: Listen only to requests coming from localhost in production mode. This is useful in environments where it is expected that HTTP requests to your app will be proxied through a more traditional web server like Apache or nginx. This setting is ignored in development mode. Default:  <code>true</code>.</li>
 <li><code>shutdownTimeout</code> <em>[Number]</em>: Maximum amount of time in milliseconds given to Roosevelt to gracefully shut itself down when sent the kill signal. Default: <code>30000</code> (30 seconds).</li>
 </ul>
-<h3 id="templateliteralsinrooseveltconfigvalues">Template literals in <code>rooseveltConfig</code> values</h3>
+<h3 id="template-literals-in-rooseveltconfig-values">Template literals in <code>rooseveltConfig</code> values</h3>
 <p>All config values support <a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals">template literal</a> style variable syntax that you can use to refer to other Roosevelt parameters. For example:</p>
 <pre><code class="json language-json">{
   "css": {
@@ -572,7 +572,7 @@
     onServerStart: (app) =&gt; { /* do something */ }
   }).startServer()
 })()</code></pre>
-<h4 id="eventlist">Event list</h4>
+<h4 id="event-list">Event list</h4>
 <p>These are sorted in order of when they are executed during the lifecycle of a Roosevelt app.</p>
 <ul>
 <li><p><code>onBeforeMiddleware(app)</code>: Fired when the app begins initializing, prior to any middleware being loaded into the app.</p>
@@ -597,7 +597,7 @@
 <ul>
 <li><code>app</code>: The <a href="http://expressjs.com/api.html#express">Express app</a> created by Roosevelt.</li></ul></li>
 </ul>
-<h3 id="expressvariablesexposedbyroosevelt">Express variables exposed by Roosevelt</h3>
+<h3 id="express-variables-exposed-by-roosevelt">Express variables exposed by Roosevelt</h3>
 <p>Roosevelt supplies several variables to Express that you may find handy. Access them using <code>app.get('variableName')</code>.</p>
 <ul>
 <li><code>appDir</code>: The directory the main module is in.</li>
@@ -641,7 +641,7 @@
 <li><code>startServer()</code> or <code>start()</code> <em>[async Function]</em>: Calls the <code>listen</code> method of <code>http</code>, <code>https</code>, or both (depending on your configuration) to start the web server with Roosevelt's config.</li>
 <li><code>stopServer(params)</code> or <code>stop(params)</code> <em>[Function]</em>: Stops the server from accepting new connections before exiting and takes an optional argument <code>stopServer({ persistProcess: true })</code> which will allow the process to remain active after the server has closed.</li>
 </ul>
-<h2 id="recognizedenvironmentvariables">Recognized environment variables</h2>
+<h2 id="recognized-environment-variables">Recognized environment variables</h2>
 <p>The following is a list of <a href="https://en.wikipedia.org/wiki/Environment_variable">environment variables</a> that Roosevelt listens for.</p>
 <ul>
 <li><code>NODE_ENV</code>:<ul>
@@ -661,8 +661,8 @@
 <li>Environment variables supersede your app's <code>rooseveltConfig</code>.</li>
 <li>Environment variables can be overridden with command line arguments.</li>
 </ul>
-<h2 id="commandlineusage">Command line usage</h2>
-<h3 id="availablenpmscripts">Available npm scripts</h3>
+<h2 id="command-line-usage">Command line usage</h2>
+<h3 id="available-npm-scripts">Available npm scripts</h3>
 <p>Roosevelt apps created with the app generator come with the following notable <a href="https://docs.npmjs.com/misc/scripts">npm scripts</a> prepopulated in <a href="https://docs.npmjs.com/files/package.json">package.json</a>:</p>
 <ul>
 <li><p><code>npm run production</code>: Runs the app in production mode.</p>
@@ -696,7 +696,7 @@
 <ul>
 <li>Supports command line flags <code>--appDir somewhere</code> <code>--secretsPath somewhere</code> to override those default locations.</li></ul></li>
 </ul>
-<h3 id="availablecommandlinearguments">Available command line arguments</h3>
+<h3 id="available-command-line-arguments">Available command line arguments</h3>
 <ul>
 <li><p><code>node app.js --production-mode</code>: Runs the app in production mode.</p>
 <ul>
@@ -738,6 +738,6 @@
 <li><code>--raw</code></li>
 <li><code>-r</code></li></ul></li></ul></li>
 </ul>
-<h3 id="combiningnpmscriptsandcommandlinearguments">Combining npm scripts and command line arguments</h3>
+<h3 id="combining-npm-scripts-and-command-line-arguments">Combining npm scripts and command line arguments</h3>
 <p>The npm scripts can be combined with the command line flags.</p>
 <p>For example, running <code>npm run dev -- --disable-validator</code> will run your app in development mode and force the HTML validator to be disabled.</p></article></arg></include>

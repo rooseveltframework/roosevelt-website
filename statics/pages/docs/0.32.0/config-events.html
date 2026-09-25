@@ -1,7 +1,7 @@
 <include src="layouts/main">
 <arg pageTitle>Configuration — Events & Express vars</arg>
 <arg pageId>roosevelt-configuration-—-events-&-express-vars</arg>
-<arg pageContent><article><h1 id="eventsandexpressvariables">Events and Express variables</h1>
+<arg pageContent><article><h1 id="events-and-express-variables">Events and Express variables</h1>
 <h2 id="events">Events</h2>
 <p>Roosevelt provides a series of events you can attach code to by passing a function to the desired event as a parameter to Roosevelt's constructor like so:</p>
 <pre><code class="js language-js">(async () =&gt; {
@@ -9,7 +9,7 @@
     onServerStart: (app) =&gt; { /* do something */ }
   }).startServer()
 })()</code></pre>
-<h3 id="eventlist">Event list</h3>
+<h3 id="event-list">Event list</h3>
 <p>These are sorted in order of when they are executed during the lifecycle of a Roosevelt app.</p>
 <ul>
 <li><p><code>onBeforeMiddleware(app)</code>: Fired when the app begins initializing, prior to any middleware being loaded into the app.</p>
@@ -34,7 +34,7 @@
 <ul>
 <li><code>app</code>: The <a href="http://expressjs.com/api.html#express">Express app</a> created by Roosevelt.</li></ul></li>
 </ul>
-<h2 id="expressvariablesexposedbyroosevelt">Express variables exposed by Roosevelt</h2>
+<h2 id="express-variables-exposed-by-roosevelt">Express variables exposed by Roosevelt</h2>
 <p>Roosevelt supplies several variables to Express that you may find handy. Access them using <code>app.get('variableName')</code>.</p>
 <ul>
 <li><code>appDir</code>: The directory the main module is in.</li>

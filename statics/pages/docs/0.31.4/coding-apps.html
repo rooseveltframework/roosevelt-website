@@ -1,7 +1,7 @@
 <include src="layouts/main">
 <arg pageTitle>web framework — coding apps</arg>
 <arg pageId>roosevelt-web-framework-—-coding-apps</arg>
-<arg pageContent><article><h2 id="makingmodelfiles">Making model files</h2>
+<arg pageContent><article><h2 id="making-model-files">Making model files</h2>
 <p>Place a file named <code>dataModel.js</code> in <code>mvc/models</code>.</p>
 <p>Here's a simple example <code>dataModel.js</code> data model:</p>
 <pre><code class="js language-js">// dataModel.js
@@ -9,14 +9,14 @@ module.exports = () =&gt; {
   return { some: 'data' }
 }</code></pre>
 <p>In more complex apps, you might query a database to get your data instead.</p>
-<h2 id="makingviewfiles">Making view files</h2>
+<h2 id="making-view-files">Making view files</h2>
 <p>Views by default are <a href="https://rooseveltframework.org/docs/teddy">Teddy</a> templates. See the Teddy documentation for information about how to write Teddy templates.</p>
 <p>You can also configure Roosevelt to use any templating system supported by Express for your views.</p>
-<h2 id="makingcontrollerfiles">Making controller files</h2>
+<h2 id="making-controller-files">Making controller files</h2>
 <p>Controller files are places to write <a href="https://expressjs.com/en/api.html#router">Express routes</a>. A route is the term Express uses for URL endpoints, such as <code>https://yoursite/blog</code> or <code>https://yoursite/about</code>.</p>
 <p>Controllers bind models and views together.</p>
 <p>To make a new controller, make a new file in the controllers directory, then follow one of the examples below.</p>
-<h3 id="examplegetroute">Example GET route</h3>
+<h3 id="example-get-route">Example GET route</h3>
 <pre><code class="js language-js">// someController.js
 module.exports = (router, app) =&gt; {
   // router is an Express router
@@ -31,7 +31,7 @@ module.exports = (router, app) =&gt; {
     res.render('about', model)
   })
 }</code></pre>
-<h3 id="examplepostroute">Example POST route</h3>
+<h3 id="example-post-route">Example POST route</h3>
 <p>In Roosevelt, <a href="https://en.wikipedia.org/wiki/Cross-site_request_forgery">Cross-Site Request Forgery</a> protection is enabled by default. That means in order to make requests to any POST route, you will need to pass a CSRF token from the server to the browser, and then return that token when making a request from the browser to the server.</p>
 <p>To do that, include the CSRF token in your HTML form as a hidden input <code>_csrf</code>:</p>
 <pre><code class="js language-js">// someController.js
@@ -55,7 +55,7 @@ const response = await fetch('/some-protected-endpoint', {
   }
 })</code></pre>
 <p>You can also exempt certain routes from CSRF protection or disable the feature entirely by configuration. See configuration section for details.</p>
-<h3 id="reusablecontrollers">Reusable controllers</h3>
+<h3 id="reusable-controllers">Reusable controllers</h3>
 <p>Sometimes it is also useful to separate controller logic from your routing. This can be done by creating a reusable controller module. Reusable controller modules differ from standard controller modules in that they are meant to be called from within other controllers and do not define routes.</p>
 <p>To create a reusable controller, put a file in your controllers directory that accepts <code>app</code>, <code>req</code>, and <code>res</code> arguments with logic that is meant to execute from within a predefined route.</p>
 <p>An example of when this might be needed would be having a reusable controller for "404 Not Found" pages:</p>
@@ -85,7 +85,7 @@ module.exports = (router, app) =&gt; {
   })
 }</code></pre>
 <p>Any controller file that has no arguments or more than two arguments will be considered a reusable controller.</p>
-<h2 id="makingstaticpages">Making static pages</h2>
+<h2 id="making-static-pages">Making static pages</h2>
 <p>You can also generate static files from templates and models as well.</p>
 <p>Templates for static pages go in your statics folder (<code>staticsRoot</code>) under the HTML source path (<code>html.sourcePath</code>), which is <code>statics/pages</code> by default.</p>
 <p>Data models for the templates will be merged from different possible locations to source them from in the following order of precedence:</p>
@@ -94,7 +94,7 @@ module.exports = (router, app) =&gt; {
 <li>File-level override in <code>htmlModels</code>.</li>
 <li>Model file.</li>
 </ol>
-<h3 id="settingstaticpagemodels">Setting static page models</h3>
+<h3 id="setting-static-page-models">Setting static page models</h3>
 <p>To declare a global model in <code>htmlModels</code>, use the <code>*</code> character:</p>
 <pre><code class="javascript language-javascript">// build.js
 (async () =&gt; {

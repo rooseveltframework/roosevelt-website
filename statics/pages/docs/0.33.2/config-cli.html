@@ -1,8 +1,8 @@
 <include src="layouts/main">
 <arg pageTitle>Configuration — Env vars & CLI usage</arg>
 <arg pageId>roosevelt-configuration-—-env-vars-&-cli-usage</arg>
-<arg pageContent><article><h1 id="environmentvariablesandcommandlineusage">Environment variables and command line usage</h1>
-<h2 id="recognizedenvironmentvariables">Recognized environment variables</h2>
+<arg pageContent><article><h1 id="environment-variables-and-command-line-usage">Environment variables and command line usage</h1>
+<h2 id="recognized-environment-variables">Recognized environment variables</h2>
 <p>The following is a list of <a href="https://en.wikipedia.org/wiki/Environment_variable">environment variables</a> that Roosevelt listens for.</p>
 <ul>
 <li><code>NODE_ENV</code>:<ul>
@@ -22,8 +22,8 @@
 <li>Environment variables supersede your app's <code>rooseveltConfig</code>.</li>
 <li>Environment variables can be overridden with command line arguments.</li>
 </ul>
-<h2 id="commandlineusage">Command line usage</h2>
-<h3 id="availablenpmscripts">Available npm scripts</h3>
+<h2 id="command-line-usage">Command line usage</h2>
+<h3 id="available-npm-scripts">Available npm scripts</h3>
 <p>Roosevelt apps created with the app generator come with the following notable <a href="https://docs.npmjs.com/misc/scripts">npm scripts</a> prepopulated in <a href="https://docs.npmjs.com/files/package.json">package.json</a>:</p>
 <ul>
 <li><p><code>npm run production</code>: Runs the app in production mode.</p>
@@ -62,7 +62,7 @@
 <ul>
 <li>Takes the app directory as an argument, and uses the current directory if you do not supply one.</li></ul></li>
 </ul>
-<h3 id="availablecommandlinearguments">Available command line arguments</h3>
+<h3 id="available-command-line-arguments">Available command line arguments</h3>
 <ul>
 <li><p><code>node app.js --production-mode</code>: Runs the app in production mode.</p>
 <ul>
@@ -108,7 +108,7 @@
 <li><code>--raw</code></li>
 <li><code>-r</code></li></ul></li></ul></li>
 </ul>
-<h3 id="overridingrecognizedcommandlineflagsandenvironmentvariables">Overriding recognized command line flags and environment variables</h3>
+<h3 id="overriding-recognized-command-line-flags-and-environment-variables">Overriding recognized command line flags and environment variables</h3>
 <p>You can rename the command line flags and environment variables Roosevelt listens for by passing a schema as the second argument to the Roosevelt constructor, with a <code>"rooseveltConfig"</code> section naming the params you want to change.</p>
 <p>For example, by default, the <code>mode</code> param is set to development by <code>--development-mode</code>, <code>--dev</code>, or <code>-d</code>. To change it to <code>--dev-mode</code> or <code>-D</code> for that instead:</p>
 <pre><code class="javascript language-javascript">const schemaOverride = {
@@ -139,6 +139,6 @@ require('roosevelt')(params, schemaOverride).startServer()</code></pre>
 <li>You can also add a flag or environment variable to a param that does not have one by default, using the same syntax.</li>
 <li>Avoid flag names beginning with <code>--no-</code>, since the command line parser treats <code>--no-example</code> as setting <code>example</code> to false rather than as a flag named <code>no-example</code>.</li>
 </ul>
-<h3 id="combiningnpmscriptsandcommandlinearguments">Combining npm scripts and command line arguments</h3>
+<h3 id="combining-npm-scripts-and-command-line-arguments">Combining npm scripts and command line arguments</h3>
 <p>The npm scripts can be combined with the command line flags.</p>
 <p>For example, running <code>npm run dev -- --disable-validator</code> will run your app in development mode and force the HTML validator to be disabled.</p></article></arg></include>

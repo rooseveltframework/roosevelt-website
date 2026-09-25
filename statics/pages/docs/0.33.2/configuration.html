@@ -1,7 +1,7 @@
 <include src="layouts/main">
 <arg pageTitle>Configuration</arg>
 <arg pageId>roosevelt-configuration</arg>
-<arg pageContent><article><h2 id="appname">App name</h2>
+<arg pageContent><article><h2 id="app-name">App name</h2>
 <p>Roosevelt will determine your app's name by examining <code>"name"</code> in <code>package.json</code>. If none is provided, it will use <code>Roosevelt Express</code> instead.</p>
 <h2 id="rooseveltconfig"><code>rooseveltConfig</code></h2>
 <p>Roosevelt is highly configurable and you can configure it from the following hierarchy of sources in increasing order of precedence:</p>
@@ -19,7 +19,7 @@
     port: 4000
   }
 }</code></pre>
-<h3 id="settingpartofaparam">Setting part of a param</h3>
+<h3 id="setting-part-of-a-param">Setting part of a param</h3>
 <p>Params that hold an object can be set a piece at a time. Anything you leave out keeps its default, so this turns off request logging without disturbing the other logging settings:</p>
 <pre><code class="javascript language-javascript">module.exports = {
   logging: {
@@ -29,7 +29,7 @@
   }
 }</code></pre>
 <p>Params that pass their options along to another module, such as <code>helmet</code> and <code>formidable</code>, accept any option that module takes, whether or not Roosevelt documents it.</p>
-<h3 id="referringtootherparamsinyourparams">Referring to other params in your params</h3>
+<h3 id="referring-to-other-params-in-your-params">Referring to other params in your params</h3>
 <p>Use <code>ref</code> when you need to reference the value of another param. It takes a function that receives the finished params:</p>
 <pre><code class="javascript language-javascript">const rooseveltConfig = require('roosevelt/config')
 const path = require('path')
@@ -42,7 +42,7 @@ module.exports = {
     }
   ]
 }</code></pre>
-<h3 id="therooseveltconfigapi">The <code>rooseveltConfig</code> API</h3>
+<h3 id="the-rooseveltconfig-api">The <code>rooseveltConfig</code> API</h3>
 <nav class="toc">
   <ul>
       <li><a href="/docs/{currentVersion.roosevelt}/config-file-paths">File paths</a></li>

@@ -37,7 +37,7 @@ const config = sourceConfigs(schema)
 
 // access one of the configs
 console.log(config.websocket.port)</code></pre>
-<h3 id="schemametadata">Schema metadata</h3>
+<h3 id="schema-metadata">Schema metadata</h3>
 <p>Schemas support the following metadata for each configurable property in order to create constraints if desired or add additional functionality:</p>
 <ul>
 <li><code>description</code> <em>[String]</em>: Describe what this config will be used for.</li>
@@ -47,13 +47,13 @@ console.log(config.websocket.port)</code></pre>
 <li><code>envVar</code> <em>[String or Array of Strings]</em>: Environment variable(s) to listen for that will set this config. If not set, source-configs will not listen for an environment variable to set the value for this config.</li>
 <li><code>secret</code> <em>[Boolean]</em>: Whether or not this value is sensitive information, like a password.</li>
 </ul>
-<h3 id="userdefinedfunctions">User-defined functions</h3>
+<h3 id="user-defined-functions">User-defined functions</h3>
 <p>Additionally, a schema can be a function which has the parent config passed to it as the first argument. To do this create a key/value pair within the schema object:</p>
 <ul>
 <li>If the schema is stored in a <code>.js</code> file, set the key as the desired function name and the value as the function.</li>
 <li>If using a <code>.json</code> file to store the schema, set the key as the desired function name and the value as <code>'user-defined function'</code>. Once the <code>.json</code> file is required in, override the key's value with the desired function.</li>
 </ul>
-<h3 id="customconfiguration">Custom configuration</h3>
+<h3 id="custom-configuration">Custom configuration</h3>
 <p>In addition to the above instantiation method, source-configs also accepts an optional configuration object that can be passed to the constructor as a second object like so:</p>
 <pre><code class="javascript language-javascript">const sourceConfigs = require('source-configs')
 const schema = require('./your-schema-js-file.json')

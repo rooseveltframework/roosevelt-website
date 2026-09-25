@@ -28,7 +28,7 @@ const app = require('single-page-express')({
   templatingEngine,
   templates
 })</code></pre>
-<h3 id="definingroutes">Defining routes</h3>
+<h3 id="defining-routes">Defining routes</h3>
 <p>The various methods of defining routes <a href="https://expressjs.com/en/guide/routing.html">like you would with Express</a> are supported.</p>
 <p>A simple example:</p>
 <pre><code class="javascript language-javascript">app.route('/').get(function (req, res) {
@@ -79,10 +79,10 @@ app.route('/routeWithFormSubmit').post(function (req, res) {
 <li><code>method</code>: e.g. GET, POST, etc. (Case insensitive.)</li>
 <li><code>body</code>: What to supply to <code>req.body</code> if you're triggering a POST.</li>
 </ul>
-<h3 id="controllingscrollpositionbehavior">Controlling scroll position behavior</h3>
+<h3 id="controlling-scroll-position-behavior">Controlling scroll position behavior</h3>
 <p>By default, <code>single-page-express</code> will remember the scroll position of pages that have been visited. It will also remember the scroll position of child containers on each page as well, but only if those containers have assigned <code>id</code> attributes.</p>
 <p>If you wish to not remember the scroll position on a per route basis, supply <code>res.resetScroll = true</code> in your route. To disable this memory app-wide, set the <code>alwaysScrollTop</code> param to <code>true</code> in the constructor.</p>
-<h3 id="runningthesampleapps">Running the sample apps</h3>
+<h3 id="running-the-sample-apps">Running the sample apps</h3>
 <p>There are 3 sample apps you can run to see demos of how <code>single-page-express</code> can be used:</p>
 <ol>
 <li><p>Basic frontend-only sample app:</p>

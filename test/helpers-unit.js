@@ -33,9 +33,7 @@ describe('version helpers', () => {
   })
 
   it('should mark the templates that every page includes so roosevelt renders every page when one changes', () => {
-    // roosevelt cannot ask a view engine which templates a page included, so this first line marker is how it knows a
-    // template is a layout or a partial rather than a page; without it, editing one would rebuild only itself and leave
-    // every page that includes it stale
+    // roosevelt cannot ask a view engine which templates a page included, so this first line marker is how it knows a template is a layout or a partial rather than a page; without it, editing one would rebuild only itself and leave every page that includes it stale
     for (const template of ['nav.html', 'layouts/main.html']) {
       const file = path.join(__dirname, '..', 'statics/pages', template)
       assert.ok(fs.existsSync(file), `statics/pages/${template} should exist`)
