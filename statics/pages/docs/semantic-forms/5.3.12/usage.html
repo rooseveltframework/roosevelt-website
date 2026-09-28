@@ -1,0 +1,79 @@
+<include src="layouts/main">
+  <arg pageTitle>Semantic Forms — Usage</arg>
+  <arg pageContent>
+    <article>
+      <h2 id="install">Install</h2>
+
+      <p><code>npm install semantic-forms</code></p>
+
+      <p>The package is distributed with the following builds available:</p>
+
+      <ul>
+        <li><code>dist/semantic-forms.cjs</code>: CommonJS bundle: <code>const semanticForms = require('semantic-forms')</code></li>
+        <li><code>dist/semantic-forms.js</code>: Standalone bundle that can be included via <code><!--#<script>--></code> tags. Declares a global variable called: <code>semanticForms</code></li>
+        <li><code>dist/semantic-forms.min.js</code>: Minified standalone bundle that can be included via <code><!--#<script>--></code> tags. Declares a global variable called: <code>semanticForms</code></li>
+        <li><code>dist/semantic-forms.mjs</code>: ES module: <code>import semanticForms from 'semantic-forms'</code></li>
+        <li><code>dist/semantic-forms.min.mjs</code>: Minified ES module: <code>import semanticForms from 'semantic-forms/min'</code></li>
+      </ul>
+
+      <h2 id="use">Use</h2>
+
+      <p>Include <code>dist/semantic-forms.css</code> and whichever of the above versions of the JS file you prefer into your project. Both ship in the npm package, and can also be loaded from any CDN that serves npm, for example <code>https://cdn.jsdelivr.net/npm/semantic-forms/dist/semantic-forms.js</code>. The <code>dist</code> folder is built from source, so it is not checked into the git repository.</p>
+
+      <p>Then apply the <code>semanticForms</code> class to your <code><!--#<form>--></code> elements:</p>
+
+      <pre><code class="language-html"><escape>
+<form class="semanticForms">
+  <!-- your form here -->
+</form>
+      </escape></code></pre>
+
+      <p>Then apply the JavaScript enhancements:</p>
+
+      <pre><code class='language-javascript'>semanticForms()</code></pre>
+
+      <p>Then the CSS/JS enhancements to your forms will apply automatically, assuming the markup structure you use is one of the supported patterns.</p>
+
+      <p>If you make changes to the DOM after Semantic Forms is activated and want to activate any additional <code>semanticForms</code> forms you insert, you can re-scan for new forms by calling <code>semanticForms.reinitialize()</code> again. If you only want to reinitialize one form instead of all of them, call <code>semanticForms.reinitialize(formElement)</code>.</p>
+
+      <h3 id="shadowdom">Forms inside a shadow root</h3>
+
+      <p>A shadow root is a separate tree, so <code>semanticForms()</code> cannot see into one by default. Pass the root to enhance the forms inside it:</p>
+
+      <pre><code class='language-javascript'>semanticForms(myElement.shadowRoot)</code></pre>
+
+      <p>Each tree you pass gets watched separately, so calling it for the document and for one or more shadow roots is fine and they do not interfere with each other. <code>semanticForms.reinitialize(formElement)</code> works out which tree the form belongs to on its own.</p>
+
+      <p>Shadow roots do not inherit the page's stylesheets, so the shadow root needs its own copy of the CSS, either through a <code><!--#<link>--></code> inside it or by adopting a stylesheet:</p>
+
+      <pre><code class='language-javascript'><escape>const sheet = new CSSStyleSheet()
+await sheet.replace(await (await fetch('/path/to/semantic-forms.css')).text())
+myElement.shadowRoot.adoptedStyleSheets = [sheet]
+</escape></code></pre>
+
+      <h3 id="features">Features</h3>
+
+      <p>Each of these has a page of its own:</p>
+
+      <ul>
+        <li><a href="/docs/semantic-forms/{currentVersion.semantic-forms}/inputs">Inputs</a></li>
+        <li><a href="/docs/semantic-forms/{currentVersion.semantic-forms}/checkboxes">Checkboxes, radios and switches</a></li>
+        <li><a href="/docs/semantic-forms/{currentVersion.semantic-forms}/buttons">Buttons</a></li>
+        <li><a href="/docs/semantic-forms/{currentVersion.semantic-forms}/layout">Layout</a></li>
+        <li><a href="/docs/semantic-forms/{currentVersion.semantic-forms}/theming">Theming</a></li>
+      </ul>
+
+      <h3 id="lowflowmode">Low flow (JavaScript disabled) mode</h3>
+
+      <p>The low flow will be displayed if JS is disabled.</p>
+
+      <p>You can also activate the low flow (JavaScript disabled) mode manually by adding the <code>lowFlow</code> class to your <code><!--#<form>--></code> element.</p>
+
+      <p>The low-flow mode reverts the float label pattern to traditional labels and doesn't include other JS-exclusive enhancements, but preserves the other visual design enhancements driven purely by CSS.</p>
+
+      <h3 id="more">More</h3>
+
+      <p>See a page demoing all features <a href="/docs/semantic-forms/{currentVersion.semantic-forms}/fullDemo">here</a>.</p>
+    </article>
+  </arg>
+</include>
