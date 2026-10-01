@@ -2,7 +2,7 @@ const { describe, it } = require('node:test')
 const assert = require('node:assert')
 const fs = require('node:fs')
 const path = require('node:path')
-const { compareVersions, stripVersion } = require('../test-server')
+const { compareVersions, stripVersion, urlOf } = require('../test-server')
 
 describe('version helpers', () => {
   it('should order versions numerically rather than as strings', () => {
@@ -30,6 +30,15 @@ describe('version helpers', () => {
 
   it('should leave a path with no version in it alone', () => {
     assert.strictEqual(stripVersion('design-philosophy/index.html'), 'design-philosophy/index.html')
+  })
+
+  it('should give a page the url github pages serves it at, whether from its template or from the file built from it', () => {
+    // the canonical tags are made from templates and the sitemap from the built files, so the two only agree if both come out the same
+    assert.strictEqual(urlOf('docs/latest/get-started.html'), '/docs/latest/get-started/')
+    assert.strictEqual(urlOf('docs/latest/get-started/index.html'), '/docs/latest/get-started/')
+    assert.strictEqual(urlOf('docs/teddy/latest/index.html'), '/docs/teddy/latest/')
+    assert.strictEqual(urlOf('contributors.html'), '/contributors/')
+    assert.strictEqual(urlOf('index.html'), '/')
   })
 
   it('should mark the templates that every page includes so roosevelt renders every page when one changes', () => {

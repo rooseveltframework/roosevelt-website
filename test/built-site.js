@@ -99,6 +99,21 @@ describe('the built site', () => {
     assert.deepStrictEqual(unexpected.slice(0, 10), [], `${unexpected.length} broken link(s) of a kind that is not already known about`)
   })
 
+  it('should link to each page at the url with the slash on it, which is the one github pages serves without a redirect', () => {
+    // every page is built into a folder of its own, and github pages answers a request for a folder without the slash by redirecting to the url with one
+    const redirected = []
+    for (const page of allPages) {
+      for (const link of internalLinks(read(page))) {
+        if (link.endsWith('/')) continue
+        const full = path.join(docsDir, link.startsWith('/') ? link.slice(1) : path.posix.join(path.posix.dirname(page), link))
+        if (fs.existsSync(full) && fs.statSync(full).isDirectory()) redirected.push(`${page} -> ${link}`)
+      }
+    }
+
+    // only the first few are shown, since the navigation is on every page and a regression there shows up hundreds of times over
+    assert.deepStrictEqual(redirected.slice(0, 10), [], `${redirected.length} link(s) leave the slash off, so github pages redirects them`)
+  })
+
   // the markdown's anchor links are written against the ids github gives its headings, so a page whose headings were given ids some other way leaves every one of them pointing at nothing, and nothing else in a build notices
   //
   // an anchor is checked against the page it lands on, whether that is the page it sits on or another one on the site; a link to a page that was not built is the test above's to report
@@ -154,6 +169,87 @@ describe('the built site', () => {
     assert.deepStrictEqual(orphans, [], 'these folders under statics/pages/docs match no module the site builds')
   })
 
+  describe('the sitemap', () => {
+    let sitemap
+
+    before(async () => {
+      // a roosevelt app set up the way the build sets one up, but with building turned off, so that this reads the built site rather than writing a new one
+      const { sitemapUrls } = require('../test-server')
+      const app = require('roosevelt')({
+        appDir: path.join(__dirname, '..'), // roosevelt would otherwise look for the app, and its config file, where the test runner is
+        makeBuildArtifacts: false,
+        sitemap: { urls: sitemapUrls },
+        logging: { methods: { http: false, info: false, warn: false, verbose: false } }
+      })
+      await app.init()
+      sitemap = app.expressApp.get('sitemap')
+    })
+
+    // how github pages answers a request for a url, from the files in docs
+    function servedByGithubPages (url) {
+      const pathname = decodeURIComponent(new URL(url).pathname)
+      const file = path.join(docsDir, pathname)
+      if (fs.existsSync(file) && fs.statSync(file).isDirectory()) {
+        if (!pathname.endsWith('/')) return { status: 301, headers: { location: `${pathname}/` } }
+        if (!fs.existsSync(path.join(file, 'index.html'))) return { status: 404 }
+        return { status: 200, headers: {}, body: fs.readFileSync(path.join(file, 'index.html'), 'utf8') }
+      }
+      if (fs.existsSync(file)) return { status: 200, headers: {}, body: fs.readFileSync(file, 'utf8') }
+      return { status: 404 }
+    }
+
+    it('should be written where github pages serves it, with a robots.txt that points to it', () => {
+      assert.ok(fs.existsSync(path.join(docsDir, 'sitemap.xml')), 'docs/sitemap.xml should have been written')
+      assert.ok(read('robots.txt').includes(sitemap.robotsLine()), 'robots.txt should point to the sitemap')
+    })
+
+    it('should publish the robots.txt as it is written in statics, without it keeping any page from being crawled', () => {
+      const robots = read('robots.txt')
+      assert.strictEqual(robots, fs.readFileSync(path.join(__dirname, '..', 'statics/robots.txt'), 'utf8'), 'docs/robots.txt should be a copy of statics/robots.txt')
+
+      // the disallow rules are a joke about the three laws of robotics, so they have to stay clear of every page the site really has
+      const disallowed = [...robots.matchAll(/^Disallow:[ \t]*(\S*)/gm)].map(match => match[1]).filter(Boolean)
+      const blocked = allPages.map(page => `/${page}`).filter(page => disallowed.some(rule => page.startsWith(rule)))
+      assert.deepStrictEqual(blocked, [], 'robots.txt keeps search engines away from these pages')
+    })
+
+    it('should be up to date with the pages that were built', async () => {
+      const written = [...read('sitemap.xml').matchAll(/<loc>([^<]+)<\/loc>/g)].map(match => match[1])
+      const current = (await sitemap.entries()).map(entry => entry.loc)
+
+      assert.deepStrictEqual(written, current)
+    })
+
+    it('should list the current pages and none of the old versions of the docs or the redirect pages', async () => {
+      const listed = (await sitemap.entries()).map(entry => new URL(entry.loc).pathname)
+
+      for (const page of ['/', '/design-philosophy/', '/contributors/', '/docs/latest/get-started/', '/docs/teddy/latest/']) {
+        assert.ok(listed.includes(page), `${page} should be listed`)
+      }
+      assert.deepStrictEqual(listed.filter(page => /\/\d+\.\d+\.\d+\//.test(page)), [], 'old versions of the docs should not be listed')
+      for (const page of ['/docs/', '/docs/latest/', '/docs/teddy/']) {
+        assert.ok(!listed.includes(page), `${page} only redirects, so it should not be listed`)
+      }
+    })
+
+    it('should only list pages that load without a redirect and name themselves as canonical', async () => {
+      const { checked, problems } = await sitemap.verify({ request: servedByGithubPages })
+
+      assert.ok(checked > 20, `expected the current pages to be listed, found ${checked}`)
+      assert.deepStrictEqual(problems, [])
+    })
+
+    it('should point the newest numbered copy of the docs at its copy under latest', () => {
+      const newest = fs.readdirSync(path.join(docsDir, 'docs'))
+        .filter(name => /^\d+\.\d+\.\d+$/.test(name))
+        .sort(require('../test-server').compareVersions)
+        .pop()
+      const canonical = cheerio.load(read(`docs/${newest}/get-started/index.html`))('link[rel=canonical]').attr('href')
+
+      assert.strictEqual(canonical, 'https://rooseveltframework.org/docs/latest/get-started/')
+    })
+  })
+
   describe('the search index', () => {
     let latest
 
@@ -174,6 +270,13 @@ describe('the built site', () => {
       const missing = latest.filter(entry => !fs.existsSync(path.join(docsDir, entry.file)))
 
       assert.deepStrictEqual(missing.map(entry => entry.file), [], 'these indexed pages were not built')
+    })
+
+    it('should only index pages built into a folder of their own, so each search result links to the folder\'s url', () => {
+      // the search results drop the index.html to link to the page at its canonical url, which a page built any other way would not have
+      const notInAFolder = latest.filter(entry => !/(^|\/)index\.html$/.test(entry.file))
+
+      assert.deepStrictEqual(notInAFolder.map(entry => entry.file), [])
     })
 
     it('should drop the site name from titles so results are told apart by the rest', () => {

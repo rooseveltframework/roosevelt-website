@@ -274,6 +274,7 @@ function onBeforeStatics (app) {
         }
 
         if (version === 'Older...') newUrl = `https://github.com/rooseveltframework/${thisRepo}/commits/main/README.md`
+        else newUrl += '/' // each page is built into a folder of its own, and github pages redirects to the url with the slash on it
         versionLinks[version] = newUrl
       }
 
@@ -297,9 +298,14 @@ function onBeforeStatics (app) {
       const newestSemanticForms = versions['semantic-forms'][0].replace(' (latest)', '')
       const semanticFormsVersion = !localCurrentVersion['semantic-forms'] || localCurrentVersion['semantic-forms'] === 'latest' ? newestSemanticForms : localCurrentVersion['semantic-forms']
 
+      // the address search engines are told to list this page at, which is its own, except on the newest version of a module's docs: that version is built twice, once under its number and once under latest, and the copy under latest is the one the sitemap lists
+      const canonicalParts = file.split('/')
+      if (canonicalParts.length >= 2 && localCurrentVersion[thisRepo] === 'latest') canonicalParts[canonicalParts.length - 2] = 'latest'
+
       // set the model for this file
       const model = {
         currentPage,
+        canonical: app.get('sitemap').canonical(undefined, urlOf(`docs/${canonicalParts.join('/')}`)),
         currentRepo: thisRepo,
         currentVersion: localCurrentVersion,
         versions: versionLinks,
@@ -367,6 +373,19 @@ function onBeforeStatics (app) {
     hasSemanticFormsFullDemo: fs.existsSync(path.join('statics/pages/docs/semantic-forms', 'latest', 'fullDemo.html')),
     hasTeddyBenchmarks: fs.existsSync(path.join('statics/pages/docs/teddy', 'latest', 'benchmarks.html'))
   }
+
+  // the pages outside the docs tree have only the one copy each, so each is its own canonical page
+  for (const file of fs.readdirSync('statics/pages')) {
+    if (file.endsWith('.html')) app.get('htmlModels')[file] = { canonical: app.get('sitemap').canonical(undefined, urlOf(file)) }
+  }
+}
+
+// the url a page is served at, from the path of its template in statics/pages or of the file built from it in docs, e.g. docs/latest/get-started.html and docs/latest/get-started/index.html are both /docs/latest/get-started/
+//
+// each page is built into a folder of its own, so the url ends in a slash; github pages redirects the url without one to it
+function urlOf (file) {
+  const url = file.replace(/\.html$/, '').replace(/(^|\/)index$/, '$1')
+  return `/${url}${url && !url.endsWith('/') ? '/' : ''}`
 }
 
 // build pages from the other modules first
@@ -423,7 +442,7 @@ async function prebuild () {
   function rewriteTemplateLinks (html, repo, siblingPages) {
     html = html.replace(/href="\/([A-Za-z0-9-]+\.html)(#[^"]*)?"/g, (match, file, anchor) => {
       if (!siblingPages.includes(file)) return match
-      const page = file === 'index.html' ? '' : file.replace(/\.html$/, '')
+      const page = file === 'index.html' ? '' : `${file.replace(/\.html$/, '')}/`
       return `href="/docs/${repo}/{currentVersion.${repo}}/${page}${anchor || ''}"`
     })
 
@@ -432,7 +451,7 @@ async function prebuild () {
     // the version becomes the same teddy variable as above, which also keeps the link inside whatever host the site is being served from rather than jumping to production
     return html.replace(/href="https:\/\/rooseveltframework\.org\/docs\/[^/"]+\/[^/"]+\/([A-Za-z0-9-]+)\/?(#[^"]*)?"/g, (match, page, anchor) => {
       if (!siblingPages.includes(`${page}.html`)) return match
-      return `href="/docs/${repo}/{currentVersion.${repo}}/${page}${anchor || ''}"`
+      return `href="/docs/${repo}/{currentVersion.${repo}}/${page}/${anchor || ''}"`
     })
   }
 
@@ -449,7 +468,7 @@ async function prebuild () {
     return html.replace(/href="\.\/([A-Za-z0-9-]+\.md)(#[^"]*)?"/g, (match, file, anchor) => {
       const target = repos[repo][file]
       if (!target) return match
-      const page = target === 'index.html' ? '' : target.replace(/\.html$/, '')
+      const page = target === 'index.html' ? '' : `${target.replace(/\.html$/, '')}/`
       const base = repo === 'roosevelt' ? '/docs/{currentVersion.roosevelt}' : `/docs/${repo}/{currentVersion.${repo}}`
       return `href="${base}/${page}${anchor || ''}"`
     })
@@ -523,7 +542,7 @@ async function prebuild () {
       //
       // so rather than being dropped it is rewritten to point at this site's own pages, with the version left as a teddy variable so the same html serves both the latest and the numbered copy of the page
       if (repo === 'roosevelt' && fileToConvert === 'CONFIGURATION.md' && configSubpages.length) {
-        const links = configSubpages.map(subpage => `      <li><a href="/docs/{currentVersion.roosevelt}/${subpage.page}">${subpage.label}</a></li>`).join('\n')
+        const links = configSubpages.map(subpage => `      <li><a href="/docs/{currentVersion.roosevelt}/${subpage.page}/">${subpage.label}</a></li>`).join('\n')
         // showdown wraps the details element in a paragraph, and a nav inside a paragraph is not valid html, so the paragraph tags are replaced along with it
         html = html.replace(/(?:<p>\s*)?<details[^>]*>[\s\S]*?<\/details>(?:\s*<\/p>)?/i, `<nav class="toc">\n  <ul>\n${links}\n  </ul>\n</nav>`)
       }
@@ -583,10 +602,10 @@ async function prebuild () {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Redirecting...</title>
-  <meta http-equiv="refresh" content="0;url=/docs/latest/get-started">
+  <meta http-equiv="refresh" content="0;url=/docs/latest/get-started/">
 </head>
 <body>
-  <p id="redirecting">You are being redirected to <a href="/docs/latest/get-started">/docs/latest/get-started</a>. If the redirect does not happen automatically, click the link.</p>
+  <p id="redirecting">You are being redirected to <a href="/docs/latest/get-started/">/docs/latest/get-started/</a>. If the redirect does not happen automatically, click the link.</p>
 </body>
 </html>`
         if (!fs.existsSync('statics/pages/docs/index.html')) {
@@ -627,10 +646,10 @@ async function prebuild () {
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Redirecting...</title>
-  <meta http-equiv="refresh" content="0;url=/docs/${repo}/latest">
+  <meta http-equiv="refresh" content="0;url=/docs/${repo}/latest/">
 </head>
 <body>
-  <p id="redirecting">You are being redirected to <a href="/docs/${repo}/latest">/docs/${repo}/latest</a>. If the redirect does not happen automatically, click the link.</p>
+  <p id="redirecting">You are being redirected to <a href="/docs/${repo}/latest/">/docs/${repo}/latest/</a>. If the redirect does not happen automatically, click the link.</p>
 </body>
 </html>`)
           logger.log('📝', `roosevelt-website writing new HTML file statics/pages/docs/${repo}/index.html`.green)
@@ -656,7 +675,7 @@ async function prebuild () {
 
 // the params every entry point starts roosevelt with
 function rooseveltParams () {
-  const params = { onBeforeStatics, onStaticsRebuilt }
+  const params = { onBeforeStatics, onStaticsRebuilt, sitemap: { urls: sitemapUrls } }
   if (fastMode) {
     params.html = { blocklist: oldVersionPages } // skip rendering the old versions of each module's docs
     console.log('🧸  Fast mode: building only the current version of each module\'s docs. The old versions already in the docs folder are left as they are. Build without --fast-mode before committing.'.yellow)
@@ -797,6 +816,69 @@ function buildSearchIndex () {
   fs.rmSync(path.join('docs', 'js', 'siteTexts.js'), { force: true }) // replaced by the search index above
 }
 
+// the pages the sitemap lists, which are the ones search engines should send people to: the site's own pages and the current version of each module's docs
+//
+// roosevelt could list every page it builds by itself, but most of those are the wrong ones here: the old versions of each module's docs, which are kept for the people who need them rather than to be found, and the pages that only redirect to another, which a sitemap should never list
+//
+// so the list is made from the pages the build wrote instead, and each one is given the date its content last changed
+function sitemapUrls () {
+  const changedOn = lastChanged()
+  const urls = []
+  for (const fileName of fs.readdirSync('docs', { recursive: true })) {
+    const file = fileName.split(path.sep).join('/')
+    if (!file.endsWith('.html')) continue
+    if (/^docs\/(?:[^/]+\/)?\d+\.\d+\.\d+\//.test(file)) continue // an old version of a module's docs, or the newest, whose copy under latest is the one listed
+    if (/<meta[^>]+http-equiv=["']?refresh/i.test(fs.readFileSync(path.join('docs', file), 'utf8'))) continue // a page that only sends the visitor on to another
+
+    const loc = urlOf(file)
+    const lastmod = pageSources(loc).map(changedOn).filter(Boolean).sort().pop()
+    urls.push(lastmod ? { loc, lastmod } : { loc })
+  }
+  return urls.sort((a, b) => a.loc.localeCompare(b.loc)) // in one order wherever it is made, rather than the order the filesystem lists them in
+}
+
+// the files in this repo a page's content comes from: its template, its model when it has one, and the data the model reads
+//
+// the layout and the navigation are left out on purpose. every page carries them, so counting them would give every page a new date whenever either changed, and search engines stop trusting a lastmod that moves when the content has not
+const pageData = {
+  'statics/pages/contributors.html': ['contributors.json']
+}
+function pageSources (url) {
+  const page = url === '/' ? 'index' : url.slice(1, -1)
+  const template = [`statics/pages/${page}.html`, `statics/pages/${page}/index.html`].find(file => fs.existsSync(file))
+  if (!template) return []
+  const stem = template.slice(0, -'.html'.length)
+  return [template, `${stem}.js`, `${stem}.json`, ...(pageData[template] || [])]
+}
+
+// when each file a page's content comes from last changed, as a YYYY-MM-DD date, going by git
+//
+// the docs templates are committed, and they are only rewritten when the markdown they are made from changes, so the date of the last commit to one is when that page last changed. a file that has changed since its last commit is changing today, which is the date it will have once that change is committed
+//
+// without git, or with a shallow clone such as ci makes, the dates are unknown or wrong, so pages are listed without one rather than with a guess
+function lastChanged () {
+  const git = args => require('child_process').execFileSync('git', args, { cwd: __dirname, encoding: 'utf8', stdio: ['ignore', 'pipe', 'ignore'], maxBuffer: 256 * 1024 * 1024 })
+  const sources = ['statics/pages', 'contributors.json']
+  const dates = {}
+  try {
+    if (git(['rev-parse', '--is-shallow-repository']).trim() === 'true') return () => undefined
+
+    // newest commit first, so the first date seen for a file is the date it last changed
+    for (const commit of git(['log', '--format=%x00%cs', '--name-only', '--', ...sources]).split('\0').slice(1)) {
+      const [date, ...files] = commit.trim().split('\n')
+      for (const file of files) if (file && !dates[file]) dates[file] = date
+    }
+
+    const today = new Date().toISOString().slice(0, 10)
+    for (const line of git(['status', '--porcelain', '-uall', '--', ...sources]).split('\n')) {
+      if (line) dates[line.slice(3).split(' -> ').pop()] = today
+    }
+  } catch {
+    return () => undefined
+  }
+  return file => dates[file]
+}
+
 // removes the version number from a docs path so that the same page can be found across versions, e.g. both docs/latest/get-started/index.html and docs/0.31.5/get-started/index.html become docs/*/get-started/index.html
 function stripVersion (file) {
   return file.replace(/\/(?:latest|\d+\.\d+\.\d+)\//, '/*/')
@@ -810,7 +892,9 @@ module.exports = {
   build,
   serve,
   compareVersions,
-  stripVersion
+  stripVersion,
+  urlOf,
+  sitemapUrls
 }
 
 // running this file is what starts a build; requiring it does not, so the tests can read the helpers above without one

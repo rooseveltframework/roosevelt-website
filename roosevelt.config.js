@@ -9,6 +9,12 @@ module.exports = {
   html: {
     folderPerPage: 'index.html'
   },
+  sitemap: {
+    enable: true,
+    baseUrl: 'https://rooseveltframework.org',
+    file: true, // github pages serves the docs folder without roosevelt, so the sitemap and robots.txt are written into it
+    staticPages: false // the pages to list are picked out by sitemapUrls in test-server.js, which leaves out the old versions of the docs and the redirect pages
+  },
   css: {
     sourcePath: 'css',
     compiler: {
@@ -97,6 +103,11 @@ module.exports = {
     {
       source: rooseveltConfig.ref(param => `${param.staticsRoot}/images`),
       dest: rooseveltConfig.ref(param => `${param.publicFolder}/images`)
+    },
+    {
+      // copied rather than given to the sitemap's robotsTxt param, because roosevelt only writes a robots.txt into the public folder when there is none there yet, so later edits to the source would never reach it
+      source: rooseveltConfig.ref(param => `${param.staticsRoot}/robots.txt`),
+      dest: rooseveltConfig.ref(param => `${param.publicFolder}/robots.txt`)
     }
   ]
 }
