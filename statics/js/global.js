@@ -140,7 +140,9 @@ async function performSearch () {
           context = `${before}<strong>${matchedText}</strong>${after}` // highlight the matched term
         }
 
-        document.querySelector('search output ul').insertAdjacentHTML('beforeend', `<li><a href="/${file.file}" title="${file.title}">…${context}…</li>`)
+        // the index names the file each page was built into, e.g. docs/latest/get-started/index.html, and the page is linked to at its folder instead, which is its canonical url
+        const url = `/${file.file.replace(/(^|\/)index\.html$/, '$1')}`
+        document.querySelector('search output ul').insertAdjacentHTML('beforeend', `<li><a href="${url}" title="${file.title}">…${context}…</li>`)
       }
     }
     document.querySelector('search output ul').insertAdjacentHTML('beforeend', `<li><a href="https://github.com/search?q=org%3Arooseveltframework+language%3AMarkdown+${document.getElementById('search').value}&type=code">Search this term on GitHub</li>`)

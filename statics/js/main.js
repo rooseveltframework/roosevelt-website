@@ -12,10 +12,10 @@ if (document.getElementById('fancy-version-picker')) {
       const response = await fetch(destination, { method: 'HEAD' }) // perform a fetch request to check if the url exists
       if (response.ok) window.location = destination
       else {
-        const parts = destination.split('/')
+        const parts = destination.replace(/\/$/, '').split('/')
         parts.pop()
         parts.pop()
-        destination = parts.join('/') + '/latest'
+        destination = parts.join('/') + '/latest/'
         window.location = destination
       }
     }
