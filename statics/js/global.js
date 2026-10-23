@@ -43,6 +43,7 @@ if (navLinks && floatOnceNavScrolls.length && 'IntersectionObserver' in window) 
 
 // activate semantic forms ui library js support https://github.com/rooseveltframework/semantic-forms
 require('semantic-forms')()
+const { enhanceTitleAttributes } = require('./tooltips.js') // tooltips for elements with title attributes
 
 // display search box that does an advanced github search that displays only when js is enabled; this can only work when js is enabled because of how github search works
 //
@@ -244,17 +245,5 @@ function setCookie (name, value, days) {
   document.cookie = `${name}=${value}; expires=${expires}; path=/`
 }
 
-// replace title attributes with tippy attributes
-const tippy = require('tippy.js/dist/tippy.cjs.js').default // tippy ui tooltip library https://github.com/atomiks/tippyjs
-function enhanceTitleAttributes () {
-  document.querySelectorAll('[title]:not(iframe)')?.forEach(titleAttribute => { // apply tippy tooltip to any element with html title attribute
-    if (!titleAttribute.getAttribute('data-tippy-skip')) {
-      tippy(titleAttribute, {
-        content: titleAttribute.getAttribute('title'), // extract tooltip content from html title attribute
-        placement: titleAttribute.getAttribute('data-tippy-placement') || 'top' // allow html elements to customize tooltip placement
-      })
-      titleAttribute.removeAttribute('title') // remove html title attribute as it is now redundant and fights with tippy
-    }
-  })
-}
+// replace title attributes with tooltips, in browsers that support them (see tooltips.js)
 enhanceTitleAttributes()

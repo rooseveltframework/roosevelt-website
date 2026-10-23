@@ -1,0 +1,115 @@
+// tooltips, which are popovers placed with css anchor positioning (see statics/js/tooltips.js): dark, with an arrow pointing at the element each is for, fading in
+
+// the popover is only positioned; what is drawn is the box inside it
+#tooltip {
+  position-area: top span-all;
+  justify-self: anchor-center; // centered on the element, as far as it can be without going off the page
+  position-try-fallbacks: flip-block;
+  position-visibility: anchors-visible; // hidden while its element is scrolled out of view
+  inset: auto;
+  max-width: min(350px, calc(100vw - 10px));
+  margin: 0 5px;
+  padding: 0;
+  border: none;
+  background: none;
+  color: #fff;
+  font-family: inherit;
+  overflow: visible;
+
+  // it fades in over 300ms and out over 250ms (see statics/js/tooltips.js, which sets data-state, and closes it once it's faded out); while it fades out, it isn't in the pointer's way
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.25s;
+
+  &[data-state="visible"] {
+    opacity: 1;
+    pointer-events: auto;
+    transition-duration: 0.3s;
+  }
+
+  &[data-placement="bottom"] {
+    position-area: bottom span-all;
+  }
+
+  &[data-placement="left"],
+  &[data-placement="right"] {
+    place-self: anchor-center auto; // centered beside the element
+    position-try-fallbacks: flip-inline;
+    margin: 5px 0;
+  }
+
+  &[data-placement="left"] {
+    position-area: left span-all;
+  }
+
+  &[data-placement="right"] {
+    position-area: right span-all;
+  }
+}
+
+// the space between the tooltip and its element, which the arrow points across, is part of the tooltip so the pointer can cross it; it's on whichever side of the tooltip the element ended up on
+#tooltip .tooltip-frame {
+  padding-bottom: 10px;
+}
+
+#tooltip .tooltip-box {
+  position: relative;
+  padding: 5px 9px;
+  border-radius: 4px;
+  background-color: #333;
+  font-size: 14px;
+  line-height: 1.4;
+  white-space: normal;
+  overflow-wrap: break-word;
+
+  // the arrow, which points down at the element by default
+  &::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: calc(50% - 8px);
+    border: 8px solid transparent;
+    border-bottom-width: 0;
+    border-top-color: #333;
+  }
+}
+
+#tooltip[data-side="bottom"] {
+  .tooltip-frame {
+    padding: 10px 0 0;
+  }
+
+  .tooltip-box::after {
+    top: auto;
+    bottom: 100%;
+    border-width: 0 8px 8px;
+    border-color: transparent transparent #333;
+  }
+}
+
+#tooltip[data-side="left"] {
+  .tooltip-frame {
+    padding: 0 10px 0 0;
+  }
+
+  .tooltip-box::after {
+    top: calc(50% - 8px);
+    left: 100%;
+    border-width: 8px 0 8px 8px;
+    border-color: transparent transparent transparent #333;
+  }
+}
+
+#tooltip[data-side="right"] {
+  .tooltip-frame {
+    padding: 0 0 0 10px;
+  }
+
+  .tooltip-box::after {
+    top: calc(50% - 8px);
+    left: auto;
+    right: 100%;
+    border-width: 8px 8px 8px 0;
+    border-color: transparent #333 transparent transparent;
+  }
+}
