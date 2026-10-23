@@ -1,6 +1,6 @@
 @use "../../node_modules/semantic-forms/dist/semantic-forms.css";
-@use '../../node_modules/tippy.js/dist/tippy.css';
 @use "helpers";
+@use "tooltips";
 
 @view-transition { // enable multi-page view transitions
   navigation: auto;
