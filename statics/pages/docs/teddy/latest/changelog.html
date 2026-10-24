@@ -1,7 +1,27 @@
 <include src="layouts/main">
 <arg pageTitle>Teddy — Changelog</arg>
 <arg pageId>teddy-teddy-—-changelog</arg>
-<arg pageContent><article><h2 id="210">2.1.0</h2>
+<arg pageContent><article><h2 id="220">2.2.0</h2>
+<ul>
+<li>Added <code>teddy.renderFragment(template, model, options)</code>, which renders into a <code>DocumentFragment</code> rather than a string. An element written with a <code>ref</code> attribute is handed back by name in the fragment's <code>refs</code>.</li>
+<li>Added <code>teddy.check(template)</code>, which compiles a template without rendering it and returns its warnings, so a build step can fail on them.</li>
+<li>Added render options: <code>teddy.render(template, model, options)</code> takes <code>verbosity</code>, <code>emptyVarBehavior</code>, and <code>cache</code> for that render alone. A callback can still be passed third, as Express does, or fourth after options.</li>
+<li>Added <code>npm run benchmark:compare</code>, which measures how fast teddy is at two versions, by default this checkout against <code>main</code>, and says which scenarios got faster or slower, by how much, and whether that's more than the measurements disagree with themselves. See <code>benchmarker/BENCHMARKER.md</code>.</li>
+<li>Improved client-side rendering performance. Precompiled templates now render about 1.5× as fast, and cached templates up to a quarter faster.</li>
+<li>Altered warnings to now name the template they're about. Warnings that only printed at a higher verbosity are worded to say what was removed.</li>
+<li>Altered <code>npm run benchmark</code> to rebuild teddy if its build is older than its source, rather than only if it's missing, so a run never measures a build left over from another branch.</li>
+<li>Fixed <code>{varName|p}</code> writing its value unescaped. <code>|p</code> is meant only to stop the value being parsed, so it's now escaped like any other variable. Combine it with <code>|s</code> (<code>{varName|s|p}</code>) to write a value unescaped and unparsed.</li>
+<li>Fixed <code>teddy.render</code> adding a <code>_noTeddyBlocks</code> property to the model it was given, which threw on a frozen model. A render now keeps what it holds out of the markup to itself.</li>
+<li>Fixed an element in an included template keeping only the first of its one-line ifs: an element can carry several, but in a template brought in by <code>&lt;include&gt;</code>, the ones after the first were dropped.</li>
+<li>Fixed <code>selected-value</code> and <code>checked-value</code> never matching a value written with the <code>|p</code> flag, on either side, such as <code>&lt;option value="{choice|p}"&gt;</code>.</li>
+<li>Fixed one-line ifs being written out as they are, as <code>if-x true="disabled"</code> attributes, on the <code>&lt;option&gt;</code> and <code>&lt;input&gt;</code> elements a <code>selected-value</code> or <code>checked-value</code> from the model marks.</li>
+<li>Fixed the client-side build dropping whitespace that sits on its own between elements, so <code>&lt;span&gt;A&lt;/span&gt; &lt;span&gt;B&lt;/span&gt;</code> rendered as <code>AB</code> rather than <code>A B</code>. Node builds were unaffected.</li>
+<li>Fixed the client-side build writing an entity in a variable's value unescaped. A value of <code>Tom &amp;amp; Jerry</code> was written as <code>Tom &amp;amp; Jerry</code> and displayed as <code>Tom &amp; Jerry</code>, where node writes <code>Tom &amp;amp;amp; Jerry</code>, which displays as the value has it.</li>
+<li>Fixed the client-side build lowercasing the names of SVG and MathML elements and attributes, so <code>viewBox</code> came out as <code>viewbox</code> and <code>linearGradient</code> as <code>lineargradient</code>, which XML consumers of the output and anything comparing it to node's don't accept. Node builds were unaffected.</li>
+<li>Fixed an escaped variable's value being able to write markup unescaped. A value is still parsed for <code>{variables}</code> of its own, but a <code>{variable|s}</code> inside it was written raw, so a model value of <code>{otherVar|s}</code> let <code>otherVar</code> through unescaped. Variables inside an escaped value are now always escaped.</li>
+<li>Updated dependencies.</li>
+</ul>
+<h2 id="210">2.1.0</h2>
 <ul>
 <li>Breaking: Removed the <code>&lt;cache&gt;</code> element and <code>teddy.setCache</code>, <code>teddy.clearCache</code>, <code>teddy.caches</code>, and <code>teddy.templateCaches</code>. They only suited pages that render the same for every visitor and are keyed by one model variable: a page carrying a session, a CSRF token, or a flash message would serve one visitor's markup to the next, and a key that missed a variable served stale pages without warning. Cache rendered pages outside the app instead, with a CDN, a reverse proxy such as nginx's <code>proxy_cache</code>, or <code>Cache-Control</code> headers. A <code>&lt;cache&gt;</code> element left in a template is now rendered as an ordinary unknown element. <code>teddy.setCacheTemplates</code> and the <code>cache</code> render option, which keep templates in memory rather than reading them again, are unchanged.</li>
 <li>Breaking: Bumped the precompiled format to <code>2</code>, so templates precompiled with an earlier version must be precompiled again.</li>

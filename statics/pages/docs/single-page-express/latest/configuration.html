@@ -25,7 +25,10 @@
 <li>If you do not set <code>res.target</code> and neither <code>app.defaultTarget</code> nor <code>app.defaultTargets</code> is set, then the contents of the <code>&lt;body&gt;</code> tag will be replaced with the output of your rendered template.</li>
 <li>You can also supply an array of query selectors to <code>res.target</code>. Elements found matching the query selectors in the array will be replaced with the corresponding query selectors from the rendered template.</li>
 <li>If you set <code>res.appendTargets = true</code>, any new target(s) you add will be in addition to whatever is set by <code>app.defaultTarget</code> or <code>app.defaultTargets</code>.</li></ul></li>
-<li><p>If you set <code>res.focus</code>, the browser's focus will be set to that element after the page is rendered. If you do not set <code>res.focus</code>, then the browser's focus will be set to the first non-inert element in the DOM with the <code>autofocus</code> attribute, or, if none are present, it will be set to whatever the target element was set to for the DOM update. If there are multiple targets, the first target on the list will be what is selected.</p></li>
+<li><p>If you set <code>res.focus</code>, the browser's focus will be set to that element after the page is rendered. If you do not set <code>res.focus</code>, then the browser's focus will be set to the first non-inert element in the DOM with the <code>autofocus</code> attribute, or, if none are present, it will be set to whatever the target element was set to for the DOM update. If there are multiple targets, the first target on the list will be what is selected. Set <code>res.focus = false</code> to leave focus where it is for one render, or the <code>manageFocus</code> constructor param to <code>false</code> to do so for every render, for example in an app whose navigation happens beside content the user is working in.</p>
+<ul>
+<li>A target element that can't take focus on its own is given <code>tabindex="-1"</code> so it can, and it keeps it: an element that stops being focusable while it has focus loses it, which would undo the move.</li></ul></li>
+<li><p>After the page is rendered, its title is announced to screen readers through a visually hidden live region: the first element with a <code>data-page-title</code> attribute, or else an <code>&lt;h1&gt;</code>, or else the <code>&lt;title&gt;</code>. Set <code>res.announce = false</code> to skip this for one render, or the <code>announcePageChange</code> constructor param to <code>false</code> to skip it for every render.</p></li>
 <li><p>If you set <code>res.skipViewTransition</code>, the DOM update will not be wrapped in a <code>document.startViewTransition()</code> call, which is useful in improving performance if you're not doing an animation.</p></li>
 <li><p>There are also hooks for setting animations as well. See "Hooks for setting animations" below.</p></li>
 </ul>
@@ -44,6 +47,10 @@
 <li><code>topbarDelay</code> <em>[Number]</em>: How long in milliseconds a navigation has to still be working before the <a href="https://buunguyen.github.io/topbar/">top bar</a> appears at all. A navigation that has its content ready sooner never shows one. Set it to <code>0</code> to show the bar the moment a navigation starts. Default: <code>250</code>.</li>
 <li><code>alwaysSkipViewTransition</code> <em>[Boolean]</em>: When set to true, if using the default render method, the DOM update will not be wrapped in a <code>document.startViewTransition()</code> call, which is useful in improving performance if you're not doing an animation. Default: <code>false</code>.</li>
 <li><code>alwaysScrollTop</code> <em>[Boolean]</em>: Always scroll to the top of the page after every render instead of remembering the scroll position of each page visited and restoring that scroll position when you revisit those pages. Default: <code>false</code>.</li>
+<li><code>scrollRestoration</code> <em>[Boolean]</em>: Remember the scroll position of each page visited and restore it when you revisit the page. Set it to <code>false</code> to leave the scroll position alone instead, which also saves measuring every element with an <code>id</code> on every navigation. Default: <code>true</code>.</li>
+<li><code>manageFocus</code> <em>[Boolean]</em>: Move the browser's focus to the new content after every render, if using the default render method. See "Default render method behavior" above. Default: <code>true</code>.</li>
+<li><code>announcePageChange</code> <em>[Boolean]</em>: Announce the new page's title to screen readers after every render, if using the default render method. Default: <code>true</code>.</li>
+<li><code>history</code> <em>[String]</em>: Where navigations are recorded: <code>'browser'</code> in the browser's own history, <code>'memory'</code> in a history of the app's own that leaves the url alone, or <code>'none'</code>. See "History" in the usage docs. <code>'memory'</code> suits a page loaded from a file, as in an Electron app. Default: <code>'browser'</code>.</li>
 </ul>
 <h4 id="customizing-the-default-render-methods-behavior">Customizing the default render method's behavior</h4>
 <p>These constructor params are only relevant if you're not supplying a custom render method.</p>
@@ -79,6 +86,10 @@
 <ul>
 <li><code>afterEveryRender(params)</code> <em>[Function]</em>: Function to execute after every template render sourced from the constructor params.</li>
 <li><code>alwaysScrollTop</code> <em>[Boolean]</em>: If true, the app will not remember scroll position on a per-page basis.</li>
+<li><code>announcePageChange</code> <em>[Boolean]</em>: Whether the new page's title is announced to screen readers after every render, sourced from the constructor params.</li>
+<li><code>historyMode</code> <em>[String]</em>: Where navigations are recorded: <code>'browser'</code>, <code>'memory'</code>, or <code>'none'</code>, sourced from the <code>history</code> constructor param, or <code>'memory'</code> if the browser refused to record one.</li>
+<li><code>manageFocus</code> <em>[Boolean]</em>: Whether focus is moved to the new content after every render, sourced from the constructor params.</li>
+<li><code>scrollRestoration</code> <em>[Boolean]</em>: Whether scroll positions are remembered and restored, sourced from the constructor params.</li>
 <li><code>alwaysSkipViewTransition</code> <em>[Boolean]</em>: When set to true, if using the default render method, the DOM update will not be wrapped in a <code>document.startViewTransition()</code> call.</li>
 <li><code>appVars</code> <em>[Object]</em>: List of variables stored via <code>app.set()</code> and retrieved with <code>app.get()</code>.</li>
 <li><code>beforeEveryRender(params)</code> <em>[Function]</em>: Function to execute before every template render sourced from the constructor params.</li>
@@ -93,7 +104,7 @@
 <li><code>topbarEnabled</code> <em>[Boolean]</em>: Whether or not the top loading bar is enabled.</li>
 <li><code>topbarRoutes</code> <em>[Array of Strings]</em>: Which routes to use the top loading bar on; defaults to all if this option is not supplied.</li>
 <li><code>updateDelay</code> <em>[Number]</em>: How long to wait before rendering a template sourced from constructor params.</li>
-<li><code>urls</code> <em>[Object]</em>: List of URLs that have been visited and metadata about them.</li>
+<li><code>urls</code> <em>[Object]</em>: List of URLs that have been visited and metadata about them, keyed by route, query string included, and the body the page was asked for with, if any.</li>
 </ul>
 <h2 id="express-api-implementation">Express API implementation</h2>
 <p><code>single-page-express</code> is a <em>partial</em> frontend implementation of the <a href="https://expressjs.com/en/5x/api.html">Express 5 API</a>. Below is a full list of Express API methods and the degree to which it is implemented.</p>
@@ -153,11 +164,14 @@
 </ul>
 <h5 id="new-methods-defined-by-single-page-express">New methods defined by single-page-express</h5>
 <ul>
-<li><code>app.triggerRoute(params)</code>: This will activate the route callback registered for a given route, as though a link was clicked or a form was POSTed. Returns a promise that resolves once the route callback has finished, so you can <code>await</code> it.<ul>
+<li><code>app.triggerRoute(params)</code>: This will activate the route callback registered for a given route, as though a link was clicked or a form was POSTed. Returns a promise that resolves once the route callback has finished and what it rendered is on the page, its render callback included, so you can <code>await</code> it. It rejects with any error the route or a render callback threw that nothing handled, and a route nothing handles is warned about.<ul>
 <li>Params accepted by <code>app.triggerRoute</code> include:<ul>
 <li><code>route</code> <em>[String]</em>: Which route you're triggering.</li>
 <li><code>method</code> <em>[String]</em>: e.g. GET, POST, etc. (Case insensitive.)</li>
-<li><code>body</code> <em>[Object]</em>: What to supply to <code>req.body</code> if you're triggering a POST.</li></ul></li></ul></li>
+<li><code>body</code> <em>[Object]</em>: What to supply to <code>req.body</code>, for any method. A GET's body is kept in the history, so going back to the page asks for it with the same body.</li>
+<li><code>history</code> <em>[String]</em>: How a GET is recorded in the history: <code>'push'</code> (the default), <code>'replace'</code>, or <code>'none'</code>.</li></ul></li></ul></li>
+<li><code>app.back()</code> and <code>app.forward()</code>: Move back or forward through the history, as the browser's buttons do, in any history mode. Each returns a promise that resolves with <code>true</code> once the page moved to has rendered, or <code>false</code> if there was nowhere to go.</li>
+<li><code>app.canGoBack()</code> and <code>app.canGoForward()</code>: Whether there's an entry in the history to move back or forward to.</li>
 </ul>
 <h3 id="request-object">Request object</h3>
 <h4 id="properties-2">Properties</h4>
@@ -196,6 +210,7 @@
 <ul>
 <li><code>req.backButtonPressed</code> <em>[Boolean]</em>: This will be <code>true</code> when the browser back button was pressed. A class <code>backButtonPressed</code> will also be added to the <code>&lt;html&gt;</code> element.</li>
 <li><code>req.forwardButtonPressed</code> <em>[Boolean]</em>: This will be <code>true</code> when the browser forward button was pressed. A class <code>forwardButtonPressed</code> will also be added to the <code>&lt;html&gt;</code> element.</li>
+<li><code>req.signal</code> <em>[AbortSignal]</em>: Aborted once a later navigation supersedes this one. A route doing slow work can check <code>req.signal.aborted</code>, or pass it to <code>fetch()</code>, to stop early; whatever a superseded navigation renders isn't written to the page either way.</li>
 <li><code>req.singlePageExpress</code> <em>[Boolean]</em>: This property will always be set to <code>true</code>. You can use it to detect whether your route is executing in the <code>single-page-express</code> context or not.</li>
 </ul>
 <h3 id="response-object">Response object</h3>
@@ -212,7 +227,8 @@
 <li><code>res.appendTargets</code> <em>[Boolean]</em>: If using the default render method, set this to <code>true</code> to make the target(s) you set with <code>res.target</code> apply <em>in addition to</em> whatever is set by <code>app.defaultTarget</code> or <code>app.defaultTargets</code>, rather than replacing them. Has no effect unless <code>res.target</code> is also set.</li>
 <li><code>res.afterRender(params)</code> <em>[Function]</em>: If using the default render method, you can set this to a function that will execute after every render.</li>
 <li><code>res.beforeRender(params)</code> <em>[Function]</em>: If using the default render method, you can set this to a function that will execute before every render.</li>
-<li><code>res.focus</code> <em>[String]</em>: If using the default render method, if you set <code>res.focus</code>, the browser's focus will be set to that element after the page is rendered. If you do not set <code>res.focus</code>, then the browser's focus will be set to the first non-inert element in the DOM with the <code>autofocus</code> attribute, or, if none are present, it will be set to whatever the target element was set to for the DOM update.</li>
+<li><code>res.announce</code> <em>[Boolean]</em>: If using the default render method, set this to <code>false</code> to skip announcing the new page to screen readers for this render.</li>
+<li><code>res.focus</code> <em>[String or Boolean]</em>: If using the default render method, if you set <code>res.focus</code>, the browser's focus will be set to that element after the page is rendered. If you do not set <code>res.focus</code>, then the browser's focus will be set to the first non-inert element in the DOM with the <code>autofocus</code> attribute, or, if none are present, it will be set to whatever the target element was set to for the DOM update. Set it to <code>false</code> to leave focus where it is for this render.</li>
 <li><code>res.removeBaseTags</code> <em>[Boolean]</em>: If using the default render method, this will remove any <code>&lt;base&gt;</code> tags from the page before doing the DOM update.</li>
 <li><code>res.removeHeadTags</code> <em>[Boolean]</em>: If using the default render method, this will remove all children of the <code>&lt;head&gt;</code> tag except the title element from the page before doing the DOM update.</li>
 <li><code>res.removeLinkTags</code> <em>[Boolean]</em>: If using the default render method, this will remove any <code>&lt;link&gt;</code> tags from the page before doing the DOM update.</li>

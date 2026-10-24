@@ -142,13 +142,24 @@ app.get('/users/:userId', function (req, res) {
   res.render('user', { user: req.user })
 })</code></pre>
 <p>Routers have their own <code>param()</code> method that works the same way for the routes they hold.</p>
-<p>You can also call <code>app.triggerRoute(params)</code> to activate the route callback registered for a given route, as though the link was clicked or a form was POSTed. It returns a promise that resolves once the route callback has finished, so you can <code>await</code> it.</p>
+<p>You can also call <code>app.triggerRoute(params)</code> to activate the route callback registered for a given route, as though the link was clicked or a form was POSTed. It returns a promise that resolves once the route callback has finished and what it rendered is on the page, its render callback included, so you can <code>await</code> it. It rejects with any error the route or a render callback threw that nothing handled, and a route nothing handles is warned about.</p>
 <p>Params accepted by <code>app.triggerRoute</code> include:</p>
 <ul>
 <li><code>route</code>: Which route you're triggering.</li>
 <li><code>method</code>: e.g. GET, POST, etc. (Case insensitive.)</li>
-<li><code>body</code>: What to supply to <code>req.body</code> if you're triggering a POST.</li>
+<li><code>body</code>: What to supply to <code>req.body</code>. It works for any method, a GET included, and a GET's body is kept in the history, so going back to the page asks for it with the same body.</li>
+<li><code>history</code>: How a GET is recorded in the history: <code>'push'</code> for a new entry (the default), <code>'replace'</code> to replace the current entry, for example to show the same page again after something on it changed, or <code>'none'</code> to leave it out.</li>
 </ul>
+<h3 id="navigations-that-overlap">Navigations that overlap</h3>
+<p>A GET navigation that starts while an earlier one is still working supersedes it: the earlier one's <code>req.signal</code> is aborted, and anything it goes on to render isn't written to the page, so the page always ends up showing the navigation that started last. A route doing slow work can check <code>req.signal.aborted</code>, or pass <code>req.signal</code> to <code>fetch()</code>, to stop early. A navigation with any other method supersedes the ones before it only once it renders, so a form posted to a route that renders nothing doesn't stop a page from rendering.</p>
+<h3 id="history">History</h3>
+<p>How navigations are recorded is set by the <code>history</code> param in the constructor:</p>
+<ul>
+<li><code>'browser'</code>: in the browser's own history, so the url changes and the browser's back and forward buttons work. This is the default.</li>
+<li><code>'memory'</code>: in a history of the app's own, which leaves the url alone. This suits a page loaded from a file, as in an Electron app, where a url changed by <code>pushState</code> names a file that isn't there, so reloading the page would fail, and some browsers refuse <code>pushState</code> altogether. A browser that refuses to record a navigation switches the app to this, with a warning.</li>
+<li><code>'none'</code>: not at all.</li>
+</ul>
+<p><code>app.back()</code> and <code>app.forward()</code> move through the history in any of these, resolving with <code>true</code> once the page moved to has rendered, or <code>false</code> if there was nowhere to go. <code>app.canGoBack()</code> and <code>app.canGoForward()</code> say whether there is, for example to enable or disable back and forward buttons. Either way, a page is asked for again exactly as it was the first time: its route with its query string, and its body.</p>
 <h3 id="validating-your-templates">Validating your templates</h3>
 <p><code>single-page-express</code> can run the markup your templates produce through an HTML validator on every render, which is a quick way to catch unclosed tags, missing <code>alt</code> attributes, and similar mistakes that a browser will silently paper over.</p>
 <p>The validator is not bundled with <code>single-page-express</code>, because most apps do not want a validator shipped to production. Install one yourself, create an instance, and hand it to the constructor. <a href="https://html-validate.org/">html-validate</a> is what this was built against:</p>
@@ -200,7 +211,8 @@ app.route('/*all').get(function (req, res) { /* ... */ })</code></pre>
 <p>For the rest of the differences between the two, see the <a href="https://expressjs.com/en/guide/migrating-5.html">Express 5 migration guide</a>. Everything else described in these docs — middleware, routers, mounting, <code>app.param()</code> — works the same way under both.</p>
 <h3 id="controlling-scroll-position-behavior">Controlling scroll position behavior</h3>
 <p>By default, <code>single-page-express</code> will remember the scroll position of pages that have been visited. It will also remember the scroll position of child containers on each page as well, but only if those containers have assigned <code>id</code> attributes.</p>
-<p>If you wish to not remember the scroll position on a per route basis, supply <code>res.resetScroll = true</code> in your route. To disable this memory app-wide, set the <code>alwaysScrollTop</code> param to <code>true</code> in the constructor.</p>
+<p>If you wish to not remember the scroll position on a per route basis, supply <code>res.resetScroll = true</code> in your route. To disable this memory app-wide, set the <code>alwaysScrollTop</code> param to <code>true</code> in the constructor, which scrolls to the top after every render, or set <code>scrollRestoration</code> to <code>false</code>, which leaves the scroll position alone.</p>
+<p>A page's scroll position is remembered by its route, query string included, and the body it was asked for with, if any, so a route that shows whatever its body or query names remembers a scroll position for each one.</p>
 <h3 id="running-the-sample-apps">Running the sample apps</h3>
 <p>There are 4 sample apps you can run to see demos of how <code>single-page-express</code> can be used:</p>
 <ol>
