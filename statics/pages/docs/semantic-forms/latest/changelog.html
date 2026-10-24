@@ -1,7 +1,24 @@
 <include src="layouts/main">
 <arg pageTitle>Semantic Forms — Changelog</arg>
 <arg pageId>semantic-forms-semantic-forms-—-changelog</arg>
-<arg pageContent><article><h2 id="5316">5.3.16</h2>
+<arg pageContent><article><h2 id="5317">5.3.17</h2>
+<ul>
+<li>Added <code>semanticForms.setInvalid(field, message, options)</code> and <code>semanticForms.clearInvalid(field)</code>, which mark a field invalid from your own code with a message saying why.</li>
+<li>Added a <code>semanticFormsButton</code> class, which styles a button outside a form like the ones in one.</li>
+<li>Added a <code>--semanticFormsCursor</code> variable, for the pointer over buttons, checkboxes, selects and the like.</li>
+<li>Added a <code>data-display-format</code> attribute for ranges with <code>data-display-value</code>, with <code>{value}</code> standing for the value, such as <code>{value}%</code>. In a <code>customLayout</code> element, a range with <code>data-display-value</code> now keeps the <code>&lt;output&gt;</code> for it up to date.</li>
+<li>Altered <code>--semanticFormsPageBgColor</code> to now set on the page's root element too, so the page can be painted with it. Forms in dark mode now set <code>color-scheme: dark</code> so things like date pickers and scrollbars are drawn dark.</li>
+<li>Added a <code>data-semantic-forms-clear</code> attribute for the clear button. And clearing a field now fires a <code>change</code> event as well as an <code>input</code> event.</li>
+<li>Fixed a keyboard listener being added every time a form was added to the page, since the enhancement runs again for each one. There's one for all of them now.</li>
+<li>Fixed a form inside a <code>&lt;dialog&gt;</code> or a popover, or one holding only a button, shrinking to nothing.</li>
+<li>Fixed a field without an id not having its control enhanced, so a switch without one wasn't given its role or dragging.</li>
+<li>Fixed a field whose id has characters a selector gives a meaning to, such as <code>tag:title</code>, stopping the enhancement of that field and every field after it.</li>
+<li>Fixed a help icon or required asterisk whose title holds quotes or markup breaking the label.</li>
+<li>Fixed <code>data-auto-grow</code> dropping the field's name, class, and other attributes when it turns an input into a textarea.</li>
+<li>Fixed enhancing a textarea firing an <code>input</code> event on it, which an app would take as the user having changed it.</li>
+<li>Updated dependencies.</li>
+</ul>
+<h2 id="5316">5.3.16</h2>
 <ul>
 <li>Fixed the search icon still looking jagged at 100% scale. It was drawn on a 24 unit grid but shown at 18px, so its 1.5px lines and its circle fell between pixels. It's now drawn on an 18 unit grid, one unit to a pixel, with 2px lines placed on whole pixels, which makes it crisp and a little bolder.</li>
 </ul>

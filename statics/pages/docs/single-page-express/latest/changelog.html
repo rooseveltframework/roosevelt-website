@@ -1,7 +1,22 @@
 <include src="layouts/main">
 <arg pageTitle>Single Page Express — Changelog</arg>
 <arg pageId>single-page-express-single-page-express-—-changelog</arg>
-<arg pageContent><article><h2 id="220">2.2.0</h2>
+<arg pageContent><article><h2 id="230">2.3.0</h2>
+<ul>
+<li>Added the <code>history</code> constructor param: <code>'browser'</code> (the default), <code>'memory'</code>, which records navigations in a history of the app's own and leaves the url alone, as suits a page loaded from a file in an Electron app, or <code>'none'</code>. Also added a <code>history</code> param for <code>app.triggerRoute</code>: <code>'push'</code>, <code>'replace'</code>, or <code>'none'</code>. A browser that refuses to record a navigation switches the app to a memory history, with a warning, rather than the navigation failing.</li>
+<li>Added <code>app.back()</code>, <code>app.forward()</code>, <code>app.canGoBack()</code>, and <code>app.canGoForward()</code>, which work in any history mode.</li>
+<li>Added <code>req.signal</code>, which is aborted once a later navigation supersedes the request.</li>
+<li>Added the <code>scrollRestoration</code>, <code>manageFocus</code>, and <code>announcePageChange</code> constructor params, and <code>res.focus = false</code> and <code>res.announce = false</code> to skip moving focus or announcing the page for one render.</li>
+<li>Fixed <code>app.triggerRoute</code> return behavior that could cause race conditions.</li>
+<li>Fixed overlapping navigations causing race conditions.</li>
+<li>Fixed the back and forward buttons asking for a page without its query string or the body it was asked for with. Both are kept in the history now.</li>
+<li>Fixed a click on an element inside a link, such as an icon, not being captured, and fixed clicks the browser gives a meaning of its own being captured: with a modifier key or a button other than the main one, or on a link with a <code>target</code>, a <code>download</code> attribute, or another origin.</li>
+<li>Fixed a query string with a <code>?</code> in a value being read with a <code>,</code> in its place.</li>
+<li>Fixed scroll positions being remembered by path alone, so every page a route showed for a different query string or body shared one.</li>
+<li>Fixed a custom <code>renderMethod</code> never restoring the scroll position, and a <code>&lt;link&gt;</code> or <code>&lt;script&gt;</code> in a new page's head that failed to load holding the page back forever.</li>
+<li>Updated dependencies.</li>
+</ul>
+<h2 id="220">2.2.0</h2>
 <ul>
 <li>Added <code>singlePageExpress.htmlValidateConfig</code>, an <a href="https://html-validate.org/">html-validate</a> config to hand the <code>htmlValidator</code> param. It is <code>html-validate:recommended</code> with <code>attribute-boolean-style</code> and <code>attribute-empty-style</code> turned off, by default.</li>
 <li>Added <code>topbarDelay</code>, which is how long a navigation has to still be working before the top bar appears at all, defaulting to 250ms. Set it to <code>0</code> for the previous behavior of showing the bar the moment a navigation starts.</li>
