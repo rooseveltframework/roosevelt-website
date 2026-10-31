@@ -41,7 +41,7 @@
     "sass": "1.106.1",
     "semantic-forms": "5.3.17",
     "showdown": "2.1.0",
-    "teddy": "2.2.0",
+    "teddy": "2.3.2",
     "terser-webpack-plugin": "5.6.1",
     "webpack": "5.112.2"
   },
