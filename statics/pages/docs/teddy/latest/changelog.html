@@ -1,7 +1,31 @@
 <include src="layouts/main">
 <arg pageTitle>Teddy — Changelog</arg>
 <arg pageId>teddy-teddy-—-changelog</arg>
-<arg pageContent><article><h2 id="220">2.2.0</h2>
+<arg pageContent><article><h2 id="232">2.3.2</h2>
+<ul>
+<li>Fixed a variable whose name is built from another variable, such as <code>{names.{key}}</code>, writing its value unescaped when the page went through a layout. A name not in the model was written back with flags the model supplied, and the layout parsed it again.</li>
+<li>Fixed a <code>{variable}</code> inside an escaped value being written unescaped when its <code>|s</code> flag was spelled oddly, such as <code>{x||ss}</code>, or when its name was built from another variable.</li>
+<li>Updated dependencies.</li>
+</ul>
+<h2 id="231">2.3.1</h2>
+<ul>
+<li>Breaking: Bumped the precompiled format to <code>4</code>, so templates precompiled with an earlier version must be precompiled again.</li>
+<li>Fixed a variable whose name is built from another variable, such as <code>{names.{key}}</code>, taking its flags from the value it was built from. A model value ending in <code>|s</code> or <code>|p|s</code> made the variable write its value unescaped. Its flags now come only from the template, such as the <code>|s</code> in <code>{names.{key}|s}</code>.</li>
+<li>Updated dependencies.</li>
+</ul>
+<h2 id="230">2.3.0</h2>
+<ul>
+<li>Breaking: Bumped the precompiled format to <code>3</code>, so templates precompiled with an earlier version must be precompiled again.</li>
+<li>Breaking: Changed <code>&lt;elseif&gt;</code> and <code>&lt;elseunless&gt;</code> conditions whose value contains a <code>{variable}</code> to now compare against what the variable resolves to, as <code>&lt;if&gt;</code> and <code>&lt;unless&gt;</code> always have. They used to compare against the value as written, so a template relying on that will render differently.</li>
+<li>Added support for <code>{variables}</code> in every attribute of a Teddy element: <code>&lt;loop&gt;</code> <code>key</code> and <code>val</code>, <code>&lt;inline&gt;</code> <code>css</code> and <code>js</code>, <code>&lt;include&gt;</code> <code>as</code>, <code>mode</code>, and <code>hydrate</code>, and the names of <code>&lt;arg&gt;</code> elements, as <code>&lt;loop&gt;</code> <code>through</code> and <code>&lt;include&gt;</code> <code>src</code> already did. An <code>as</code>, <code>mode</code>, or <code>hydrate</code> holding a variable is checked once a render has resolved it, with the same rules and errors as one written out.</li>
+<li>Added support for <code>{variables}</code> and <code>${variables}</code> in a condition's name, such as <code>&lt;if event.{column.name}.icon&gt;</code> or a one-line <code>if-names.{person}="girl"</code>.</li>
+<li>Altered conditions to compare a value written with <code>|p</code> or <code>|s</code>, such as <code>&lt;if x="{y|p}"&gt;</code>, against the variable's value. <code>|p</code> used to make it compare against the placeholder the value is held out as.</li>
+<li>Fixed <code>{variable|h}</code> and <code>{variable|d}</code> looking up the variable with the flag still attached to its name, so a variable that was present in the model was treated as missing and rendered as empty under <code>|h</code> or as <code>{variable}</code> under <code>|d</code>.</li>
+<li>Fixed a <code>${variable}</code> whose name is built from another variable, such as <code>${names.{key}}</code>, dropping its <code>$</code> when it didn't resolve. A plain <code>${variable}</code> already kept it.</li>
+<li>Fixed the client-side build splitting an attribute name at a <code>{</code>, <code>}</code>, or <code>$</code>, which broke one-line ifs and <code>&lt;arg&gt;</code> names holding a variable.</li>
+<li>Updated dependencies.</li>
+</ul>
+<h2 id="220">2.2.0</h2>
 <ul>
 <li>Added <code>teddy.renderFragment(template, model, options)</code>, which renders into a <code>DocumentFragment</code> rather than a string. An element written with a <code>ref</code> attribute is handed back by name in the fragment's <code>refs</code>.</li>
 <li>Added <code>teddy.check(template)</code>, which compiles a template without rendering it and returns its warnings, so a build step can fail on them.</li>

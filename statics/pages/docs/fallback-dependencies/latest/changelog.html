@@ -1,7 +1,13 @@
 <include src="layouts/main">
 <arg pageTitle>Fallback dependencies — Changelog</arg>
 <arg pageId>fallback-dependencies-fallback-dependencies-—-changelog</arg>
-<arg pageContent><article><h2 id="202">2.0.2</h2>
+<arg pageContent><article><h2 id="203">2.0.3</h2>
+<ul>
+<li>Fixed updating an existing clone failing when a tag on the remote had been moved to a different commit.</li>
+<li>Fixed only the final fallback's error being logged when all fallbacks for a dependency fail. Every failed attempt's error is now reported.</li>
+<li>Updated various dependencies.</li>
+</ul>
+<h2 id="202">2.0.2</h2>
 <ul>
 <li>Altered git fallback-dependencies with a <code>prepare</code> script to now build the way npm builds them, with their <code>devDependencies</code> installed. Set <code>skipPrepare</code>, or the <code>FALLBACK_DEPENDENCIES_SKIP_PREPARE</code> environment variable, to opt out.</li>
 <li>Fixed npm configuration being ignored when fetching from the npm registry. The global, user, and project <code>.npmrc</code> files are now read the same way npm reads them, so <code>registry</code>, scoped registries, auth tokens, proxy settings, TLS options, and the npm cache all apply. Previously a fallback-dependency on a private registry was requested from the public one.</li>
