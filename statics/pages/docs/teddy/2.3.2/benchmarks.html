@@ -1,0 +1,3838 @@
+<include src="layouts/main">
+<arg pageTitle>Teddy — Benchmarks</arg>
+<arg pageId>teddy-teddy-—-benchmarks</arg>
+<arg pageContent><article><h1 id="templating-engine-benchmarks">Templating engine benchmarks</h1>
+<p>These benchmarks were ran on the following hardware:</p>
+<table>
+<thead>
+<tr>
+<th></th>
+<th></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Node</td>
+<td>v26.9.0 (V8 14.6.202.34-node.32)</td>
+</tr>
+<tr>
+<td>Platform</td>
+<td>Linux 7.0.0-42-generic x64</td>
+</tr>
+<tr>
+<td>CPU</td>
+<td>AMD Ryzen 9 9900X 12-Core Processor, 24 cores</td>
+</tr>
+<tr>
+<td>Memory</td>
+<td>121 GB</td>
+</tr>
+<tr>
+<td>Time per measurement</td>
+<td>1000 ms</td>
+</tr>
+<tr>
+<td>Process isolation</td>
+<td>one child process per measurement</td>
+</tr>
+</tbody>
+</table>
+<h2 id="overall">Overall</h2>
+<h3 id="in-node-cached">In Node, cached</h3>
+<p>Geometric mean of the per scenario ratios to Teddy.</p>
+<table>
+<thead>
+<tr>
+<th>Engine</th>
+<th style="text-align:right;">Scenarios</th>
+<th>vs Teddy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Teddy</td>
+<td style="text-align:right;">6</td>
+<td>same</td>
+</tr>
+<tr>
+<td>Pug</td>
+<td style="text-align:right;">6</td>
+<td>1.24× slower</td>
+</tr>
+<tr>
+<td>Eta</td>
+<td style="text-align:right;">6</td>
+<td>1.29× slower</td>
+</tr>
+<tr>
+<td>Squirrelly</td>
+<td style="text-align:right;">6</td>
+<td>1.35× slower</td>
+</tr>
+<tr>
+<td>Marko</td>
+<td style="text-align:right;">6</td>
+<td>1.95× slower</td>
+</tr>
+<tr>
+<td>doT</td>
+<td style="text-align:right;">6</td>
+<td>2.64× slower</td>
+</tr>
+<tr>
+<td>art-template</td>
+<td style="text-align:right;">6</td>
+<td>3.01× slower</td>
+</tr>
+<tr>
+<td>Dust.js</td>
+<td style="text-align:right;">6</td>
+<td>5.77× slower</td>
+</tr>
+<tr>
+<td>Handlebars</td>
+<td style="text-align:right;">6</td>
+<td>6.33× slower</td>
+</tr>
+<tr>
+<td>Lodash template</td>
+<td style="text-align:right;">6</td>
+<td>7.39× slower</td>
+</tr>
+<tr>
+<td>Mustache</td>
+<td style="text-align:right;">6</td>
+<td>8.99× slower</td>
+</tr>
+<tr>
+<td>Nunjucks</td>
+<td style="text-align:right;">6</td>
+<td>9.51× slower</td>
+</tr>
+<tr>
+<td>EJS</td>
+<td style="text-align:right;">6</td>
+<td>17.30× slower</td>
+</tr>
+<tr>
+<td>PHP (node-php-runner)</td>
+<td style="text-align:right;">6</td>
+<td>30.81× slower</td>
+</tr>
+<tr>
+<td>LiquidJS</td>
+<td style="text-align:right;">6</td>
+<td>83.08× slower</td>
+</tr>
+</tbody>
+</table>
+<h3 id="in-node-cold">In Node, cold</h3>
+<p>Geometric mean of the per scenario ratios to Teddy.</p>
+<table>
+<thead>
+<tr>
+<th>Engine</th>
+<th style="text-align:right;">Scenarios</th>
+<th>vs Teddy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>doT</td>
+<td style="text-align:right;">6</td>
+<td>16.04× faster</td>
+</tr>
+<tr>
+<td>Eta</td>
+<td style="text-align:right;">6</td>
+<td>13.10× faster</td>
+</tr>
+<tr>
+<td>Squirrelly</td>
+<td style="text-align:right;">6</td>
+<td>9.89× faster</td>
+</tr>
+<tr>
+<td>art-template</td>
+<td style="text-align:right;">6</td>
+<td>3.96× faster</td>
+</tr>
+<tr>
+<td>Mustache</td>
+<td style="text-align:right;">6</td>
+<td>3.85× faster</td>
+</tr>
+<tr>
+<td>Lodash template</td>
+<td style="text-align:right;">6</td>
+<td>3.53× faster</td>
+</tr>
+<tr>
+<td>EJS</td>
+<td style="text-align:right;">6</td>
+<td>3.23× faster</td>
+</tr>
+<tr>
+<td>Handlebars</td>
+<td style="text-align:right;">6</td>
+<td>1.48× faster</td>
+</tr>
+<tr>
+<td>Nunjucks</td>
+<td style="text-align:right;">6</td>
+<td>1.48× faster</td>
+</tr>
+<tr>
+<td>Dust.js</td>
+<td style="text-align:right;">6</td>
+<td>1.39× faster</td>
+</tr>
+<tr>
+<td>Teddy</td>
+<td style="text-align:right;">6</td>
+<td>same</td>
+</tr>
+<tr>
+<td>LiquidJS</td>
+<td style="text-align:right;">6</td>
+<td>same</td>
+</tr>
+<tr>
+<td>PHP (node-php-runner)</td>
+<td style="text-align:right;">6</td>
+<td>1.74× slower</td>
+</tr>
+<tr>
+<td>Pug</td>
+<td style="text-align:right;">6</td>
+<td>2.86× slower</td>
+</tr>
+<tr>
+<td>Marko</td>
+<td style="text-align:right;">6</td>
+<td>6.43× slower</td>
+</tr>
+</tbody>
+</table>
+<h3 id="in-a-browser-cached">In a browser, cached</h3>
+<p>Ratios to <strong>Teddy (emitted js)</strong>. Teddy is listed twice because it is the only engine here that renders two different ways: from emitted JavaScript, or by walking a node tree with no build step. <a href="#in-a-browser-cached-chromium">The detail below</a> says more about both.</p>
+<table>
+<thead>
+<tr>
+<th>Engine</th>
+<th style="text-align:right;">Scenarios</th>
+<th>vs Teddy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Teddy (emitted js)</td>
+<td style="text-align:right;">6</td>
+<td>same</td>
+</tr>
+<tr>
+<td>Pug</td>
+<td style="text-align:right;">6</td>
+<td>1.15× slower</td>
+</tr>
+<tr>
+<td>Eta</td>
+<td style="text-align:right;">6</td>
+<td>1.21× slower</td>
+</tr>
+<tr>
+<td>Squirrelly</td>
+<td style="text-align:right;">6</td>
+<td>1.30× slower</td>
+</tr>
+<tr>
+<td>doT</td>
+<td style="text-align:right;">6</td>
+<td>1.72× slower</td>
+</tr>
+<tr>
+<td>art-template</td>
+<td style="text-align:right;">6</td>
+<td>2.34× slower</td>
+</tr>
+<tr>
+<td>Marko</td>
+<td style="text-align:right;">6</td>
+<td>2.36× slower</td>
+</tr>
+<tr>
+<td>Dust.js</td>
+<td style="text-align:right;">6</td>
+<td>4.10× slower</td>
+</tr>
+<tr>
+<td>Handlebars</td>
+<td style="text-align:right;">6</td>
+<td>5.26× slower</td>
+</tr>
+<tr>
+<td>Mustache</td>
+<td style="text-align:right;">6</td>
+<td>5.89× slower</td>
+</tr>
+<tr>
+<td>Teddy (tree walk)</td>
+<td style="text-align:right;">6</td>
+<td>6.15× slower</td>
+</tr>
+<tr>
+<td>Lodash template</td>
+<td style="text-align:right;">6</td>
+<td>6.23× slower</td>
+</tr>
+<tr>
+<td>Nunjucks</td>
+<td style="text-align:right;">6</td>
+<td>6.78× slower</td>
+</tr>
+<tr>
+<td>EJS</td>
+<td style="text-align:right;">6</td>
+<td>13.18× slower</td>
+</tr>
+<tr>
+<td>LiquidJS</td>
+<td style="text-align:right;">6</td>
+<td>180.39× slower</td>
+</tr>
+<tr>
+<td>PHP (node-php-runner)</td>
+<td style="text-align:right;">0</td>
+<td>cannot run client-side</td>
+</tr>
+</tbody>
+</table>
+<h3 id="in-a-browser-cold">In a browser, cold</h3>
+<p>Geometric mean of the per scenario ratios to Teddy.</p>
+<table>
+<thead>
+<tr>
+<th>Engine</th>
+<th style="text-align:right;">Scenarios</th>
+<th>vs Teddy</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>doT</td>
+<td style="text-align:right;">6</td>
+<td>17.29× faster</td>
+</tr>
+<tr>
+<td>Eta</td>
+<td style="text-align:right;">6</td>
+<td>11.13× faster</td>
+</tr>
+<tr>
+<td>Squirrelly</td>
+<td style="text-align:right;">6</td>
+<td>8.00× faster</td>
+</tr>
+<tr>
+<td>Lodash template</td>
+<td style="text-align:right;">6</td>
+<td>6.05× faster</td>
+</tr>
+<tr>
+<td>art-template</td>
+<td style="text-align:right;">6</td>
+<td>3.88× faster</td>
+</tr>
+<tr>
+<td>EJS</td>
+<td style="text-align:right;">6</td>
+<td>3.48× faster</td>
+</tr>
+<tr>
+<td>Mustache</td>
+<td style="text-align:right;">6</td>
+<td>3.17× faster</td>
+</tr>
+<tr>
+<td>Nunjucks</td>
+<td style="text-align:right;">6</td>
+<td>1.79× faster</td>
+</tr>
+<tr>
+<td>Dust.js</td>
+<td style="text-align:right;">6</td>
+<td>1.32× faster</td>
+</tr>
+<tr>
+<td>Handlebars</td>
+<td style="text-align:right;">6</td>
+<td>1.31× faster</td>
+</tr>
+<tr>
+<td>Teddy</td>
+<td style="text-align:right;">6</td>
+<td>same</td>
+</tr>
+<tr>
+<td>LiquidJS</td>
+<td style="text-align:right;">6</td>
+<td>2.57× slower</td>
+</tr>
+<tr>
+<td>Pug</td>
+<td style="text-align:right;">0</td>
+<td>compiles ahead of time</td>
+</tr>
+<tr>
+<td>Marko</td>
+<td style="text-align:right;">0</td>
+<td>compiles ahead of time</td>
+</tr>
+<tr>
+<td>PHP (node-php-runner)</td>
+<td style="text-align:right;">0</td>
+<td>cannot run client-side</td>
+</tr>
+</tbody>
+</table>
+<h2 id="cached-render-only-template-already-compiled">cached (render only, template already compiled)</h2>
+<h3 id="variables">Variables</h3>
+<p>28 interpolations, one of them escaped html and one of them raw html. Measures the cost of looking a value up in the model and writing it out.</p>
+<table>
+<thead>
+<tr>
+<th>Engine</th>
+<th>Version</th>
+<th style="text-align:right;">Renders/sec</th>
+<th style="text-align:right;">Mean ms</th>
+<th style="text-align:right;">± %</th>
+<th>vs Teddy</th>
+<th style="text-align:right;">Output bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>art-template</td>
+<td>4.13.4</td>
+<td style="text-align:right;">1,204,018</td>
+<td style="text-align:right;">8.7e-4</td>
+<td style="text-align:right;">0.8</td>
+<td>1.61× faster</td>
+<td style="text-align:right;">1,259</td>
+</tr>
+<tr>
+<td>Teddy</td>
+<td>2.3.2</td>
+<td style="text-align:right;">745,830</td>
+<td style="text-align:right;">1.4e-3</td>
+<td style="text-align:right;">0.4</td>
+<td>same</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>Eta</td>
+<td>4.6.0</td>
+<td style="text-align:right;">639,996</td>
+<td style="text-align:right;">1.6e-3</td>
+<td style="text-align:right;">0.2</td>
+<td>1.17× slower</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>Pug</td>
+<td>3.0.4</td>
+<td style="text-align:right;">623,050</td>
+<td style="text-align:right;">1.6e-3</td>
+<td style="text-align:right;">0.2</td>
+<td>1.20× slower</td>
+<td style="text-align:right;">1,158</td>
+</tr>
+<tr>
+<td>Squirrelly</td>
+<td>9.1.1</td>
+<td style="text-align:right;">574,216</td>
+<td style="text-align:right;">1.8e-3</td>
+<td style="text-align:right;">0.3</td>
+<td>1.30× slower</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>Marko</td>
+<td>6.3.51</td>
+<td style="text-align:right;">529,323</td>
+<td style="text-align:right;">1.9e-3</td>
+<td style="text-align:right;">0.2</td>
+<td>1.41× slower</td>
+<td style="text-align:right;">1,140</td>
+</tr>
+<tr>
+<td>doT</td>
+<td>1.1.3</td>
+<td style="text-align:right;">400,262</td>
+<td style="text-align:right;">2.5e-3</td>
+<td style="text-align:right;">0.1</td>
+<td>1.86× slower</td>
+<td style="text-align:right;">1,275</td>
+</tr>
+<tr>
+<td>Handlebars</td>
+<td>4.7.9</td>
+<td style="text-align:right;">343,031</td>
+<td style="text-align:right;">2.9e-3</td>
+<td style="text-align:right;">0.2</td>
+<td>2.17× slower</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>Nunjucks</td>
+<td>3.2.4</td>
+<td style="text-align:right;">293,453</td>
+<td style="text-align:right;">3.4e-3</td>
+<td style="text-align:right;">0.1</td>
+<td>2.54× slower</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>Dust.js</td>
+<td>3.0.1</td>
+<td style="text-align:right;">239,335</td>
+<td style="text-align:right;">4.2e-3</td>
+<td style="text-align:right;">0.2</td>
+<td>3.12× slower</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>Lodash template</td>
+<td>4.18.1</td>
+<td style="text-align:right;">237,778</td>
+<td style="text-align:right;">4.2e-3</td>
+<td style="text-align:right;">0.1</td>
+<td>3.14× slower</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>Mustache</td>
+<td>4.2.0</td>
+<td style="text-align:right;">162,991</td>
+<td style="text-align:right;">6.3e-3</td>
+<td style="text-align:right;">0.2</td>
+<td>4.58× slower</td>
+<td style="text-align:right;">1,278</td>
+</tr>
+<tr>
+<td>EJS</td>
+<td>6.0.1</td>
+<td style="text-align:right;">124,222</td>
+<td style="text-align:right;">8.1e-3</td>
+<td style="text-align:right;">0.7</td>
+<td>6.00× slower</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>PHP (node-php-runner)</td>
+<td>2.0.0</td>
+<td style="text-align:right;">35,950</td>
+<td style="text-align:right;">0.030</td>
+<td style="text-align:right;">0.5</td>
+<td>20.75× slower</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>LiquidJS</td>
+<td>10.29.0</td>
+<td style="text-align:right;">26,737</td>
+<td style="text-align:right;">0.038</td>
+<td style="text-align:right;">0.2</td>
+<td>27.90× slower</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+</tbody>
+</table>
+<h3 id="conditionals">Conditionals</h3>
+<p>8 branches: if/else, an else-if chain, a negation, a boolean pair, and an inline attribute condition. Measures the cost of evaluating a branch and discarding the branch not taken.</p>
+<table>
+<thead>
+<tr>
+<th>Engine</th>
+<th>Version</th>
+<th style="text-align:right;">Renders/sec</th>
+<th style="text-align:right;">Mean ms</th>
+<th style="text-align:right;">± %</th>
+<th>vs Teddy</th>
+<th style="text-align:right;">Output bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Squirrelly</td>
+<td>9.1.1</td>
+<td style="text-align:right;">10,409,548</td>
+<td style="text-align:right;">1.0e-4</td>
+<td style="text-align:right;">1.7</td>
+<td>1.63× faster</td>
+<td style="text-align:right;">478</td>
+</tr>
+<tr>
+<td>Eta</td>
+<td>4.6.0</td>
+<td style="text-align:right;">9,993,882</td>
+<td style="text-align:right;">1.1e-4</td>
+<td style="text-align:right;">2.6</td>
+<td>1.57× faster</td>
+<td style="text-align:right;">478</td>
+</tr>
+<tr>
+<td>art-template</td>
+<td>4.13.4</td>
+<td style="text-align:right;">9,731,421</td>
+<td style="text-align:right;">1.1e-4</td>
+<td style="text-align:right;">1.7</td>
+<td>1.53× faster</td>
+<td style="text-align:right;">492</td>
+</tr>
+<tr>
+<td>Pug</td>
+<td>3.0.4</td>
+<td style="text-align:right;">9,482,917</td>
+<td style="text-align:right;">1.2e-4</td>
+<td style="text-align:right;">0.5</td>
+<td>1.49× faster</td>
+<td style="text-align:right;">410</td>
+</tr>
+<tr>
+<td>Teddy</td>
+<td>2.3.2</td>
+<td style="text-align:right;">6,373,406</td>
+<td style="text-align:right;">1.6e-4</td>
+<td style="text-align:right;">0.3</td>
+<td>same</td>
+<td style="text-align:right;">516</td>
+</tr>
+<tr>
+<td>doT</td>
+<td>1.1.3</td>
+<td style="text-align:right;">5,108,761</td>
+<td style="text-align:right;">2.0e-4</td>
+<td style="text-align:right;">0.6</td>
+<td>1.25× slower</td>
+<td style="text-align:right;">492</td>
+</tr>
+<tr>
+<td>Marko</td>
+<td>6.3.51</td>
+<td style="text-align:right;">1,687,628</td>
+<td style="text-align:right;">6.2e-4</td>
+<td style="text-align:right;">0.4</td>
+<td>3.78× slower</td>
+<td style="text-align:right;">392</td>
+</tr>
+<tr>
+<td>Nunjucks</td>
+<td>3.2.4</td>
+<td style="text-align:right;">1,172,823</td>
+<td style="text-align:right;">8.8e-4</td>
+<td style="text-align:right;">0.2</td>
+<td>5.43× slower</td>
+<td style="text-align:right;">492</td>
+</tr>
+<tr>
+<td>Dust.js</td>
+<td>3.0.1</td>
+<td style="text-align:right;">922,659</td>
+<td style="text-align:right;">1.1e-3</td>
+<td style="text-align:right;">1.4</td>
+<td>6.91× slower</td>
+<td style="text-align:right;">516</td>
+</tr>
+<tr>
+<td>Lodash template</td>
+<td>4.18.1</td>
+<td style="text-align:right;">529,486</td>
+<td style="text-align:right;">1.9e-3</td>
+<td style="text-align:right;">0.1</td>
+<td>12.04× slower</td>
+<td style="text-align:right;">492</td>
+</tr>
+<tr>
+<td>Mustache</td>
+<td>4.2.0</td>
+<td style="text-align:right;">516,033</td>
+<td style="text-align:right;">2.0e-3</td>
+<td style="text-align:right;">0.2</td>
+<td>12.35× slower</td>
+<td style="text-align:right;">454</td>
+</tr>
+<tr>
+<td>Handlebars</td>
+<td>4.7.9</td>
+<td style="text-align:right;">467,931</td>
+<td style="text-align:right;">2.2e-3</td>
+<td style="text-align:right;">0.3</td>
+<td>13.62× slower</td>
+<td style="text-align:right;">453</td>
+</tr>
+<tr>
+<td>EJS</td>
+<td>6.0.1</td>
+<td style="text-align:right;">369,337</td>
+<td style="text-align:right;">2.8e-3</td>
+<td style="text-align:right;">0.3</td>
+<td>17.26× slower</td>
+<td style="text-align:right;">492</td>
+</tr>
+<tr>
+<td>LiquidJS</td>
+<td>10.29.0</td>
+<td style="text-align:right;">65,938</td>
+<td style="text-align:right;">0.015</td>
+<td style="text-align:right;">0.2</td>
+<td>96.66× slower</td>
+<td style="text-align:right;">492</td>
+</tr>
+<tr>
+<td>PHP (node-php-runner)</td>
+<td>2.0.0</td>
+<td style="text-align:right;">65,408</td>
+<td style="text-align:right;">0.016</td>
+<td style="text-align:right;">0.4</td>
+<td>97.44× slower</td>
+<td style="text-align:right;">478</td>
+</tr>
+</tbody>
+</table>
+<h3 id="loops">Loops</h3>
+<p>24 products, each with a branch and a nested loop over 3 tags. Measures nested iteration with per-iteration branching.</p>
+<table>
+<thead>
+<tr>
+<th>Engine</th>
+<th>Version</th>
+<th style="text-align:right;">Renders/sec</th>
+<th style="text-align:right;">Mean ms</th>
+<th style="text-align:right;">± %</th>
+<th>vs Teddy</th>
+<th style="text-align:right;">Output bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Teddy</td>
+<td>2.3.2</td>
+<td style="text-align:right;">304,506</td>
+<td style="text-align:right;">3.4e-3</td>
+<td style="text-align:right;">0.2</td>
+<td>same</td>
+<td style="text-align:right;">11,795</td>
+</tr>
+<tr>
+<td>art-template</td>
+<td>4.13.4</td>
+<td style="text-align:right;">240,915</td>
+<td style="text-align:right;">4.3e-3</td>
+<td style="text-align:right;">0.3</td>
+<td>1.26× slower</td>
+<td style="text-align:right;">11,627</td>
+</tr>
+<tr>
+<td>Eta</td>
+<td>4.6.0</td>
+<td style="text-align:right;">229,657</td>
+<td style="text-align:right;">4.5e-3</td>
+<td style="text-align:right;">0.3</td>
+<td>1.33× slower</td>
+<td style="text-align:right;">11,425</td>
+</tr>
+<tr>
+<td>Pug</td>
+<td>3.0.4</td>
+<td style="text-align:right;">209,245</td>
+<td style="text-align:right;">4.9e-3</td>
+<td style="text-align:right;">0.2</td>
+<td>1.46× slower</td>
+<td style="text-align:right;">7,782</td>
+</tr>
+<tr>
+<td>Squirrelly</td>
+<td>9.1.1</td>
+<td style="text-align:right;">180,451</td>
+<td style="text-align:right;">5.7e-3</td>
+<td style="text-align:right;">0.3</td>
+<td>1.69× slower</td>
+<td style="text-align:right;">11,425</td>
+</tr>
+<tr>
+<td>Marko</td>
+<td>6.3.51</td>
+<td style="text-align:right;">157,061</td>
+<td style="text-align:right;">6.5e-3</td>
+<td style="text-align:right;">0.3</td>
+<td>1.94× slower</td>
+<td style="text-align:right;">7,474</td>
+</tr>
+<tr>
+<td>doT</td>
+<td>1.1.3</td>
+<td style="text-align:right;">82,859</td>
+<td style="text-align:right;">0.012</td>
+<td style="text-align:right;">0.4</td>
+<td>3.67× slower</td>
+<td style="text-align:right;">11,627</td>
+</tr>
+<tr>
+<td>Handlebars</td>
+<td>4.7.9</td>
+<td style="text-align:right;">45,211</td>
+<td style="text-align:right;">0.023</td>
+<td style="text-align:right;">0.4</td>
+<td>6.74× slower</td>
+<td style="text-align:right;">10,121</td>
+</tr>
+<tr>
+<td>Dust.js</td>
+<td>3.0.1</td>
+<td style="text-align:right;">40,419</td>
+<td style="text-align:right;">0.025</td>
+<td style="text-align:right;">0.3</td>
+<td>7.53× slower</td>
+<td style="text-align:right;">11,627</td>
+</tr>
+<tr>
+<td>Mustache</td>
+<td>4.2.0</td>
+<td style="text-align:right;">37,922</td>
+<td style="text-align:right;">0.027</td>
+<td style="text-align:right;">0.3</td>
+<td>8.03× slower</td>
+<td style="text-align:right;">10,121</td>
+</tr>
+<tr>
+<td>Lodash template</td>
+<td>4.18.1</td>
+<td style="text-align:right;">37,087</td>
+<td style="text-align:right;">0.027</td>
+<td style="text-align:right;">0.2</td>
+<td>8.21× slower</td>
+<td style="text-align:right;">11,627</td>
+</tr>
+<tr>
+<td>EJS</td>
+<td>6.0.1</td>
+<td style="text-align:right;">17,633</td>
+<td style="text-align:right;">0.057</td>
+<td style="text-align:right;">0.1</td>
+<td>17.27× slower</td>
+<td style="text-align:right;">11,627</td>
+</tr>
+<tr>
+<td>Nunjucks</td>
+<td>3.2.4</td>
+<td style="text-align:right;">17,180</td>
+<td style="text-align:right;">0.059</td>
+<td style="text-align:right;">0.2</td>
+<td>17.72× slower</td>
+<td style="text-align:right;">11,627</td>
+</tr>
+<tr>
+<td>PHP (node-php-runner)</td>
+<td>2.0.0</td>
+<td style="text-align:right;">11,840</td>
+<td style="text-align:right;">0.086</td>
+<td style="text-align:right;">0.3</td>
+<td>25.72× slower</td>
+<td style="text-align:right;">11,425</td>
+</tr>
+<tr>
+<td>LiquidJS</td>
+<td>10.29.0</td>
+<td style="text-align:right;">2,679</td>
+<td style="text-align:right;">0.375</td>
+<td style="text-align:right;">0.4</td>
+<td>113.65× slower</td>
+<td style="text-align:right;">11,627</td>
+</tr>
+</tbody>
+</table>
+<h3 id="large-table">Large table</h3>
+<p>1,000 rows of 7 cells, one of them conditional. Measures how the engine scales when the same small body is rendered many times.</p>
+<table>
+<thead>
+<tr>
+<th>Engine</th>
+<th>Version</th>
+<th style="text-align:right;">Renders/sec</th>
+<th style="text-align:right;">Mean ms</th>
+<th style="text-align:right;">± %</th>
+<th>vs Teddy</th>
+<th style="text-align:right;">Output bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Teddy</td>
+<td>2.3.2</td>
+<td style="text-align:right;">9,828</td>
+<td style="text-align:right;">0.107</td>
+<td style="text-align:right;">0.8</td>
+<td>same</td>
+<td style="text-align:right;">238,758</td>
+</tr>
+<tr>
+<td>Eta</td>
+<td>4.6.0</td>
+<td style="text-align:right;">7,860</td>
+<td style="text-align:right;">0.129</td>
+<td style="text-align:right;">0.4</td>
+<td>1.25× slower</td>
+<td style="text-align:right;">237,757</td>
+</tr>
+<tr>
+<td>art-template</td>
+<td>4.13.4</td>
+<td style="text-align:right;">7,346</td>
+<td style="text-align:right;">0.140</td>
+<td style="text-align:right;">0.6</td>
+<td>1.34× slower</td>
+<td style="text-align:right;">238,758</td>
+</tr>
+<tr>
+<td>Marko</td>
+<td>6.3.51</td>
+<td style="text-align:right;">6,623</td>
+<td style="text-align:right;">0.153</td>
+<td style="text-align:right;">0.4</td>
+<td>1.48× slower</td>
+<td style="text-align:right;">156,732</td>
+</tr>
+<tr>
+<td>Pug</td>
+<td>3.0.4</td>
+<td style="text-align:right;">6,510</td>
+<td style="text-align:right;">0.159</td>
+<td style="text-align:right;">0.7</td>
+<td>1.51× slower</td>
+<td style="text-align:right;">156,734</td>
+</tr>
+<tr>
+<td>Squirrelly</td>
+<td>9.1.1</td>
+<td style="text-align:right;">6,316</td>
+<td style="text-align:right;">0.161</td>
+<td style="text-align:right;">0.5</td>
+<td>1.56× slower</td>
+<td style="text-align:right;">237,757</td>
+</tr>
+<tr>
+<td>doT</td>
+<td>1.1.3</td>
+<td style="text-align:right;">2,745</td>
+<td style="text-align:right;">0.368</td>
+<td style="text-align:right;">0.5</td>
+<td>3.58× slower</td>
+<td style="text-align:right;">238,758</td>
+</tr>
+<tr>
+<td>Handlebars</td>
+<td>4.7.9</td>
+<td style="text-align:right;">2,702</td>
+<td style="text-align:right;">0.381</td>
+<td style="text-align:right;">0.9</td>
+<td>3.64× slower</td>
+<td style="text-align:right;">233,753</td>
+</tr>
+<tr>
+<td>Dust.js</td>
+<td>3.0.1</td>
+<td style="text-align:right;">1,728</td>
+<td style="text-align:right;">0.585</td>
+<td style="text-align:right;">0.6</td>
+<td>5.69× slower</td>
+<td style="text-align:right;">238,758</td>
+</tr>
+<tr>
+<td>Lodash template</td>
+<td>4.18.1</td>
+<td style="text-align:right;">1,700</td>
+<td style="text-align:right;">0.593</td>
+<td style="text-align:right;">0.6</td>
+<td>5.78× slower</td>
+<td style="text-align:right;">238,758</td>
+</tr>
+<tr>
+<td>Mustache</td>
+<td>4.2.0</td>
+<td style="text-align:right;">1,323</td>
+<td style="text-align:right;">0.762</td>
+<td style="text-align:right;">0.6</td>
+<td>7.43× slower</td>
+<td style="text-align:right;">233,753</td>
+</tr>
+<tr>
+<td>Nunjucks</td>
+<td>3.2.4</td>
+<td style="text-align:right;">1,150</td>
+<td style="text-align:right;">0.873</td>
+<td style="text-align:right;">0.4</td>
+<td>8.55× slower</td>
+<td style="text-align:right;">238,758</td>
+</tr>
+<tr>
+<td>EJS</td>
+<td>6.0.1</td>
+<td style="text-align:right;">651</td>
+<td style="text-align:right;">1.55</td>
+<td style="text-align:right;">0.8</td>
+<td>15.09× slower</td>
+<td style="text-align:right;">238,758</td>
+</tr>
+<tr>
+<td>PHP (node-php-runner)</td>
+<td>2.0.0</td>
+<td style="text-align:right;">495</td>
+<td style="text-align:right;">2.07</td>
+<td style="text-align:right;">1.6</td>
+<td>19.86× slower</td>
+<td style="text-align:right;">237,757</td>
+</tr>
+<tr>
+<td>LiquidJS</td>
+<td>10.29.0</td>
+<td style="text-align:right;">100</td>
+<td style="text-align:right;">10.01</td>
+<td style="text-align:right;">0.9</td>
+<td>98.24× slower</td>
+<td style="text-align:right;">238,758</td>
+</tr>
+</tbody>
+</table>
+<h3 id="partials">Partials</h3>
+<p>a shell that pulls in a header and a footer once and a product partial 24 times. Measures the per-call overhead of including another template.</p>
+<table>
+<thead>
+<tr>
+<th>Engine</th>
+<th>Version</th>
+<th style="text-align:right;">Renders/sec</th>
+<th style="text-align:right;">Mean ms</th>
+<th style="text-align:right;">± %</th>
+<th>vs Teddy</th>
+<th style="text-align:right;">Output bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Teddy</td>
+<td>2.3.2</td>
+<td style="text-align:right;">218,681</td>
+<td style="text-align:right;">4.8e-3</td>
+<td style="text-align:right;">0.3</td>
+<td>same</td>
+<td style="text-align:right;">10,958</td>
+</tr>
+<tr>
+<td>Pug</td>
+<td>3.0.4</td>
+<td style="text-align:right;">151,222</td>
+<td style="text-align:right;">6.9e-3</td>
+<td style="text-align:right;">0.3</td>
+<td>1.45× slower</td>
+<td style="text-align:right;">8,611</td>
+</tr>
+<tr>
+<td>Squirrelly</td>
+<td>9.1.1</td>
+<td style="text-align:right;">125,815</td>
+<td style="text-align:right;">8.1e-3</td>
+<td style="text-align:right;">0.3</td>
+<td>1.74× slower</td>
+<td style="text-align:right;">10,672</td>
+</tr>
+<tr>
+<td>Marko</td>
+<td>6.3.51</td>
+<td style="text-align:right;">112,803</td>
+<td style="text-align:right;">9.0e-3</td>
+<td style="text-align:right;">0.2</td>
+<td>1.94× slower</td>
+<td style="text-align:right;">8,247</td>
+</tr>
+<tr>
+<td>Eta</td>
+<td>4.6.0</td>
+<td style="text-align:right;">108,764</td>
+<td style="text-align:right;">9.5e-3</td>
+<td style="text-align:right;">0.3</td>
+<td>2.01× slower</td>
+<td style="text-align:right;">10,672</td>
+</tr>
+<tr>
+<td>doT</td>
+<td>1.1.3</td>
+<td style="text-align:right;">66,181</td>
+<td style="text-align:right;">0.015</td>
+<td style="text-align:right;">0.3</td>
+<td>3.30× slower</td>
+<td style="text-align:right;">10,931</td>
+</tr>
+<tr>
+<td>Dust.js</td>
+<td>3.0.1</td>
+<td style="text-align:right;">34,662</td>
+<td style="text-align:right;">0.029</td>
+<td style="text-align:right;">0.2</td>
+<td>6.31× slower</td>
+<td style="text-align:right;">10,883</td>
+</tr>
+<tr>
+<td>Lodash template</td>
+<td>4.18.1</td>
+<td style="text-align:right;">21,506</td>
+<td style="text-align:right;">0.047</td>
+<td style="text-align:right;">0.4</td>
+<td>10.17× slower</td>
+<td style="text-align:right;">10,883</td>
+</tr>
+<tr>
+<td>Handlebars</td>
+<td>4.7.9</td>
+<td style="text-align:right;">20,955</td>
+<td style="text-align:right;">0.049</td>
+<td style="text-align:right;">0.3</td>
+<td>10.44× slower</td>
+<td style="text-align:right;">11,648</td>
+</tr>
+<tr>
+<td>Mustache</td>
+<td>4.2.0</td>
+<td style="text-align:right;">16,808</td>
+<td style="text-align:right;">0.060</td>
+<td style="text-align:right;">0.2</td>
+<td>13.01× slower</td>
+<td style="text-align:right;">11,708</td>
+</tr>
+<tr>
+<td>Nunjucks</td>
+<td>3.2.4</td>
+<td style="text-align:right;">9,890</td>
+<td style="text-align:right;">0.120</td>
+<td style="text-align:right;">3.8</td>
+<td>22.11× slower</td>
+<td style="text-align:right;">10,883</td>
+</tr>
+<tr>
+<td>PHP (node-php-runner)</td>
+<td>2.0.0</td>
+<td style="text-align:right;">6,839</td>
+<td style="text-align:right;">0.153</td>
+<td style="text-align:right;">0.7</td>
+<td>31.97× slower</td>
+<td style="text-align:right;">10,672</td>
+</tr>
+<tr>
+<td>EJS</td>
+<td>6.0.1</td>
+<td style="text-align:right;">6,211</td>
+<td style="text-align:right;">0.162</td>
+<td style="text-align:right;">0.2</td>
+<td>35.21× slower</td>
+<td style="text-align:right;">10,883</td>
+</tr>
+<tr>
+<td>art-template</td>
+<td>4.13.4</td>
+<td style="text-align:right;">5,532</td>
+<td style="text-align:right;">0.193</td>
+<td style="text-align:right;">1.9</td>
+<td>39.53× slower</td>
+<td style="text-align:right;">10,883</td>
+</tr>
+<tr>
+<td>LiquidJS</td>
+<td>10.29.0</td>
+<td style="text-align:right;">2,042</td>
+<td style="text-align:right;">0.496</td>
+<td style="text-align:right;">0.6</td>
+<td>107.09× slower</td>
+<td style="text-align:right;">10,883</td>
+</tr>
+</tbody>
+</table>
+<h3 id="full-page">Full page</h3>
+<p>a complete document: head, header, banner, else-if chain, 24 products, a 25 row table, footer. Measures everything above at once, which is the closest thing here to a real request.</p>
+<table>
+<thead>
+<tr>
+<th>Engine</th>
+<th>Version</th>
+<th style="text-align:right;">Renders/sec</th>
+<th style="text-align:right;">Mean ms</th>
+<th style="text-align:right;">± %</th>
+<th>vs Teddy</th>
+<th style="text-align:right;">Output bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Teddy</td>
+<td>2.3.2</td>
+<td style="text-align:right;">150,070</td>
+<td style="text-align:right;">6.8e-3</td>
+<td style="text-align:right;">0.3</td>
+<td>same</td>
+<td style="text-align:right;">17,397</td>
+</tr>
+<tr>
+<td>Pug</td>
+<td>3.0.4</td>
+<td style="text-align:right;">103,888</td>
+<td style="text-align:right;">9.8e-3</td>
+<td style="text-align:right;">0.3</td>
+<td>1.44× slower</td>
+<td style="text-align:right;">11,824</td>
+</tr>
+<tr>
+<td>Squirrelly</td>
+<td>9.1.1</td>
+<td style="text-align:right;">88,437</td>
+<td style="text-align:right;">0.012</td>
+<td style="text-align:right;">0.5</td>
+<td>1.70× slower</td>
+<td style="text-align:right;">17,067</td>
+</tr>
+<tr>
+<td>Eta</td>
+<td>4.6.0</td>
+<td style="text-align:right;">82,567</td>
+<td style="text-align:right;">0.013</td>
+<td style="text-align:right;">0.5</td>
+<td>1.82× slower</td>
+<td style="text-align:right;">17,067</td>
+</tr>
+<tr>
+<td>Marko</td>
+<td>6.3.51</td>
+<td style="text-align:right;">82,089</td>
+<td style="text-align:right;">0.012</td>
+<td style="text-align:right;">0.3</td>
+<td>1.83× slower</td>
+<td style="text-align:right;">11,438</td>
+</tr>
+<tr>
+<td>doT</td>
+<td>1.1.3</td>
+<td style="text-align:right;">44,491</td>
+<td style="text-align:right;">0.023</td>
+<td style="text-align:right;">0.6</td>
+<td>3.37× slower</td>
+<td style="text-align:right;">17,364</td>
+</tr>
+<tr>
+<td>Dust.js</td>
+<td>3.0.1</td>
+<td style="text-align:right;">23,632</td>
+<td style="text-align:right;">0.043</td>
+<td style="text-align:right;">0.4</td>
+<td>6.35× slower</td>
+<td style="text-align:right;">17,328</td>
+</tr>
+<tr>
+<td>Handlebars</td>
+<td>4.7.9</td>
+<td style="text-align:right;">17,664</td>
+<td style="text-align:right;">0.057</td>
+<td style="text-align:right;">0.3</td>
+<td>8.50× slower</td>
+<td style="text-align:right;">18,765</td>
+</tr>
+<tr>
+<td>Lodash template</td>
+<td>4.18.1</td>
+<td style="text-align:right;">16,793</td>
+<td style="text-align:right;">0.060</td>
+<td style="text-align:right;">0.4</td>
+<td>8.94× slower</td>
+<td style="text-align:right;">17,308</td>
+</tr>
+<tr>
+<td>Mustache</td>
+<td>4.2.0</td>
+<td style="text-align:right;">12,454</td>
+<td style="text-align:right;">0.081</td>
+<td style="text-align:right;">0.2</td>
+<td>12.05× slower</td>
+<td style="text-align:right;">18,837</td>
+</tr>
+<tr>
+<td>Nunjucks</td>
+<td>3.2.4</td>
+<td style="text-align:right;">9,357</td>
+<td style="text-align:right;">0.129</td>
+<td style="text-align:right;">3.9</td>
+<td>16.04× slower</td>
+<td style="text-align:right;">17,308</td>
+</tr>
+<tr>
+<td>PHP (node-php-runner)</td>
+<td>2.0.0</td>
+<td style="text-align:right;">5,789</td>
+<td style="text-align:right;">0.178</td>
+<td style="text-align:right;">0.6</td>
+<td>25.92× slower</td>
+<td style="text-align:right;">17,067</td>
+</tr>
+<tr>
+<td>art-template</td>
+<td>4.13.4</td>
+<td style="text-align:right;">5,506</td>
+<td style="text-align:right;">0.195</td>
+<td style="text-align:right;">1.8</td>
+<td>27.26× slower</td>
+<td style="text-align:right;">17,308</td>
+</tr>
+<tr>
+<td>EJS</td>
+<td>6.0.1</td>
+<td style="text-align:right;">5,316</td>
+<td style="text-align:right;">0.189</td>
+<td style="text-align:right;">0.2</td>
+<td>28.23× slower</td>
+<td style="text-align:right;">17,308</td>
+</tr>
+<tr>
+<td>LiquidJS</td>
+<td>10.29.0</td>
+<td style="text-align:right;">1,471</td>
+<td style="text-align:right;">0.684</td>
+<td style="text-align:right;">0.5</td>
+<td>102.00× slower</td>
+<td style="text-align:right;">17,308</td>
+</tr>
+</tbody>
+</table>
+<h2 id="cold-compile-and-render-together-engine-cache-off">cold (compile and render together, engine cache off)</h2>
+<h3 id="variables-1">Variables</h3>
+<p>28 interpolations, one of them escaped html and one of them raw html. Measures the cost of looking a value up in the model and writing it out.</p>
+<table>
+<thead>
+<tr>
+<th>Engine</th>
+<th>Version</th>
+<th style="text-align:right;">Renders/sec</th>
+<th style="text-align:right;">Mean ms</th>
+<th style="text-align:right;">± %</th>
+<th>vs Teddy</th>
+<th style="text-align:right;">Output bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>doT</td>
+<td>1.1.3</td>
+<td style="text-align:right;">40,962</td>
+<td style="text-align:right;">0.025</td>
+<td style="text-align:right;">0.2</td>
+<td>14.47× faster</td>
+<td style="text-align:right;">1,275</td>
+</tr>
+<tr>
+<td>Eta</td>
+<td>4.6.0</td>
+<td style="text-align:right;">20,138</td>
+<td style="text-align:right;">0.051</td>
+<td style="text-align:right;">0.4</td>
+<td>7.11× faster</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>EJS</td>
+<td>6.0.1</td>
+<td style="text-align:right;">17,169</td>
+<td style="text-align:right;">0.061</td>
+<td style="text-align:right;">0.5</td>
+<td>6.07× faster</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>Squirrelly</td>
+<td>9.1.1</td>
+<td style="text-align:right;">15,336</td>
+<td style="text-align:right;">0.066</td>
+<td style="text-align:right;">0.3</td>
+<td>5.42× faster</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>art-template</td>
+<td>4.13.4</td>
+<td style="text-align:right;">11,673</td>
+<td style="text-align:right;">0.089</td>
+<td style="text-align:right;">0.8</td>
+<td>4.12× faster</td>
+<td style="text-align:right;">1,259</td>
+</tr>
+<tr>
+<td>Mustache</td>
+<td>4.2.0</td>
+<td style="text-align:right;">9,058</td>
+<td style="text-align:right;">0.113</td>
+<td style="text-align:right;">0.4</td>
+<td>3.20× faster</td>
+<td style="text-align:right;">1,278</td>
+</tr>
+<tr>
+<td>Lodash template</td>
+<td>4.18.1</td>
+<td style="text-align:right;">8,305</td>
+<td style="text-align:right;">0.127</td>
+<td style="text-align:right;">1.3</td>
+<td>2.93× faster</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>LiquidJS</td>
+<td>10.29.0</td>
+<td style="text-align:right;">6,681</td>
+<td style="text-align:right;">0.161</td>
+<td style="text-align:right;">1.5</td>
+<td>2.36× faster</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>Nunjucks</td>
+<td>3.2.4</td>
+<td style="text-align:right;">6,663</td>
+<td style="text-align:right;">0.152</td>
+<td style="text-align:right;">0.4</td>
+<td>2.35× faster</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>Teddy</td>
+<td>2.3.2</td>
+<td style="text-align:right;">2,830</td>
+<td style="text-align:right;">0.374</td>
+<td style="text-align:right;">1.4</td>
+<td>same</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>Handlebars</td>
+<td>4.7.9</td>
+<td style="text-align:right;">2,411</td>
+<td style="text-align:right;">0.424</td>
+<td style="text-align:right;">0.8</td>
+<td>1.17× slower</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>Dust.js</td>
+<td>3.0.1</td>
+<td style="text-align:right;">1,756</td>
+<td style="text-align:right;">0.579</td>
+<td style="text-align:right;">0.8</td>
+<td>1.61× slower</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>PHP (node-php-runner)</td>
+<td>2.0.0</td>
+<td style="text-align:right;">789</td>
+<td style="text-align:right;">1.31</td>
+<td style="text-align:right;">1.4</td>
+<td>3.59× slower</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>Pug</td>
+<td>3.0.4</td>
+<td style="text-align:right;">375</td>
+<td style="text-align:right;">2.69</td>
+<td style="text-align:right;">1.1</td>
+<td>7.55× slower</td>
+<td style="text-align:right;">1,158</td>
+</tr>
+<tr>
+<td>Marko</td>
+<td>6.3.51</td>
+<td style="text-align:right;">278</td>
+<td style="text-align:right;">3.91</td>
+<td style="text-align:right;">5.3</td>
+<td>10.17× slower</td>
+<td style="text-align:right;">1,140</td>
+</tr>
+</tbody>
+</table>
+<h3 id="conditionals-1">Conditionals</h3>
+<p>8 branches: if/else, an else-if chain, a negation, a boolean pair, and an inline attribute condition. Measures the cost of evaluating a branch and discarding the branch not taken.</p>
+<table>
+<thead>
+<tr>
+<th>Engine</th>
+<th>Version</th>
+<th style="text-align:right;">Renders/sec</th>
+<th style="text-align:right;">Mean ms</th>
+<th style="text-align:right;">± %</th>
+<th>vs Teddy</th>
+<th style="text-align:right;">Output bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>doT</td>
+<td>1.1.3</td>
+<td style="text-align:right;">51,471</td>
+<td style="text-align:right;">0.020</td>
+<td style="text-align:right;">0.2</td>
+<td>53.54× faster</td>
+<td style="text-align:right;">492</td>
+</tr>
+<tr>
+<td>EJS</td>
+<td>6.0.1</td>
+<td style="text-align:right;">24,876</td>
+<td style="text-align:right;">0.041</td>
+<td style="text-align:right;">0.3</td>
+<td>25.88× faster</td>
+<td style="text-align:right;">492</td>
+</tr>
+<tr>
+<td>Eta</td>
+<td>4.6.0</td>
+<td style="text-align:right;">23,215</td>
+<td style="text-align:right;">0.043</td>
+<td style="text-align:right;">0.2</td>
+<td>24.15× faster</td>
+<td style="text-align:right;">478</td>
+</tr>
+<tr>
+<td>Squirrelly</td>
+<td>9.1.1</td>
+<td style="text-align:right;">16,500</td>
+<td style="text-align:right;">0.061</td>
+<td style="text-align:right;">0.3</td>
+<td>17.16× faster</td>
+<td style="text-align:right;">478</td>
+</tr>
+<tr>
+<td>art-template</td>
+<td>4.13.4</td>
+<td style="text-align:right;">15,727</td>
+<td style="text-align:right;">0.067</td>
+<td style="text-align:right;">1.0</td>
+<td>16.36× faster</td>
+<td style="text-align:right;">492</td>
+</tr>
+<tr>
+<td>LiquidJS</td>
+<td>10.29.0</td>
+<td style="text-align:right;">12,048</td>
+<td style="text-align:right;">0.090</td>
+<td style="text-align:right;">1.7</td>
+<td>12.53× faster</td>
+<td style="text-align:right;">492</td>
+</tr>
+<tr>
+<td>Lodash template</td>
+<td>4.18.1</td>
+<td style="text-align:right;">9,330</td>
+<td style="text-align:right;">0.114</td>
+<td style="text-align:right;">2.1</td>
+<td>9.71× faster</td>
+<td style="text-align:right;">492</td>
+</tr>
+<tr>
+<td>Mustache</td>
+<td>4.2.0</td>
+<td style="text-align:right;">8,438</td>
+<td style="text-align:right;">0.120</td>
+<td style="text-align:right;">0.5</td>
+<td>8.78× faster</td>
+<td style="text-align:right;">454</td>
+</tr>
+<tr>
+<td>Nunjucks</td>
+<td>3.2.4</td>
+<td style="text-align:right;">5,777</td>
+<td style="text-align:right;">0.175</td>
+<td style="text-align:right;">0.3</td>
+<td>6.01× faster</td>
+<td style="text-align:right;">492</td>
+</tr>
+<tr>
+<td>Handlebars</td>
+<td>4.7.9</td>
+<td style="text-align:right;">2,335</td>
+<td style="text-align:right;">0.439</td>
+<td style="text-align:right;">0.8</td>
+<td>2.43× faster</td>
+<td style="text-align:right;">453</td>
+</tr>
+<tr>
+<td>Dust.js</td>
+<td>3.0.1</td>
+<td style="text-align:right;">1,888</td>
+<td style="text-align:right;">0.531</td>
+<td style="text-align:right;">0.3</td>
+<td>1.96× faster</td>
+<td style="text-align:right;">516</td>
+</tr>
+<tr>
+<td>PHP (node-php-runner)</td>
+<td>2.0.0</td>
+<td style="text-align:right;">1,168</td>
+<td style="text-align:right;">1.05</td>
+<td style="text-align:right;">1.4</td>
+<td>1.22× faster</td>
+<td style="text-align:right;">478</td>
+</tr>
+<tr>
+<td>Teddy</td>
+<td>2.3.2</td>
+<td style="text-align:right;">961</td>
+<td style="text-align:right;">1.07</td>
+<td style="text-align:right;">1.4</td>
+<td>same</td>
+<td style="text-align:right;">516</td>
+</tr>
+<tr>
+<td>Pug</td>
+<td>3.0.4</td>
+<td style="text-align:right;">696</td>
+<td style="text-align:right;">1.45</td>
+<td style="text-align:right;">0.9</td>
+<td>1.38× slower</td>
+<td style="text-align:right;">410</td>
+</tr>
+<tr>
+<td>Marko</td>
+<td>6.3.51</td>
+<td style="text-align:right;">183</td>
+<td style="text-align:right;">5.73</td>
+<td style="text-align:right;">4.2</td>
+<td>5.24× slower</td>
+<td style="text-align:right;">392</td>
+</tr>
+</tbody>
+</table>
+<h3 id="loops-1">Loops</h3>
+<p>24 products, each with a branch and a nested loop over 3 tags. Measures nested iteration with per-iteration branching.</p>
+<table>
+<thead>
+<tr>
+<th>Engine</th>
+<th>Version</th>
+<th style="text-align:right;">Renders/sec</th>
+<th style="text-align:right;">Mean ms</th>
+<th style="text-align:right;">± %</th>
+<th>vs Teddy</th>
+<th style="text-align:right;">Output bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>doT</td>
+<td>1.1.3</td>
+<td style="text-align:right;">33,804</td>
+<td style="text-align:right;">0.031</td>
+<td style="text-align:right;">0.6</td>
+<td>15.64× faster</td>
+<td style="text-align:right;">11,627</td>
+</tr>
+<tr>
+<td>Eta</td>
+<td>4.6.0</td>
+<td style="text-align:right;">23,089</td>
+<td style="text-align:right;">0.045</td>
+<td style="text-align:right;">0.4</td>
+<td>10.68× faster</td>
+<td style="text-align:right;">11,425</td>
+</tr>
+<tr>
+<td>art-template</td>
+<td>4.13.4</td>
+<td style="text-align:right;">21,409</td>
+<td style="text-align:right;">0.049</td>
+<td style="text-align:right;">0.8</td>
+<td>9.91× faster</td>
+<td style="text-align:right;">11,627</td>
+</tr>
+<tr>
+<td>Squirrelly</td>
+<td>9.1.1</td>
+<td style="text-align:right;">16,452</td>
+<td style="text-align:right;">0.063</td>
+<td style="text-align:right;">0.5</td>
+<td>7.61× faster</td>
+<td style="text-align:right;">11,425</td>
+</tr>
+<tr>
+<td>EJS</td>
+<td>6.0.1</td>
+<td style="text-align:right;">11,929</td>
+<td style="text-align:right;">0.084</td>
+<td style="text-align:right;">0.2</td>
+<td>5.52× faster</td>
+<td style="text-align:right;">11,627</td>
+</tr>
+<tr>
+<td>Mustache</td>
+<td>4.2.0</td>
+<td style="text-align:right;">8,914</td>
+<td style="text-align:right;">0.113</td>
+<td style="text-align:right;">0.3</td>
+<td>4.12× faster</td>
+<td style="text-align:right;">10,121</td>
+</tr>
+<tr>
+<td>Lodash template</td>
+<td>4.18.1</td>
+<td style="text-align:right;">6,577</td>
+<td style="text-align:right;">0.161</td>
+<td style="text-align:right;">1.3</td>
+<td>3.04× faster</td>
+<td style="text-align:right;">11,627</td>
+</tr>
+<tr>
+<td>Nunjucks</td>
+<td>3.2.4</td>
+<td style="text-align:right;">5,506</td>
+<td style="text-align:right;">0.184</td>
+<td style="text-align:right;">0.4</td>
+<td>2.55× faster</td>
+<td style="text-align:right;">11,627</td>
+</tr>
+<tr>
+<td>Handlebars</td>
+<td>4.7.9</td>
+<td style="text-align:right;">3,609</td>
+<td style="text-align:right;">0.288</td>
+<td style="text-align:right;">0.9</td>
+<td>1.67× faster</td>
+<td style="text-align:right;">10,121</td>
+</tr>
+<tr>
+<td>Dust.js</td>
+<td>3.0.1</td>
+<td style="text-align:right;">2,438</td>
+<td style="text-align:right;">0.418</td>
+<td style="text-align:right;">0.7</td>
+<td>1.13× faster</td>
+<td style="text-align:right;">11,627</td>
+</tr>
+<tr>
+<td>Teddy</td>
+<td>2.3.2</td>
+<td style="text-align:right;">2,161</td>
+<td style="text-align:right;">0.485</td>
+<td style="text-align:right;">1.4</td>
+<td>same</td>
+<td style="text-align:right;">11,795</td>
+</tr>
+<tr>
+<td>LiquidJS</td>
+<td>10.29.0</td>
+<td style="text-align:right;">2,130</td>
+<td style="text-align:right;">0.481</td>
+<td style="text-align:right;">0.8</td>
+<td>1.01× slower</td>
+<td style="text-align:right;">11,627</td>
+</tr>
+<tr>
+<td>PHP (node-php-runner)</td>
+<td>2.0.0</td>
+<td style="text-align:right;">882</td>
+<td style="text-align:right;">1.16</td>
+<td style="text-align:right;">1.1</td>
+<td>2.45× slower</td>
+<td style="text-align:right;">11,425</td>
+</tr>
+<tr>
+<td>Pug</td>
+<td>3.0.4</td>
+<td style="text-align:right;">710</td>
+<td style="text-align:right;">1.42</td>
+<td style="text-align:right;">0.8</td>
+<td>3.04× slower</td>
+<td style="text-align:right;">7,782</td>
+</tr>
+<tr>
+<td>Marko</td>
+<td>6.3.51</td>
+<td style="text-align:right;">389</td>
+<td style="text-align:right;">2.72</td>
+<td style="text-align:right;">3.4</td>
+<td>5.56× slower</td>
+<td style="text-align:right;">7,474</td>
+</tr>
+</tbody>
+</table>
+<h3 id="large-table-1">Large table</h3>
+<p>1,000 rows of 7 cells, one of them conditional. Measures how the engine scales when the same small body is rendered many times.</p>
+<table>
+<thead>
+<tr>
+<th>Engine</th>
+<th>Version</th>
+<th style="text-align:right;">Renders/sec</th>
+<th style="text-align:right;">Mean ms</th>
+<th style="text-align:right;">± %</th>
+<th>vs Teddy</th>
+<th style="text-align:right;">Output bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Eta</td>
+<td>4.6.0</td>
+<td style="text-align:right;">5,855</td>
+<td style="text-align:right;">0.175</td>
+<td style="text-align:right;">0.6</td>
+<td>2.43× faster</td>
+<td style="text-align:right;">237,757</td>
+</tr>
+<tr>
+<td>art-template</td>
+<td>4.13.4</td>
+<td style="text-align:right;">5,815</td>
+<td style="text-align:right;">0.177</td>
+<td style="text-align:right;">0.7</td>
+<td>2.42× faster</td>
+<td style="text-align:right;">238,758</td>
+</tr>
+<tr>
+<td>Squirrelly</td>
+<td>9.1.1</td>
+<td style="text-align:right;">4,621</td>
+<td style="text-align:right;">0.223</td>
+<td style="text-align:right;">0.7</td>
+<td>1.92× faster</td>
+<td style="text-align:right;">237,757</td>
+</tr>
+<tr>
+<td>doT</td>
+<td>1.1.3</td>
+<td style="text-align:right;">2,565</td>
+<td style="text-align:right;">0.397</td>
+<td style="text-align:right;">0.7</td>
+<td>1.07× faster</td>
+<td style="text-align:right;">238,758</td>
+</tr>
+<tr>
+<td>Teddy</td>
+<td>2.3.2</td>
+<td style="text-align:right;">2,405</td>
+<td style="text-align:right;">0.431</td>
+<td style="text-align:right;">1.2</td>
+<td>same</td>
+<td style="text-align:right;">238,758</td>
+</tr>
+<tr>
+<td>Handlebars</td>
+<td>4.7.9</td>
+<td style="text-align:right;">1,769</td>
+<td style="text-align:right;">0.575</td>
+<td style="text-align:right;">0.8</td>
+<td>1.36× slower</td>
+<td style="text-align:right;">233,753</td>
+</tr>
+<tr>
+<td>Mustache</td>
+<td>4.2.0</td>
+<td style="text-align:right;">1,162</td>
+<td style="text-align:right;">0.866</td>
+<td style="text-align:right;">0.6</td>
+<td>2.07× slower</td>
+<td style="text-align:right;">233,753</td>
+</tr>
+<tr>
+<td>Lodash template</td>
+<td>4.18.1</td>
+<td style="text-align:right;">1,086</td>
+<td style="text-align:right;">1.37</td>
+<td style="text-align:right;">14.3</td>
+<td>2.22× slower</td>
+<td style="text-align:right;">238,758</td>
+</tr>
+<tr>
+<td>Nunjucks</td>
+<td>3.2.4</td>
+<td style="text-align:right;">1,008</td>
+<td style="text-align:right;">0.997</td>
+<td style="text-align:right;">0.5</td>
+<td>2.39× slower</td>
+<td style="text-align:right;">238,758</td>
+</tr>
+<tr>
+<td>Dust.js</td>
+<td>3.0.1</td>
+<td style="text-align:right;">954</td>
+<td style="text-align:right;">1.05</td>
+<td style="text-align:right;">0.6</td>
+<td>2.52× slower</td>
+<td style="text-align:right;">238,758</td>
+</tr>
+<tr>
+<td>Pug</td>
+<td>3.0.4</td>
+<td style="text-align:right;">694</td>
+<td style="text-align:right;">1.46</td>
+<td style="text-align:right;">1.1</td>
+<td>3.47× slower</td>
+<td style="text-align:right;">156,734</td>
+</tr>
+<tr>
+<td>EJS</td>
+<td>6.0.1</td>
+<td style="text-align:right;">644</td>
+<td style="text-align:right;">1.56</td>
+<td style="text-align:right;">0.7</td>
+<td>3.73× slower</td>
+<td style="text-align:right;">238,758</td>
+</tr>
+<tr>
+<td>Marko</td>
+<td>6.3.51</td>
+<td style="text-align:right;">467</td>
+<td style="text-align:right;">2.31</td>
+<td style="text-align:right;">3.7</td>
+<td>5.15× slower</td>
+<td style="text-align:right;">156,732</td>
+</tr>
+<tr>
+<td>PHP (node-php-runner)</td>
+<td>2.0.0</td>
+<td style="text-align:right;">439</td>
+<td style="text-align:right;">2.33</td>
+<td style="text-align:right;">1.6</td>
+<td>5.47× slower</td>
+<td style="text-align:right;">237,757</td>
+</tr>
+<tr>
+<td>LiquidJS</td>
+<td>10.29.0</td>
+<td style="text-align:right;">95.2</td>
+<td style="text-align:right;">10.55</td>
+<td style="text-align:right;">1.4</td>
+<td>25.25× slower</td>
+<td style="text-align:right;">238,758</td>
+</tr>
+</tbody>
+</table>
+<h3 id="partials-1">Partials</h3>
+<p>a shell that pulls in a header and a footer once and a product partial 24 times. Measures the per-call overhead of including another template.</p>
+<table>
+<thead>
+<tr>
+<th>Engine</th>
+<th>Version</th>
+<th style="text-align:right;">Renders/sec</th>
+<th style="text-align:right;">Mean ms</th>
+<th style="text-align:right;">± %</th>
+<th>vs Teddy</th>
+<th style="text-align:right;">Output bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>doT</td>
+<td>1.1.3</td>
+<td style="text-align:right;">25,327</td>
+<td style="text-align:right;">0.040</td>
+<td style="text-align:right;">0.2</td>
+<td>25.77× faster</td>
+<td style="text-align:right;">10,931</td>
+</tr>
+<tr>
+<td>Eta</td>
+<td>4.6.0</td>
+<td style="text-align:right;">22,217</td>
+<td style="text-align:right;">0.047</td>
+<td style="text-align:right;">0.4</td>
+<td>22.60× faster</td>
+<td style="text-align:right;">10,672</td>
+</tr>
+<tr>
+<td>Squirrelly</td>
+<td>9.1.1</td>
+<td style="text-align:right;">17,621</td>
+<td style="text-align:right;">0.058</td>
+<td style="text-align:right;">0.7</td>
+<td>17.93× faster</td>
+<td style="text-align:right;">10,672</td>
+</tr>
+<tr>
+<td>Mustache</td>
+<td>4.2.0</td>
+<td style="text-align:right;">5,254</td>
+<td style="text-align:right;">0.194</td>
+<td style="text-align:right;">0.6</td>
+<td>5.35× faster</td>
+<td style="text-align:right;">11,708</td>
+</tr>
+<tr>
+<td>Lodash template</td>
+<td>4.18.1</td>
+<td style="text-align:right;">4,573</td>
+<td style="text-align:right;">0.225</td>
+<td style="text-align:right;">1.1</td>
+<td>4.65× faster</td>
+<td style="text-align:right;">10,883</td>
+</tr>
+<tr>
+<td>Dust.js</td>
+<td>3.0.1</td>
+<td style="text-align:right;">2,870</td>
+<td style="text-align:right;">0.351</td>
+<td style="text-align:right;">0.4</td>
+<td>2.92× faster</td>
+<td style="text-align:right;">10,883</td>
+</tr>
+<tr>
+<td>Handlebars</td>
+<td>4.7.9</td>
+<td style="text-align:right;">1,560</td>
+<td style="text-align:right;">0.654</td>
+<td style="text-align:right;">0.9</td>
+<td>1.59× faster</td>
+<td style="text-align:right;">11,648</td>
+</tr>
+<tr>
+<td>EJS</td>
+<td>6.0.1</td>
+<td style="text-align:right;">1,307</td>
+<td style="text-align:right;">0.768</td>
+<td style="text-align:right;">0.4</td>
+<td>1.33× faster</td>
+<td style="text-align:right;">10,883</td>
+</tr>
+<tr>
+<td>Teddy</td>
+<td>2.3.2</td>
+<td style="text-align:right;">983</td>
+<td style="text-align:right;">1.06</td>
+<td style="text-align:right;">1.7</td>
+<td>same</td>
+<td style="text-align:right;">10,958</td>
+</tr>
+<tr>
+<td>art-template</td>
+<td>4.13.4</td>
+<td style="text-align:right;">937</td>
+<td style="text-align:right;">1.09</td>
+<td style="text-align:right;">1.1</td>
+<td>1.05× slower</td>
+<td style="text-align:right;">10,883</td>
+</tr>
+<tr>
+<td>PHP (node-php-runner)</td>
+<td>2.0.0</td>
+<td style="text-align:right;">743</td>
+<td style="text-align:right;">1.36</td>
+<td style="text-align:right;">0.8</td>
+<td>1.32× slower</td>
+<td style="text-align:right;">10,672</td>
+</tr>
+<tr>
+<td>LiquidJS</td>
+<td>10.29.0</td>
+<td style="text-align:right;">573</td>
+<td style="text-align:right;">1.75</td>
+<td style="text-align:right;">0.5</td>
+<td>1.71× slower</td>
+<td style="text-align:right;">10,883</td>
+</tr>
+<tr>
+<td>Nunjucks</td>
+<td>3.2.4</td>
+<td style="text-align:right;">442</td>
+<td style="text-align:right;">2.29</td>
+<td style="text-align:right;">1.3</td>
+<td>2.22× slower</td>
+<td style="text-align:right;">10,883</td>
+</tr>
+<tr>
+<td>Pug</td>
+<td>3.0.4</td>
+<td style="text-align:right;">363</td>
+<td style="text-align:right;">2.76</td>
+<td style="text-align:right;">0.7</td>
+<td>2.70× slower</td>
+<td style="text-align:right;">8,611</td>
+</tr>
+<tr>
+<td>Marko</td>
+<td>6.3.51</td>
+<td style="text-align:right;">102</td>
+<td style="text-align:right;">10.13</td>
+<td style="text-align:right;">4.6</td>
+<td>9.60× slower</td>
+<td style="text-align:right;">8,247</td>
+</tr>
+</tbody>
+</table>
+<h3 id="full-page-1">Full page</h3>
+<p>a complete document: head, header, banner, else-if chain, 24 products, a 25 row table, footer. Measures everything above at once, which is the closest thing here to a real request.</p>
+<table>
+<thead>
+<tr>
+<th>Engine</th>
+<th>Version</th>
+<th style="text-align:right;">Renders/sec</th>
+<th style="text-align:right;">Mean ms</th>
+<th style="text-align:right;">± %</th>
+<th>vs Teddy</th>
+<th style="text-align:right;">Output bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>doT</td>
+<td>1.1.3</td>
+<td style="text-align:right;">16,231</td>
+<td style="text-align:right;">0.063</td>
+<td style="text-align:right;">0.4</td>
+<td>51.07× faster</td>
+<td style="text-align:right;">17,364</td>
+</tr>
+<tr>
+<td>Eta</td>
+<td>4.6.0</td>
+<td style="text-align:right;">15,927</td>
+<td style="text-align:right;">0.064</td>
+<td style="text-align:right;">0.4</td>
+<td>50.11× faster</td>
+<td style="text-align:right;">17,067</td>
+</tr>
+<tr>
+<td>Squirrelly</td>
+<td>9.1.1</td>
+<td style="text-align:right;">12,205</td>
+<td style="text-align:right;">0.084</td>
+<td style="text-align:right;">0.4</td>
+<td>38.40× faster</td>
+<td style="text-align:right;">17,067</td>
+</tr>
+<tr>
+<td>Mustache</td>
+<td>4.2.0</td>
+<td style="text-align:right;">3,472</td>
+<td style="text-align:right;">0.293</td>
+<td style="text-align:right;">0.6</td>
+<td>10.92× faster</td>
+<td style="text-align:right;">18,837</td>
+</tr>
+<tr>
+<td>Lodash template</td>
+<td>4.18.1</td>
+<td style="text-align:right;">3,380</td>
+<td style="text-align:right;">0.305</td>
+<td style="text-align:right;">1.2</td>
+<td>10.64× faster</td>
+<td style="text-align:right;">17,308</td>
+</tr>
+<tr>
+<td>Dust.js</td>
+<td>3.0.1</td>
+<td style="text-align:right;">1,434</td>
+<td style="text-align:right;">0.709</td>
+<td style="text-align:right;">0.9</td>
+<td>4.51× faster</td>
+<td style="text-align:right;">17,328</td>
+</tr>
+<tr>
+<td>EJS</td>
+<td>6.0.1</td>
+<td style="text-align:right;">1,166</td>
+<td style="text-align:right;">0.864</td>
+<td style="text-align:right;">0.6</td>
+<td>3.67× faster</td>
+<td style="text-align:right;">17,308</td>
+</tr>
+<tr>
+<td>Handlebars</td>
+<td>4.7.9</td>
+<td style="text-align:right;">840</td>
+<td style="text-align:right;">1.21</td>
+<td style="text-align:right;">1.0</td>
+<td>2.64× faster</td>
+<td style="text-align:right;">18,765</td>
+</tr>
+<tr>
+<td>art-template</td>
+<td>4.13.4</td>
+<td style="text-align:right;">796</td>
+<td style="text-align:right;">1.30</td>
+<td style="text-align:right;">1.7</td>
+<td>2.51× faster</td>
+<td style="text-align:right;">17,308</td>
+</tr>
+<tr>
+<td>PHP (node-php-runner)</td>
+<td>2.0.0</td>
+<td style="text-align:right;">604</td>
+<td style="text-align:right;">1.73</td>
+<td style="text-align:right;">1.9</td>
+<td>1.90× faster</td>
+<td style="text-align:right;">17,067</td>
+</tr>
+<tr>
+<td>Nunjucks</td>
+<td>3.2.4</td>
+<td style="text-align:right;">494</td>
+<td style="text-align:right;">2.06</td>
+<td style="text-align:right;">1.3</td>
+<td>1.55× faster</td>
+<td style="text-align:right;">17,308</td>
+</tr>
+<tr>
+<td>LiquidJS</td>
+<td>10.29.0</td>
+<td style="text-align:right;">461</td>
+<td style="text-align:right;">2.19</td>
+<td style="text-align:right;">1.0</td>
+<td>1.45× faster</td>
+<td style="text-align:right;">17,308</td>
+</tr>
+<tr>
+<td>Teddy</td>
+<td>2.3.2</td>
+<td style="text-align:right;">318</td>
+<td style="text-align:right;">3.22</td>
+<td style="text-align:right;">2.0</td>
+<td>same</td>
+<td style="text-align:right;">17,397</td>
+</tr>
+<tr>
+<td>Pug</td>
+<td>3.0.4</td>
+<td style="text-align:right;">174</td>
+<td style="text-align:right;">5.80</td>
+<td style="text-align:right;">1.4</td>
+<td>1.83× slower</td>
+<td style="text-align:right;">11,824</td>
+</tr>
+<tr>
+<td>Marko</td>
+<td>6.3.51</td>
+<td style="text-align:right;">65.8</td>
+<td style="text-align:right;">15.72</td>
+<td style="text-align:right;">5.0</td>
+<td>4.83× slower</td>
+<td style="text-align:right;">11,438</td>
+</tr>
+</tbody>
+</table>
+<h2 id="in-a-browser-cached-chromium">In a browser, cached (chromium)</h2>
+<p>The same scenarios rendered inside a real browser rather than in Node, timing rendering only. A browser has no filesystem, so every template and partial is handed to the engine up front.</p>
+<p><strong>Teddy is listed twice, and it is the only engine here that is.</strong> Every other engine in this table renders one way: it turns a template into a JavaScript function and calls it. Teddy can do that, and it can also render by walking the node tree its compiler built, without writing any JavaScript at all. Those are two different renderers, not two ways of arriving at the same one, which is why the route changes the number for Teddy and for nobody else. Both rows are real ways to run it, and which one an app gets depends on whether it has a build step:</p>
+<ul>
+<li><strong>Teddy (emitted js)</strong> is the emitted JavaScript, written out by <code>teddy.precompile()</code> in Node and loaded as a script. Faster, and it needs a build step and a known set of templates.</li>
+<li><strong>Teddy (tree walk)</strong> is what a page gets with no build step at all: drop in the browser build and render. It is also the only thing that can render a template that does not exist until runtime, which is what a live editor or a template fetched from a server needs.</li>
+</ul>
+<p>Ratios are against <strong>Teddy (emitted js)</strong>, since that is the like for like against the other engines here, all of which are running a compiled function too.</p>
+<h3 id="variables-2">Variables</h3>
+<p>28 interpolations, one of them escaped html and one of them raw html. Measures the cost of looking a value up in the model and writing it out.</p>
+<table>
+<thead>
+<tr>
+<th>Engine</th>
+<th>Compiled</th>
+<th style="text-align:right;">Renders/sec</th>
+<th style="text-align:right;">Mean ms</th>
+<th>vs Teddy</th>
+<th style="text-align:right;">Output bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>art-template</td>
+<td>in page</td>
+<td style="text-align:right;">1,118,552</td>
+<td style="text-align:right;">8.9e-4</td>
+<td>1.40× faster</td>
+<td style="text-align:right;">1,259</td>
+</tr>
+<tr>
+<td>Pug</td>
+<td>ahead of time</td>
+<td style="text-align:right;">838,080</td>
+<td style="text-align:right;">1.2e-3</td>
+<td>1.05× faster</td>
+<td style="text-align:right;">1,158</td>
+</tr>
+<tr>
+<td>Teddy (emitted js)</td>
+<td>ahead of time</td>
+<td style="text-align:right;">800,371</td>
+<td style="text-align:right;">1.2e-3</td>
+<td>same</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>Eta</td>
+<td>in page</td>
+<td style="text-align:right;">723,891</td>
+<td style="text-align:right;">1.4e-3</td>
+<td>1.11× slower</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>Squirrelly</td>
+<td>in page</td>
+<td style="text-align:right;">686,701</td>
+<td style="text-align:right;">1.5e-3</td>
+<td>1.17× slower</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>doT</td>
+<td>in page</td>
+<td style="text-align:right;">536,101</td>
+<td style="text-align:right;">1.9e-3</td>
+<td>1.49× slower</td>
+<td style="text-align:right;">1,275</td>
+</tr>
+<tr>
+<td>Marko</td>
+<td>ahead of time</td>
+<td style="text-align:right;">402,558</td>
+<td style="text-align:right;">2.5e-3</td>
+<td>1.99× slower</td>
+<td style="text-align:right;">1,140</td>
+</tr>
+<tr>
+<td>Teddy (tree walk)</td>
+<td>in page</td>
+<td style="text-align:right;">394,568</td>
+<td style="text-align:right;">2.5e-3</td>
+<td>2.03× slower</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>Handlebars</td>
+<td>in page</td>
+<td style="text-align:right;">382,718</td>
+<td style="text-align:right;">2.6e-3</td>
+<td>2.09× slower</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>Nunjucks</td>
+<td>in page</td>
+<td style="text-align:right;">325,064</td>
+<td style="text-align:right;">3.1e-3</td>
+<td>2.46× slower</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>Dust.js</td>
+<td>in page</td>
+<td style="text-align:right;">293,627</td>
+<td style="text-align:right;">3.4e-3</td>
+<td>2.73× slower</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>Lodash template</td>
+<td>in page</td>
+<td style="text-align:right;">284,976</td>
+<td style="text-align:right;">3.5e-3</td>
+<td>2.81× slower</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>Mustache</td>
+<td>in page</td>
+<td style="text-align:right;">239,945</td>
+<td style="text-align:right;">4.2e-3</td>
+<td>3.34× slower</td>
+<td style="text-align:right;">1,278</td>
+</tr>
+<tr>
+<td>EJS</td>
+<td>in page</td>
+<td style="text-align:right;">141,529</td>
+<td style="text-align:right;">7.1e-3</td>
+<td>5.66× slower</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>LiquidJS</td>
+<td>in page</td>
+<td style="text-align:right;">13,416</td>
+<td style="text-align:right;">0.075</td>
+<td>59.66× slower</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>PHP (node-php-runner)</td>
+<td>—</td>
+<td style="text-align:right;">—</td>
+<td style="text-align:right;">—</td>
+<td>cannot run client-side</td>
+<td style="text-align:right;">—</td>
+</tr>
+</tbody>
+</table>
+<h3 id="conditionals-2">Conditionals</h3>
+<p>8 branches: if/else, an else-if chain, a negation, a boolean pair, and an inline attribute condition. Measures the cost of evaluating a branch and discarding the branch not taken.</p>
+<table>
+<thead>
+<tr>
+<th>Engine</th>
+<th>Compiled</th>
+<th style="text-align:right;">Renders/sec</th>
+<th style="text-align:right;">Mean ms</th>
+<th>vs Teddy</th>
+<th style="text-align:right;">Output bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Eta</td>
+<td>in page</td>
+<td style="text-align:right;">5,691,645</td>
+<td style="text-align:right;">1.8e-4</td>
+<td>1.69× faster</td>
+<td style="text-align:right;">478</td>
+</tr>
+<tr>
+<td>art-template</td>
+<td>in page</td>
+<td style="text-align:right;">5,672,860</td>
+<td style="text-align:right;">1.8e-4</td>
+<td>1.68× faster</td>
+<td style="text-align:right;">492</td>
+</tr>
+<tr>
+<td>Squirrelly</td>
+<td>in page</td>
+<td style="text-align:right;">5,382,795</td>
+<td style="text-align:right;">1.9e-4</td>
+<td>1.59× faster</td>
+<td style="text-align:right;">478</td>
+</tr>
+<tr>
+<td>Pug</td>
+<td>ahead of time</td>
+<td style="text-align:right;">4,756,946</td>
+<td style="text-align:right;">2.1e-4</td>
+<td>1.41× faster</td>
+<td style="text-align:right;">410</td>
+</tr>
+<tr>
+<td>doT</td>
+<td>in page</td>
+<td style="text-align:right;">4,683,580</td>
+<td style="text-align:right;">2.1e-4</td>
+<td>1.39× faster</td>
+<td style="text-align:right;">492</td>
+</tr>
+<tr>
+<td>Teddy (emitted js)</td>
+<td>ahead of time</td>
+<td style="text-align:right;">3,377,715</td>
+<td style="text-align:right;">3.0e-4</td>
+<td>same</td>
+<td style="text-align:right;">516</td>
+</tr>
+<tr>
+<td>Nunjucks</td>
+<td>in page</td>
+<td style="text-align:right;">1,138,533</td>
+<td style="text-align:right;">8.8e-4</td>
+<td>2.97× slower</td>
+<td style="text-align:right;">492</td>
+</tr>
+<tr>
+<td>Dust.js</td>
+<td>in page</td>
+<td style="text-align:right;">1,002,299</td>
+<td style="text-align:right;">1.0e-3</td>
+<td>3.37× slower</td>
+<td style="text-align:right;">516</td>
+</tr>
+<tr>
+<td>Teddy (tree walk)</td>
+<td>in page</td>
+<td style="text-align:right;">693,014</td>
+<td style="text-align:right;">1.4e-3</td>
+<td>4.87× slower</td>
+<td style="text-align:right;">516</td>
+</tr>
+<tr>
+<td>Mustache</td>
+<td>in page</td>
+<td style="text-align:right;">605,389</td>
+<td style="text-align:right;">1.7e-3</td>
+<td>5.58× slower</td>
+<td style="text-align:right;">454</td>
+</tr>
+<tr>
+<td>Marko</td>
+<td>ahead of time</td>
+<td style="text-align:right;">587,669</td>
+<td style="text-align:right;">1.7e-3</td>
+<td>5.75× slower</td>
+<td style="text-align:right;">392</td>
+</tr>
+<tr>
+<td>Lodash template</td>
+<td>in page</td>
+<td style="text-align:right;">555,057</td>
+<td style="text-align:right;">1.8e-3</td>
+<td>6.09× slower</td>
+<td style="text-align:right;">492</td>
+</tr>
+<tr>
+<td>Handlebars</td>
+<td>in page</td>
+<td style="text-align:right;">525,829</td>
+<td style="text-align:right;">1.9e-3</td>
+<td>6.42× slower</td>
+<td style="text-align:right;">453</td>
+</tr>
+<tr>
+<td>EJS</td>
+<td>in page</td>
+<td style="text-align:right;">400,979</td>
+<td style="text-align:right;">2.5e-3</td>
+<td>8.42× slower</td>
+<td style="text-align:right;">492</td>
+</tr>
+<tr>
+<td>LiquidJS</td>
+<td>in page</td>
+<td style="text-align:right;">30,573</td>
+<td style="text-align:right;">0.033</td>
+<td>110.48× slower</td>
+<td style="text-align:right;">492</td>
+</tr>
+<tr>
+<td>PHP (node-php-runner)</td>
+<td>—</td>
+<td style="text-align:right;">—</td>
+<td style="text-align:right;">—</td>
+<td>cannot run client-side</td>
+<td style="text-align:right;">—</td>
+</tr>
+</tbody>
+</table>
+<h3 id="loops-2">Loops</h3>
+<p>24 products, each with a branch and a nested loop over 3 tags. Measures nested iteration with per-iteration branching.</p>
+<table>
+<thead>
+<tr>
+<th>Engine</th>
+<th>Compiled</th>
+<th style="text-align:right;">Renders/sec</th>
+<th style="text-align:right;">Mean ms</th>
+<th>vs Teddy</th>
+<th style="text-align:right;">Output bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Teddy (emitted js)</td>
+<td>ahead of time</td>
+<td style="text-align:right;">323,793</td>
+<td style="text-align:right;">3.1e-3</td>
+<td>same</td>
+<td style="text-align:right;">11,795</td>
+</tr>
+<tr>
+<td>art-template</td>
+<td>in page</td>
+<td style="text-align:right;">239,052</td>
+<td style="text-align:right;">4.2e-3</td>
+<td>1.35× slower</td>
+<td style="text-align:right;">11,627</td>
+</tr>
+<tr>
+<td>Pug</td>
+<td>ahead of time</td>
+<td style="text-align:right;">217,777</td>
+<td style="text-align:right;">4.6e-3</td>
+<td>1.49× slower</td>
+<td style="text-align:right;">7,782</td>
+</tr>
+<tr>
+<td>Eta</td>
+<td>in page</td>
+<td style="text-align:right;">215,695</td>
+<td style="text-align:right;">4.6e-3</td>
+<td>1.50× slower</td>
+<td style="text-align:right;">11,425</td>
+</tr>
+<tr>
+<td>Squirrelly</td>
+<td>in page</td>
+<td style="text-align:right;">187,773</td>
+<td style="text-align:right;">5.3e-3</td>
+<td>1.72× slower</td>
+<td style="text-align:right;">11,425</td>
+</tr>
+<tr>
+<td>Marko</td>
+<td>ahead of time</td>
+<td style="text-align:right;">130,242</td>
+<td style="text-align:right;">7.7e-3</td>
+<td>2.49× slower</td>
+<td style="text-align:right;">7,474</td>
+</tr>
+<tr>
+<td>doT</td>
+<td>in page</td>
+<td style="text-align:right;">127,229</td>
+<td style="text-align:right;">7.9e-3</td>
+<td>2.54× slower</td>
+<td style="text-align:right;">11,627</td>
+</tr>
+<tr>
+<td>Dust.js</td>
+<td>in page</td>
+<td style="text-align:right;">63,520</td>
+<td style="text-align:right;">0.016</td>
+<td>5.10× slower</td>
+<td style="text-align:right;">11,627</td>
+</tr>
+<tr>
+<td>Handlebars</td>
+<td>in page</td>
+<td style="text-align:right;">54,209</td>
+<td style="text-align:right;">0.018</td>
+<td>5.97× slower</td>
+<td style="text-align:right;">10,121</td>
+</tr>
+<tr>
+<td>Mustache</td>
+<td>in page</td>
+<td style="text-align:right;">50,478</td>
+<td style="text-align:right;">0.020</td>
+<td>6.41× slower</td>
+<td style="text-align:right;">10,121</td>
+</tr>
+<tr>
+<td>Lodash template</td>
+<td>in page</td>
+<td style="text-align:right;">31,071</td>
+<td style="text-align:right;">0.032</td>
+<td>10.42× slower</td>
+<td style="text-align:right;">11,627</td>
+</tr>
+<tr>
+<td>Nunjucks</td>
+<td>in page</td>
+<td style="text-align:right;">24,975</td>
+<td style="text-align:right;">0.040</td>
+<td>12.96× slower</td>
+<td style="text-align:right;">11,627</td>
+</tr>
+<tr>
+<td>Teddy (tree walk)</td>
+<td>in page</td>
+<td style="text-align:right;">23,217</td>
+<td style="text-align:right;">0.043</td>
+<td>13.95× slower</td>
+<td style="text-align:right;">11,795</td>
+</tr>
+<tr>
+<td>EJS</td>
+<td>in page</td>
+<td style="text-align:right;">19,151</td>
+<td style="text-align:right;">0.052</td>
+<td>16.91× slower</td>
+<td style="text-align:right;">11,627</td>
+</tr>
+<tr>
+<td>LiquidJS</td>
+<td>in page</td>
+<td style="text-align:right;">1,188</td>
+<td style="text-align:right;">0.842</td>
+<td>272.63× slower</td>
+<td style="text-align:right;">11,627</td>
+</tr>
+<tr>
+<td>PHP (node-php-runner)</td>
+<td>—</td>
+<td style="text-align:right;">—</td>
+<td style="text-align:right;">—</td>
+<td>cannot run client-side</td>
+<td style="text-align:right;">—</td>
+</tr>
+</tbody>
+</table>
+<h3 id="large-table-2">Large table</h3>
+<p>1,000 rows of 7 cells, one of them conditional. Measures how the engine scales when the same small body is rendered many times.</p>
+<table>
+<thead>
+<tr>
+<th>Engine</th>
+<th>Compiled</th>
+<th style="text-align:right;">Renders/sec</th>
+<th style="text-align:right;">Mean ms</th>
+<th>vs Teddy</th>
+<th style="text-align:right;">Output bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Teddy (emitted js)</td>
+<td>ahead of time</td>
+<td style="text-align:right;">9,723</td>
+<td style="text-align:right;">0.103</td>
+<td>same</td>
+<td style="text-align:right;">238,758</td>
+</tr>
+<tr>
+<td>Eta</td>
+<td>in page</td>
+<td style="text-align:right;">8,139</td>
+<td style="text-align:right;">0.123</td>
+<td>1.19× slower</td>
+<td style="text-align:right;">237,757</td>
+</tr>
+<tr>
+<td>art-template</td>
+<td>in page</td>
+<td style="text-align:right;">7,416</td>
+<td style="text-align:right;">0.135</td>
+<td>1.31× slower</td>
+<td style="text-align:right;">238,758</td>
+</tr>
+<tr>
+<td>Pug</td>
+<td>ahead of time</td>
+<td style="text-align:right;">6,944</td>
+<td style="text-align:right;">0.144</td>
+<td>1.40× slower</td>
+<td style="text-align:right;">156,734</td>
+</tr>
+<tr>
+<td>Squirrelly</td>
+<td>in page</td>
+<td style="text-align:right;">6,527</td>
+<td style="text-align:right;">0.153</td>
+<td>1.49× slower</td>
+<td style="text-align:right;">237,757</td>
+</tr>
+<tr>
+<td>Marko</td>
+<td>ahead of time</td>
+<td style="text-align:right;">6,369</td>
+<td style="text-align:right;">0.157</td>
+<td>1.53× slower</td>
+<td style="text-align:right;">156,732</td>
+</tr>
+<tr>
+<td>doT</td>
+<td>in page</td>
+<td style="text-align:right;">4,125</td>
+<td style="text-align:right;">0.242</td>
+<td>2.36× slower</td>
+<td style="text-align:right;">238,758</td>
+</tr>
+<tr>
+<td>Handlebars</td>
+<td>in page</td>
+<td style="text-align:right;">2,116</td>
+<td style="text-align:right;">0.473</td>
+<td>4.60× slower</td>
+<td style="text-align:right;">233,753</td>
+</tr>
+<tr>
+<td>Dust.js</td>
+<td>in page</td>
+<td style="text-align:right;">1,972</td>
+<td style="text-align:right;">0.507</td>
+<td>4.93× slower</td>
+<td style="text-align:right;">238,758</td>
+</tr>
+<tr>
+<td>Lodash template</td>
+<td>in page</td>
+<td style="text-align:right;">1,845</td>
+<td style="text-align:right;">0.542</td>
+<td>5.27× slower</td>
+<td style="text-align:right;">238,758</td>
+</tr>
+<tr>
+<td>Mustache</td>
+<td>in page</td>
+<td style="text-align:right;">1,715</td>
+<td style="text-align:right;">0.583</td>
+<td>5.67× slower</td>
+<td style="text-align:right;">233,753</td>
+</tr>
+<tr>
+<td>Teddy (tree walk)</td>
+<td>in page</td>
+<td style="text-align:right;">1,639</td>
+<td style="text-align:right;">0.610</td>
+<td>5.93× slower</td>
+<td style="text-align:right;">238,758</td>
+</tr>
+<tr>
+<td>Nunjucks</td>
+<td>in page</td>
+<td style="text-align:right;">1,587</td>
+<td style="text-align:right;">0.630</td>
+<td>6.13× slower</td>
+<td style="text-align:right;">238,758</td>
+</tr>
+<tr>
+<td>EJS</td>
+<td>in page</td>
+<td style="text-align:right;">671</td>
+<td style="text-align:right;">1.49</td>
+<td>14.49× slower</td>
+<td style="text-align:right;">238,758</td>
+</tr>
+<tr>
+<td>LiquidJS</td>
+<td>in page</td>
+<td style="text-align:right;">43.5</td>
+<td style="text-align:right;">22.99</td>
+<td>223.54× slower</td>
+<td style="text-align:right;">238,758</td>
+</tr>
+<tr>
+<td>PHP (node-php-runner)</td>
+<td>—</td>
+<td style="text-align:right;">—</td>
+<td style="text-align:right;">—</td>
+<td>cannot run client-side</td>
+<td style="text-align:right;">—</td>
+</tr>
+</tbody>
+</table>
+<h3 id="partials-2">Partials</h3>
+<p>a shell that pulls in a header and a footer once and a product partial 24 times. Measures the per-call overhead of including another template.</p>
+<table>
+<thead>
+<tr>
+<th>Engine</th>
+<th>Compiled</th>
+<th style="text-align:right;">Renders/sec</th>
+<th style="text-align:right;">Mean ms</th>
+<th>vs Teddy</th>
+<th style="text-align:right;">Output bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Teddy (emitted js)</td>
+<td>ahead of time</td>
+<td style="text-align:right;">180,839</td>
+<td style="text-align:right;">5.5e-3</td>
+<td>same</td>
+<td style="text-align:right;">10,958</td>
+</tr>
+<tr>
+<td>Pug</td>
+<td>ahead of time</td>
+<td style="text-align:right;">159,267</td>
+<td style="text-align:right;">6.3e-3</td>
+<td>1.14× slower</td>
+<td style="text-align:right;">8,611</td>
+</tr>
+<tr>
+<td>Squirrelly</td>
+<td>in page</td>
+<td style="text-align:right;">125,376</td>
+<td style="text-align:right;">8.0e-3</td>
+<td>1.44× slower</td>
+<td style="text-align:right;">10,672</td>
+</tr>
+<tr>
+<td>Eta</td>
+<td>in page</td>
+<td style="text-align:right;">113,817</td>
+<td style="text-align:right;">8.8e-3</td>
+<td>1.59× slower</td>
+<td style="text-align:right;">10,672</td>
+</tr>
+<tr>
+<td>doT</td>
+<td>in page</td>
+<td style="text-align:right;">101,560</td>
+<td style="text-align:right;">9.8e-3</td>
+<td>1.78× slower</td>
+<td style="text-align:right;">10,931</td>
+</tr>
+<tr>
+<td>Marko</td>
+<td>ahead of time</td>
+<td style="text-align:right;">96,479</td>
+<td style="text-align:right;">0.010</td>
+<td>1.87× slower</td>
+<td style="text-align:right;">8,247</td>
+</tr>
+<tr>
+<td>Dust.js</td>
+<td>in page</td>
+<td style="text-align:right;">51,455</td>
+<td style="text-align:right;">0.019</td>
+<td>3.51× slower</td>
+<td style="text-align:right;">10,883</td>
+</tr>
+<tr>
+<td>Mustache</td>
+<td>in page</td>
+<td style="text-align:right;">24,939</td>
+<td style="text-align:right;">0.040</td>
+<td>7.25× slower</td>
+<td style="text-align:right;">11,708</td>
+</tr>
+<tr>
+<td>Handlebars</td>
+<td>in page</td>
+<td style="text-align:right;">24,562</td>
+<td style="text-align:right;">0.041</td>
+<td>7.36× slower</td>
+<td style="text-align:right;">11,648</td>
+</tr>
+<tr>
+<td>Lodash template</td>
+<td>in page</td>
+<td style="text-align:right;">24,323</td>
+<td style="text-align:right;">0.041</td>
+<td>7.43× slower</td>
+<td style="text-align:right;">10,883</td>
+</tr>
+<tr>
+<td>Teddy (tree walk)</td>
+<td>in page</td>
+<td style="text-align:right;">23,188</td>
+<td style="text-align:right;">0.043</td>
+<td>7.80× slower</td>
+<td style="text-align:right;">10,958</td>
+</tr>
+<tr>
+<td>Nunjucks</td>
+<td>in page</td>
+<td style="text-align:right;">14,041</td>
+<td style="text-align:right;">0.071</td>
+<td>12.88× slower</td>
+<td style="text-align:right;">10,883</td>
+</tr>
+<tr>
+<td>art-template</td>
+<td>in page</td>
+<td style="text-align:right;">11,586</td>
+<td style="text-align:right;">0.086</td>
+<td>15.61× slower</td>
+<td style="text-align:right;">10,883</td>
+</tr>
+<tr>
+<td>EJS</td>
+<td>in page</td>
+<td style="text-align:right;">8,751</td>
+<td style="text-align:right;">0.114</td>
+<td>20.66× slower</td>
+<td style="text-align:right;">10,883</td>
+</tr>
+<tr>
+<td>LiquidJS</td>
+<td>in page</td>
+<td style="text-align:right;">656</td>
+<td style="text-align:right;">1.52</td>
+<td>275.52× slower</td>
+<td style="text-align:right;">10,883</td>
+</tr>
+<tr>
+<td>PHP (node-php-runner)</td>
+<td>—</td>
+<td style="text-align:right;">—</td>
+<td style="text-align:right;">—</td>
+<td>cannot run client-side</td>
+<td style="text-align:right;">—</td>
+</tr>
+</tbody>
+</table>
+<h3 id="full-page-2">Full page</h3>
+<p>a complete document: head, header, banner, else-if chain, 24 products, a 25 row table, footer. Measures everything above at once, which is the closest thing here to a real request.</p>
+<table>
+<thead>
+<tr>
+<th>Engine</th>
+<th>Compiled</th>
+<th style="text-align:right;">Renders/sec</th>
+<th style="text-align:right;">Mean ms</th>
+<th>vs Teddy</th>
+<th style="text-align:right;">Output bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Teddy (emitted js)</td>
+<td>ahead of time</td>
+<td style="text-align:right;">157,730</td>
+<td style="text-align:right;">6.3e-3</td>
+<td>same</td>
+<td style="text-align:right;">17,397</td>
+</tr>
+<tr>
+<td>Pug</td>
+<td>ahead of time</td>
+<td style="text-align:right;">112,004</td>
+<td style="text-align:right;">8.9e-3</td>
+<td>1.41× slower</td>
+<td style="text-align:right;">11,824</td>
+</tr>
+<tr>
+<td>Eta</td>
+<td>in page</td>
+<td style="text-align:right;">93,321</td>
+<td style="text-align:right;">0.011</td>
+<td>1.69× slower</td>
+<td style="text-align:right;">17,067</td>
+</tr>
+<tr>
+<td>Squirrelly</td>
+<td>in page</td>
+<td style="text-align:right;">90,496</td>
+<td style="text-align:right;">0.011</td>
+<td>1.74× slower</td>
+<td style="text-align:right;">17,067</td>
+</tr>
+<tr>
+<td>Marko</td>
+<td>ahead of time</td>
+<td style="text-align:right;">74,436</td>
+<td style="text-align:right;">0.013</td>
+<td>2.12× slower</td>
+<td style="text-align:right;">11,438</td>
+</tr>
+<tr>
+<td>doT</td>
+<td>in page</td>
+<td style="text-align:right;">70,050</td>
+<td style="text-align:right;">0.014</td>
+<td>2.25× slower</td>
+<td style="text-align:right;">17,364</td>
+</tr>
+<tr>
+<td>Dust.js</td>
+<td>in page</td>
+<td style="text-align:right;">27,003</td>
+<td style="text-align:right;">0.037</td>
+<td>5.84× slower</td>
+<td style="text-align:right;">17,328</td>
+</tr>
+<tr>
+<td>Handlebars</td>
+<td>in page</td>
+<td style="text-align:right;">20,300</td>
+<td style="text-align:right;">0.049</td>
+<td>7.77× slower</td>
+<td style="text-align:right;">18,765</td>
+</tr>
+<tr>
+<td>Lodash template</td>
+<td>in page</td>
+<td style="text-align:right;">18,793</td>
+<td style="text-align:right;">0.053</td>
+<td>8.39× slower</td>
+<td style="text-align:right;">17,308</td>
+</tr>
+<tr>
+<td>Teddy (tree walk)</td>
+<td>in page</td>
+<td style="text-align:right;">18,571</td>
+<td style="text-align:right;">0.054</td>
+<td>8.49× slower</td>
+<td style="text-align:right;">17,397</td>
+</tr>
+<tr>
+<td>Mustache</td>
+<td>in page</td>
+<td style="text-align:right;">18,486</td>
+<td style="text-align:right;">0.054</td>
+<td>8.53× slower</td>
+<td style="text-align:right;">18,837</td>
+</tr>
+<tr>
+<td>Nunjucks</td>
+<td>in page</td>
+<td style="text-align:right;">12,150</td>
+<td style="text-align:right;">0.082</td>
+<td>12.98× slower</td>
+<td style="text-align:right;">17,308</td>
+</tr>
+<tr>
+<td>art-template</td>
+<td>in page</td>
+<td style="text-align:right;">11,409</td>
+<td style="text-align:right;">0.088</td>
+<td>13.83× slower</td>
+<td style="text-align:right;">17,308</td>
+</tr>
+<tr>
+<td>EJS</td>
+<td>in page</td>
+<td style="text-align:right;">7,259</td>
+<td style="text-align:right;">0.138</td>
+<td>21.73× slower</td>
+<td style="text-align:right;">17,308</td>
+</tr>
+<tr>
+<td>LiquidJS</td>
+<td>in page</td>
+<td style="text-align:right;">507</td>
+<td style="text-align:right;">1.97</td>
+<td>311.32× slower</td>
+<td style="text-align:right;">17,308</td>
+</tr>
+<tr>
+<td>PHP (node-php-runner)</td>
+<td>—</td>
+<td style="text-align:right;">—</td>
+<td style="text-align:right;">—</td>
+<td>cannot run client-side</td>
+<td style="text-align:right;">—</td>
+</tr>
+</tbody>
+</table>
+<p>Engines with nothing a browser can run:</p>
+<ul>
+<li><strong>PHP (node-php-runner)</strong>: not a javascript engine, so there is nothing a browser can run either way</li>
+</ul>
+<h2 id="in-a-browser-cold-chromium">In a browser, cold (chromium)</h2>
+<p>The same scenarios in a browser, timing the compile and one render together, with whatever the engine kept from last time dropped first. This is the browser's answer to the cold mode above: what the first render of a template costs. Only engines that can compile in a browser at all appear, which is what leaves Pug and Marko out of it.</p>
+<h3 id="variables-3">Variables</h3>
+<p>28 interpolations, one of them escaped html and one of them raw html. Measures the cost of looking a value up in the model and writing it out.</p>
+<table>
+<thead>
+<tr>
+<th>Engine</th>
+<th style="text-align:right;">Renders/sec</th>
+<th style="text-align:right;">Mean ms</th>
+<th>vs Teddy</th>
+<th style="text-align:right;">Output bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>doT</td>
+<td style="text-align:right;">89,195</td>
+<td style="text-align:right;">0.011</td>
+<td>16.53× faster</td>
+<td style="text-align:right;">1,275</td>
+</tr>
+<tr>
+<td>Eta</td>
+<td style="text-align:right;">32,892</td>
+<td style="text-align:right;">0.030</td>
+<td>6.10× faster</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>Lodash template</td>
+<td style="text-align:right;">27,702</td>
+<td style="text-align:right;">0.036</td>
+<td>5.14× faster</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>EJS</td>
+<td style="text-align:right;">26,462</td>
+<td style="text-align:right;">0.038</td>
+<td>4.91× faster</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>Squirrelly</td>
+<td style="text-align:right;">23,276</td>
+<td style="text-align:right;">0.043</td>
+<td>4.31× faster</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>Mustache</td>
+<td style="text-align:right;">13,457</td>
+<td style="text-align:right;">0.074</td>
+<td>2.49× faster</td>
+<td style="text-align:right;">1,278</td>
+</tr>
+<tr>
+<td>art-template</td>
+<td style="text-align:right;">13,173</td>
+<td style="text-align:right;">0.076</td>
+<td>2.44× faster</td>
+<td style="text-align:right;">1,259</td>
+</tr>
+<tr>
+<td>Nunjucks</td>
+<td style="text-align:right;">7,354</td>
+<td style="text-align:right;">0.136</td>
+<td>1.36× faster</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>Teddy</td>
+<td style="text-align:right;">5,394</td>
+<td style="text-align:right;">0.185</td>
+<td>same</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>LiquidJS</td>
+<td style="text-align:right;">5,020</td>
+<td style="text-align:right;">0.199</td>
+<td>1.07× slower</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>Handlebars</td>
+<td style="text-align:right;">4,017</td>
+<td style="text-align:right;">0.249</td>
+<td>1.34× slower</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>Dust.js</td>
+<td style="text-align:right;">3,231</td>
+<td style="text-align:right;">0.309</td>
+<td>1.67× slower</td>
+<td style="text-align:right;">1,258</td>
+</tr>
+<tr>
+<td>Pug</td>
+<td style="text-align:right;">—</td>
+<td style="text-align:right;">—</td>
+<td>compiles ahead of time</td>
+<td style="text-align:right;">—</td>
+</tr>
+<tr>
+<td>Marko</td>
+<td style="text-align:right;">—</td>
+<td style="text-align:right;">—</td>
+<td>compiles ahead of time</td>
+<td style="text-align:right;">—</td>
+</tr>
+<tr>
+<td>PHP (node-php-runner)</td>
+<td style="text-align:right;">—</td>
+<td style="text-align:right;">—</td>
+<td>cannot run client-side</td>
+<td style="text-align:right;">—</td>
+</tr>
+</tbody>
+</table>
+<h3 id="conditionals-3">Conditionals</h3>
+<p>8 branches: if/else, an else-if chain, a negation, a boolean pair, and an inline attribute condition. Measures the cost of evaluating a branch and discarding the branch not taken.</p>
+<table>
+<thead>
+<tr>
+<th>Engine</th>
+<th style="text-align:right;">Renders/sec</th>
+<th style="text-align:right;">Mean ms</th>
+<th>vs Teddy</th>
+<th style="text-align:right;">Output bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>doT</td>
+<td style="text-align:right;">120,406</td>
+<td style="text-align:right;">8.3e-3</td>
+<td>42.95× faster</td>
+<td style="text-align:right;">492</td>
+</tr>
+<tr>
+<td>Lodash template</td>
+<td style="text-align:right;">41,227</td>
+<td style="text-align:right;">0.024</td>
+<td>14.70× faster</td>
+<td style="text-align:right;">492</td>
+</tr>
+<tr>
+<td>Eta</td>
+<td style="text-align:right;">40,168</td>
+<td style="text-align:right;">0.025</td>
+<td>14.33× faster</td>
+<td style="text-align:right;">478</td>
+</tr>
+<tr>
+<td>EJS</td>
+<td style="text-align:right;">37,786</td>
+<td style="text-align:right;">0.026</td>
+<td>13.48× faster</td>
+<td style="text-align:right;">492</td>
+</tr>
+<tr>
+<td>Squirrelly</td>
+<td style="text-align:right;">24,616</td>
+<td style="text-align:right;">0.041</td>
+<td>8.78× faster</td>
+<td style="text-align:right;">478</td>
+</tr>
+<tr>
+<td>art-template</td>
+<td style="text-align:right;">13,650</td>
+<td style="text-align:right;">0.073</td>
+<td>4.87× faster</td>
+<td style="text-align:right;">492</td>
+</tr>
+<tr>
+<td>Mustache</td>
+<td style="text-align:right;">12,669</td>
+<td style="text-align:right;">0.079</td>
+<td>4.52× faster</td>
+<td style="text-align:right;">454</td>
+</tr>
+<tr>
+<td>LiquidJS</td>
+<td style="text-align:right;">7,827</td>
+<td style="text-align:right;">0.128</td>
+<td>2.79× faster</td>
+<td style="text-align:right;">492</td>
+</tr>
+<tr>
+<td>Nunjucks</td>
+<td style="text-align:right;">7,791</td>
+<td style="text-align:right;">0.128</td>
+<td>2.78× faster</td>
+<td style="text-align:right;">492</td>
+</tr>
+<tr>
+<td>Handlebars</td>
+<td style="text-align:right;">3,899</td>
+<td style="text-align:right;">0.256</td>
+<td>1.39× faster</td>
+<td style="text-align:right;">453</td>
+</tr>
+<tr>
+<td>Dust.js</td>
+<td style="text-align:right;">3,140</td>
+<td style="text-align:right;">0.319</td>
+<td>1.12× faster</td>
+<td style="text-align:right;">516</td>
+</tr>
+<tr>
+<td>Teddy</td>
+<td style="text-align:right;">2,804</td>
+<td style="text-align:right;">0.357</td>
+<td>same</td>
+<td style="text-align:right;">516</td>
+</tr>
+<tr>
+<td>Pug</td>
+<td style="text-align:right;">—</td>
+<td style="text-align:right;">—</td>
+<td>compiles ahead of time</td>
+<td style="text-align:right;">—</td>
+</tr>
+<tr>
+<td>Marko</td>
+<td style="text-align:right;">—</td>
+<td style="text-align:right;">—</td>
+<td>compiles ahead of time</td>
+<td style="text-align:right;">—</td>
+</tr>
+<tr>
+<td>PHP (node-php-runner)</td>
+<td style="text-align:right;">—</td>
+<td style="text-align:right;">—</td>
+<td>cannot run client-side</td>
+<td style="text-align:right;">—</td>
+</tr>
+</tbody>
+</table>
+<h3 id="loops-3">Loops</h3>
+<p>24 products, each with a branch and a nested loop over 3 tags. Measures nested iteration with per-iteration branching.</p>
+<table>
+<thead>
+<tr>
+<th>Engine</th>
+<th style="text-align:right;">Renders/sec</th>
+<th style="text-align:right;">Mean ms</th>
+<th>vs Teddy</th>
+<th style="text-align:right;">Output bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>doT</td>
+<td style="text-align:right;">75,325</td>
+<td style="text-align:right;">0.013</td>
+<td>21.93× faster</td>
+<td style="text-align:right;">11,627</td>
+</tr>
+<tr>
+<td>Eta</td>
+<td style="text-align:right;">38,334</td>
+<td style="text-align:right;">0.026</td>
+<td>11.16× faster</td>
+<td style="text-align:right;">11,425</td>
+</tr>
+<tr>
+<td>Squirrelly</td>
+<td style="text-align:right;">25,846</td>
+<td style="text-align:right;">0.039</td>
+<td>7.52× faster</td>
+<td style="text-align:right;">11,425</td>
+</tr>
+<tr>
+<td>art-template</td>
+<td style="text-align:right;">25,466</td>
+<td style="text-align:right;">0.039</td>
+<td>7.41× faster</td>
+<td style="text-align:right;">11,627</td>
+</tr>
+<tr>
+<td>Lodash template</td>
+<td style="text-align:right;">21,434</td>
+<td style="text-align:right;">0.047</td>
+<td>6.24× faster</td>
+<td style="text-align:right;">11,627</td>
+</tr>
+<tr>
+<td>EJS</td>
+<td style="text-align:right;">12,733</td>
+<td style="text-align:right;">0.079</td>
+<td>3.71× faster</td>
+<td style="text-align:right;">11,627</td>
+</tr>
+<tr>
+<td>Mustache</td>
+<td style="text-align:right;">11,968</td>
+<td style="text-align:right;">0.084</td>
+<td>3.48× faster</td>
+<td style="text-align:right;">10,121</td>
+</tr>
+<tr>
+<td>Nunjucks</td>
+<td style="text-align:right;">6,305</td>
+<td style="text-align:right;">0.159</td>
+<td>1.84× faster</td>
+<td style="text-align:right;">11,627</td>
+</tr>
+<tr>
+<td>Handlebars</td>
+<td style="text-align:right;">5,535</td>
+<td style="text-align:right;">0.181</td>
+<td>1.61× faster</td>
+<td style="text-align:right;">10,121</td>
+</tr>
+<tr>
+<td>Dust.js</td>
+<td style="text-align:right;">3,595</td>
+<td style="text-align:right;">0.278</td>
+<td>1.05× faster</td>
+<td style="text-align:right;">11,627</td>
+</tr>
+<tr>
+<td>Teddy</td>
+<td style="text-align:right;">3,435</td>
+<td style="text-align:right;">0.291</td>
+<td>same</td>
+<td style="text-align:right;">11,795</td>
+</tr>
+<tr>
+<td>LiquidJS</td>
+<td style="text-align:right;">1,061</td>
+<td style="text-align:right;">0.942</td>
+<td>3.24× slower</td>
+<td style="text-align:right;">11,627</td>
+</tr>
+<tr>
+<td>Pug</td>
+<td style="text-align:right;">—</td>
+<td style="text-align:right;">—</td>
+<td>compiles ahead of time</td>
+<td style="text-align:right;">—</td>
+</tr>
+<tr>
+<td>Marko</td>
+<td style="text-align:right;">—</td>
+<td style="text-align:right;">—</td>
+<td>compiles ahead of time</td>
+<td style="text-align:right;">—</td>
+</tr>
+<tr>
+<td>PHP (node-php-runner)</td>
+<td style="text-align:right;">—</td>
+<td style="text-align:right;">—</td>
+<td>cannot run client-side</td>
+<td style="text-align:right;">—</td>
+</tr>
+</tbody>
+</table>
+<h3 id="large-table-3">Large table</h3>
+<p>1,000 rows of 7 cells, one of them conditional. Measures how the engine scales when the same small body is rendered many times.</p>
+<table>
+<thead>
+<tr>
+<th>Engine</th>
+<th style="text-align:right;">Renders/sec</th>
+<th style="text-align:right;">Mean ms</th>
+<th>vs Teddy</th>
+<th style="text-align:right;">Output bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Eta</td>
+<td style="text-align:right;">6,814</td>
+<td style="text-align:right;">0.147</td>
+<td>4.38× faster</td>
+<td style="text-align:right;">237,757</td>
+</tr>
+<tr>
+<td>art-template</td>
+<td style="text-align:right;">5,838</td>
+<td style="text-align:right;">0.171</td>
+<td>3.75× faster</td>
+<td style="text-align:right;">238,758</td>
+</tr>
+<tr>
+<td>Squirrelly</td>
+<td style="text-align:right;">5,290</td>
+<td style="text-align:right;">0.189</td>
+<td>3.40× faster</td>
+<td style="text-align:right;">237,757</td>
+</tr>
+<tr>
+<td>doT</td>
+<td style="text-align:right;">3,674</td>
+<td style="text-align:right;">0.272</td>
+<td>2.36× faster</td>
+<td style="text-align:right;">238,758</td>
+</tr>
+<tr>
+<td>Handlebars</td>
+<td style="text-align:right;">2,157</td>
+<td style="text-align:right;">0.464</td>
+<td>1.39× faster</td>
+<td style="text-align:right;">233,753</td>
+</tr>
+<tr>
+<td>Lodash template</td>
+<td style="text-align:right;">1,787</td>
+<td style="text-align:right;">0.560</td>
+<td>1.15× faster</td>
+<td style="text-align:right;">238,758</td>
+</tr>
+<tr>
+<td>Mustache</td>
+<td style="text-align:right;">1,678</td>
+<td style="text-align:right;">0.596</td>
+<td>1.08× faster</td>
+<td style="text-align:right;">233,753</td>
+</tr>
+<tr>
+<td>Dust.js</td>
+<td style="text-align:right;">1,657</td>
+<td style="text-align:right;">0.603</td>
+<td>1.07× faster</td>
+<td style="text-align:right;">238,758</td>
+</tr>
+<tr>
+<td>Teddy</td>
+<td style="text-align:right;">1,555</td>
+<td style="text-align:right;">0.643</td>
+<td>same</td>
+<td style="text-align:right;">238,758</td>
+</tr>
+<tr>
+<td>Nunjucks</td>
+<td style="text-align:right;">1,477</td>
+<td style="text-align:right;">0.677</td>
+<td>1.05× slower</td>
+<td style="text-align:right;">238,758</td>
+</tr>
+<tr>
+<td>EJS</td>
+<td style="text-align:right;">728</td>
+<td style="text-align:right;">1.37</td>
+<td>2.14× slower</td>
+<td style="text-align:right;">238,758</td>
+</tr>
+<tr>
+<td>LiquidJS</td>
+<td style="text-align:right;">47.3</td>
+<td style="text-align:right;">21.14</td>
+<td>32.87× slower</td>
+<td style="text-align:right;">238,758</td>
+</tr>
+<tr>
+<td>Pug</td>
+<td style="text-align:right;">—</td>
+<td style="text-align:right;">—</td>
+<td>compiles ahead of time</td>
+<td style="text-align:right;">—</td>
+</tr>
+<tr>
+<td>Marko</td>
+<td style="text-align:right;">—</td>
+<td style="text-align:right;">—</td>
+<td>compiles ahead of time</td>
+<td style="text-align:right;">—</td>
+</tr>
+<tr>
+<td>PHP (node-php-runner)</td>
+<td style="text-align:right;">—</td>
+<td style="text-align:right;">—</td>
+<td>cannot run client-side</td>
+<td style="text-align:right;">—</td>
+</tr>
+</tbody>
+</table>
+<h3 id="partials-3">Partials</h3>
+<p>a shell that pulls in a header and a footer once and a product partial 24 times. Measures the per-call overhead of including another template.</p>
+<table>
+<thead>
+<tr>
+<th>Engine</th>
+<th style="text-align:right;">Renders/sec</th>
+<th style="text-align:right;">Mean ms</th>
+<th>vs Teddy</th>
+<th style="text-align:right;">Output bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>doT</td>
+<td style="text-align:right;">46,572</td>
+<td style="text-align:right;">0.021</td>
+<td>19.44× faster</td>
+<td style="text-align:right;">10,931</td>
+</tr>
+<tr>
+<td>Eta</td>
+<td style="text-align:right;">31,942</td>
+<td style="text-align:right;">0.031</td>
+<td>13.33× faster</td>
+<td style="text-align:right;">10,672</td>
+</tr>
+<tr>
+<td>Squirrelly</td>
+<td style="text-align:right;">27,367</td>
+<td style="text-align:right;">0.037</td>
+<td>11.42× faster</td>
+<td style="text-align:right;">10,672</td>
+</tr>
+<tr>
+<td>Lodash template</td>
+<td style="text-align:right;">13,192</td>
+<td style="text-align:right;">0.076</td>
+<td>5.51× faster</td>
+<td style="text-align:right;">10,883</td>
+</tr>
+<tr>
+<td>Mustache</td>
+<td style="text-align:right;">8,303</td>
+<td style="text-align:right;">0.120</td>
+<td>3.47× faster</td>
+<td style="text-align:right;">11,708</td>
+</tr>
+<tr>
+<td>EJS</td>
+<td style="text-align:right;">6,240</td>
+<td style="text-align:right;">0.160</td>
+<td>2.60× faster</td>
+<td style="text-align:right;">10,883</td>
+</tr>
+<tr>
+<td>art-template</td>
+<td style="text-align:right;">4,783</td>
+<td style="text-align:right;">0.209</td>
+<td>2.00× faster</td>
+<td style="text-align:right;">10,883</td>
+</tr>
+<tr>
+<td>Dust.js</td>
+<td style="text-align:right;">4,732</td>
+<td style="text-align:right;">0.211</td>
+<td>1.98× faster</td>
+<td style="text-align:right;">10,883</td>
+</tr>
+<tr>
+<td>Nunjucks</td>
+<td style="text-align:right;">3,798</td>
+<td style="text-align:right;">0.263</td>
+<td>1.59× faster</td>
+<td style="text-align:right;">10,883</td>
+</tr>
+<tr>
+<td>Handlebars</td>
+<td style="text-align:right;">2,681</td>
+<td style="text-align:right;">0.373</td>
+<td>1.12× faster</td>
+<td style="text-align:right;">11,648</td>
+</tr>
+<tr>
+<td>Teddy</td>
+<td style="text-align:right;">2,396</td>
+<td style="text-align:right;">0.417</td>
+<td>same</td>
+<td style="text-align:right;">10,958</td>
+</tr>
+<tr>
+<td>LiquidJS</td>
+<td style="text-align:right;">545</td>
+<td style="text-align:right;">1.83</td>
+<td>4.40× slower</td>
+<td style="text-align:right;">10,883</td>
+</tr>
+<tr>
+<td>Pug</td>
+<td style="text-align:right;">—</td>
+<td style="text-align:right;">—</td>
+<td>compiles ahead of time</td>
+<td style="text-align:right;">—</td>
+</tr>
+<tr>
+<td>Marko</td>
+<td style="text-align:right;">—</td>
+<td style="text-align:right;">—</td>
+<td>compiles ahead of time</td>
+<td style="text-align:right;">—</td>
+</tr>
+<tr>
+<td>PHP (node-php-runner)</td>
+<td style="text-align:right;">—</td>
+<td style="text-align:right;">—</td>
+<td>cannot run client-side</td>
+<td style="text-align:right;">—</td>
+</tr>
+</tbody>
+</table>
+<h3 id="full-page-3">Full page</h3>
+<p>a complete document: head, header, banner, else-if chain, 24 products, a 25 row table, footer. Measures everything above at once, which is the closest thing here to a real request.</p>
+<table>
+<thead>
+<tr>
+<th>Engine</th>
+<th style="text-align:right;">Renders/sec</th>
+<th style="text-align:right;">Mean ms</th>
+<th>vs Teddy</th>
+<th style="text-align:right;">Output bytes</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>doT</td>
+<td style="text-align:right;">28,069</td>
+<td style="text-align:right;">0.036</td>
+<td>37.30× faster</td>
+<td style="text-align:right;">17,364</td>
+</tr>
+<tr>
+<td>Eta</td>
+<td style="text-align:right;">25,148</td>
+<td style="text-align:right;">0.040</td>
+<td>33.42× faster</td>
+<td style="text-align:right;">17,067</td>
+</tr>
+<tr>
+<td>Squirrelly</td>
+<td style="text-align:right;">17,789</td>
+<td style="text-align:right;">0.056</td>
+<td>23.64× faster</td>
+<td style="text-align:right;">17,067</td>
+</tr>
+<tr>
+<td>Lodash template</td>
+<td style="text-align:right;">12,380</td>
+<td style="text-align:right;">0.081</td>
+<td>16.45× faster</td>
+<td style="text-align:right;">17,308</td>
+</tr>
+<tr>
+<td>Mustache</td>
+<td style="text-align:right;">5,159</td>
+<td style="text-align:right;">0.194</td>
+<td>6.86× faster</td>
+<td style="text-align:right;">18,837</td>
+</tr>
+<tr>
+<td>EJS</td>
+<td style="text-align:right;">4,482</td>
+<td style="text-align:right;">0.223</td>
+<td>5.96× faster</td>
+<td style="text-align:right;">17,308</td>
+</tr>
+<tr>
+<td>art-template</td>
+<td style="text-align:right;">3,883</td>
+<td style="text-align:right;">0.258</td>
+<td>5.16× faster</td>
+<td style="text-align:right;">17,308</td>
+</tr>
+<tr>
+<td>Dust.js</td>
+<td style="text-align:right;">2,738</td>
+<td style="text-align:right;">0.365</td>
+<td>3.64× faster</td>
+<td style="text-align:right;">17,328</td>
+</tr>
+<tr>
+<td>Nunjucks</td>
+<td style="text-align:right;">2,376</td>
+<td style="text-align:right;">0.421</td>
+<td>3.16× faster</td>
+<td style="text-align:right;">17,308</td>
+</tr>
+<tr>
+<td>Handlebars</td>
+<td style="text-align:right;">1,459</td>
+<td style="text-align:right;">0.685</td>
+<td>1.94× faster</td>
+<td style="text-align:right;">18,765</td>
+</tr>
+<tr>
+<td>Teddy</td>
+<td style="text-align:right;">752</td>
+<td style="text-align:right;">1.33</td>
+<td>same</td>
+<td style="text-align:right;">17,397</td>
+</tr>
+<tr>
+<td>LiquidJS</td>
+<td style="text-align:right;">470</td>
+<td style="text-align:right;">2.13</td>
+<td>1.60× slower</td>
+<td style="text-align:right;">17,308</td>
+</tr>
+<tr>
+<td>Pug</td>
+<td style="text-align:right;">—</td>
+<td style="text-align:right;">—</td>
+<td>compiles ahead of time</td>
+<td style="text-align:right;">—</td>
+</tr>
+<tr>
+<td>Marko</td>
+<td style="text-align:right;">—</td>
+<td style="text-align:right;">—</td>
+<td>compiles ahead of time</td>
+<td style="text-align:right;">—</td>
+</tr>
+<tr>
+<td>PHP (node-php-runner)</td>
+<td style="text-align:right;">—</td>
+<td style="text-align:right;">—</td>
+<td>cannot run client-side</td>
+<td style="text-align:right;">—</td>
+</tr>
+</tbody>
+</table>
+<p>Engines with nothing a browser can run:</p>
+<ul>
+<li><strong>Pug</strong>: ships no build that compiles a template in a browser: pug compiles ahead of time, so it is measured that way</li>
+<li><strong>Marko</strong>: ships no build that compiles a template in a browser: marko compiles ahead of time</li>
+<li><strong>PHP (node-php-runner)</strong>: not a javascript engine, so there is nothing to run in a browser</li>
+</ul>
+<h2 id="notes-on-individual-engines">Notes on individual engines</h2>
+<ul>
+<li><strong>Pug</strong>: partials are mixins; pug include is inlined at compile time</li>
+<li><strong>Mustache</strong>: logic-less: else branches are written as inverted sections</li>
+<li><strong>Dust.js</strong>: renders through a callback, called before it returns</li>
+<li><strong>Marko</strong>: ahead-of-time compiler; a .marko file becomes a js module</li>
+<li><strong>LiquidJS</strong>: output is unescaped by default; escaping is explicit</li>
+<li><strong>doT</strong>: partials are compile-time definitions, inlined before the render function exists</li>
+<li><strong>Lodash template</strong>: no include mechanism; partials are passed in as compiled functions</li>
+<li><strong>PHP (node-php-runner)</strong>: not a javascript engine: the template is PHP, and every render crosses into another process, so a fixed round trip and writing the part of the model the page reads as JSON cost more than running the template does</li>
+</ul></article></arg></include>
