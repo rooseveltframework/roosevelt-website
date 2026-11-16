@@ -6,7 +6,7 @@
 //
 // a tooltip shows when the pointer goes over an element or the element is focused from the keyboard, and hides when the pointer leaves, the element is clicked, or escape is pressed; on a touchscreen, tapping an element shows its tooltip and tapping it again or anywhere else hides it
 //
-// the pointer can be moved from an element onto its tooltip without the tooltip disappearing, which matters to people who zoom in (see https://www.w3.org/WAI/WCAG22/Understanding/content-on-hover-or-focus)
+// the tooltip never catches the pointer (see tooltips.scss): moving the pointer from an element onto its tooltip is leaving the element, so the tooltip hides
 const PLACEMENTS = ['top', 'bottom', 'left', 'right']
 const OPPOSITE = { top: 'bottom', bottom: 'top', left: 'right', right: 'left' }
 const FADE_OUT = 250 // ms the tooltip takes to fade out, as tooltips.scss says, before it's closed
@@ -26,13 +26,10 @@ function tooltipElement () {
   tooltip.id = 'tooltip'
   tooltip.popover = 'manual' // so showing it closes nothing else
   tooltip.setAttribute('role', 'tooltip')
-  tooltip.innerHTML = '<div class="tooltip-frame"><div class="tooltip-box"><span class="tooltip-text"></span></div></div>' // the frame fills the space between the tooltip and its element, so the pointer can cross that space without leaving the tooltip
+  tooltip.innerHTML = '<div class="tooltip-frame"><div class="tooltip-box"><span class="tooltip-text"></span></div></div>' // the frame fills the space between the tooltip and its element, which the arrow points across
   document.body.appendChild(tooltip)
   return tooltip
 }
-
-// whether a node is part of the tooltip
-const inTooltip = (node) => Boolean(tooltip && node && tooltip.contains(node))
 
 function show (element, by) {
   if (element === shownFor) return
@@ -86,6 +83,14 @@ function side () {
   }[placement]
   const wanted = flipped ? OPPOSITE[placement] : placement
   if (tooltip.dataset.side !== wanted) tooltip.dataset.side = wanted
+  aimArrow(box, element)
+}
+
+// point the arrow at the middle of the element. the tooltip is centered on the element when there's room, but near the edge of the window it's pushed back inside, and the arrow, which is part of the tooltip, would be pushed along with it and point at nothing.
+// css can't line the arrow up by itself (only the popover is anchored to the element, not the boxes inside it), so where the element's middle is along the tooltip's box is measured here and handed to the stylesheet (see tooltips.scss)
+function aimArrow (box, element) {
+  tooltip.style.setProperty('--tooltip-arrow-x', `${element.left + element.width / 2 - box.left}px`)
+  tooltip.style.setProperty('--tooltip-arrow-y', `${element.top + element.height / 2 - box.top}px`)
 }
 
 // gives every element with a title attribute a tooltip, except iframes and elements with a data-tooltip-skip attribute; it's run again whenever the page adds elements with titles, e.g. search results
@@ -102,7 +107,7 @@ function enhanceTitleAttributes () {
 if (supported) {
   // touches are handled on pointerdown below, because a touch's pointer only goes over what is tapped as it is tapped
   document.addEventListener('pointerover', event => {
-    if (event.pointerType === 'touch' || inTooltip(event.target)) return
+    if (event.pointerType === 'touch') return
     const element = event.target.closest('[data-tooltip]')
     // a tooltip shown by keyboard focus stays while the pointer goes over other things, e.g. as the page scrolls the focused element into view under a pointer that isn't moving
     if (!element) return shownBy === 'focus' ? undefined : hide()
@@ -110,12 +115,9 @@ if (supported) {
   })
   document.addEventListener('pointerout', event => {
     if (event.pointerType === 'touch') return
-    if (inTooltip(event.target)) {
-      if (!inTooltip(event.relatedTarget) && !shownFor?.contains(event.relatedTarget)) hide()
-      return
-    }
+    // the tooltip goes as soon as the pointer is off its element. the tooltip itself never catches the pointer (see tooltips.scss), so moving onto it is leaving the element too
     const element = event.target.closest('[data-tooltip]')
-    if (!element || element.contains(event.relatedTarget) || (element === shownFor && inTooltip(event.relatedTarget))) return
+    if (!element || element.contains(event.relatedTarget)) return
     if (element === clickedOn) clickedOn = null
     if (element === shownFor) hide()
   })
@@ -125,7 +127,6 @@ if (supported) {
   })
   document.addEventListener('focusout', event => { if (shownFor?.contains(event.target)) hide() })
   document.addEventListener('pointerdown', event => {
-    if (inTooltip(event.target)) return
     const element = event.target.closest('[data-tooltip]')
     if (event.pointerType === 'touch') {
       const showing = element && element === shownFor

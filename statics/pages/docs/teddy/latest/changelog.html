@@ -1,7 +1,12 @@
 <include src="layouts/main">
 <arg pageTitle>Teddy — Changelog</arg>
 <arg pageId>teddy-teddy-—-changelog</arg>
-<arg pageContent><article><h2 id="232">2.3.2</h2>
+<arg pageContent><article><h2 id="233">2.3.3</h2>
+<ul>
+<li>Shrank production bundle</li>
+<li>Updated dependencies.</li>
+</ul>
+<h2 id="232">2.3.2</h2>
 <ul>
 <li>Fixed a variable whose name is built from another variable, such as <code>{names.{key}}</code>, writing its value unescaped when the page went through a layout. A name not in the model was written back with flags the model supplied, and the layout parsed it again.</li>
 <li>Fixed a <code>{variable}</code> inside an escaped value being written unescaped when its <code>|s</code> flag was spelled oddly, such as <code>{x||ss}</code>, or when its name was built from another variable.</li>
