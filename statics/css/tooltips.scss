@@ -16,14 +16,13 @@
   font-family: inherit;
   overflow: visible;
 
-  // it fades in over 300ms and out over 250ms (see statics/js/tooltips.js, which sets data-state, and closes it once it's faded out); while it fades out, it isn't in the pointer's way
+  // it fades in over 300ms and out over 250ms (see statics/js/tooltips.js, which sets data-state, and closes it once it's faded out); the pointer goes straight through it to whatever is under it, so it hides as soon as the pointer is off its element, even onto the tooltip
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.25s;
 
   &[data-state="visible"] {
     opacity: 1;
-    pointer-events: auto;
     transition-duration: 0.3s;
   }
 
@@ -47,7 +46,7 @@
   }
 }
 
-// the space between the tooltip and its element, which the arrow points across, is part of the tooltip so the pointer can cross it; it's on whichever side of the tooltip the element ended up on
+// the space between the tooltip and its element, which the arrow points across; it's on whichever side of the tooltip the element ended up on
 #tooltip .tooltip-frame {
   padding-bottom: 10px;
 }
@@ -67,7 +66,7 @@
     content: "";
     position: absolute;
     top: 100%;
-    left: calc(50% - 8px);
+    left: clamp(4px, calc(var(--tooltip-arrow-x, 50%) - 8px), calc(100% - 20px)); // at the middle of the element, which statics/js/tooltips.js measures (the tooltip's own middle isn't it when the tooltip's been pushed in from the edge of the window), but never off the end of the tooltip or onto its rounded corners
     border: 8px solid transparent;
     border-bottom-width: 0;
     border-top-color: #333;
@@ -93,7 +92,7 @@
   }
 
   .tooltip-box::after {
-    top: calc(50% - 8px);
+    top: clamp(4px, calc(var(--tooltip-arrow-y, 50%) - 8px), calc(100% - 20px));
     left: 100%;
     border-width: 8px 0 8px 8px;
     border-color: transparent transparent transparent #333;
@@ -106,7 +105,7 @@
   }
 
   .tooltip-box::after {
-    top: calc(50% - 8px);
+    top: clamp(4px, calc(var(--tooltip-arrow-y, 50%) - 8px), calc(100% - 20px));
     left: auto;
     right: 100%;
     border-width: 8px 8px 8px 0;
