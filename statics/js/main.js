@@ -43,7 +43,10 @@ document.querySelectorAll('pre code').forEach((codeBlock) => {
 const teddy = require('teddy/client')
 document.querySelectorAll('.teddy-live-demo').forEach((form) => {
   form.querySelector('output').innerHTML = ''
-  form.querySelector('fieldset').appendChild(document.createElement('iframe'))
+  // the template typed into the demo is rendered into a sandboxed iframe, which runs no scripts and is given an origin of its own, so nothing the template contains can reach this page
+  const iframe = document.createElement('iframe')
+  iframe.setAttribute('sandbox', '')
+  form.querySelector('fieldset').appendChild(iframe)
   form.querySelector('iframe').srcdoc = `<style>body { font-family: sans-serif; padding: 15px; color: ${window.theme === 'dark' ? '#fff;' : '#000;'} }</style><body>` + 'Click the "Render" button. Rendered template output will go here.' + '</body>'
   form.querySelector('menu button').addEventListener('click', (event) => {
     event.preventDefault()

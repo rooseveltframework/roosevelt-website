@@ -1,0 +1,44 @@
+<include src="layouts/main">
+<arg pageTitle>HTML attribute minifier — Changelog</arg>
+<arg pageId>minify-html-attributes-html-attribute-minifier-—-changelog</arg>
+<arg pageContent><article><h2 id="112">1.1.2</h2>
+<ul>
+<li>Added <code>exemptScripts</code> param, the counterpart of <code>exemptStylesheets</code> for scripts this module is not handed, such as a library bundled in from <code>node_modules</code>.</li>
+<li>Added <code>idReferenceAttributes</code> param, for attributes whose value is an ID that a library defines. Their values are renamed along with the IDs they point at.</li>
+<li>Added warnings for class values this module has to leave alone because a template builds them, such as <code>class="flash {type}"</code>, and for class attributes a template writes from inside another attribute. Either stops matching a renamed class in your CSS or JS without any error, so they are reported through <code>onWarning</code> whenever a class is renamed.</li>
+<li>Fixed <code>popovertarget</code>, <code>commandfor</code>, and <code>interestfor</code> not following a renamed ID, which broke popovers and invoker buttons, and <code>&lt;output for&gt;</code> only following the first of the IDs it lists.</li>
+<li>Updated dependencies.</li>
+</ul>
+<h2 id="111">1.1.1</h2>
+<ul>
+<li>Fixed <code>CHANGELOG.md</code>, <code>CONFIGURATION.md</code>, and <code>USAGE.md</code> being omitted from the published npm package.</li>
+</ul>
+<h2 id="110">1.1.0</h2>
+<ul>
+<li>Breaking: Renamed the <code>extraAttributes</code> param to <code>renameAttributeValues</code>, since it renames the attribute's value rather than its name. Passing the old name now does nothing.</li>
+<li>Added <code>onWarning</code> param, called for everything this module could not safely rename.</li>
+<li>Added <code>exemptStylesheets</code> param, for vendored stylesheets outside your <code>cssDir</code> that cannot be rewritten. Every name they define is exempted, so markup using a third party theme's classes keeps working.</li>
+<li>Added <code>htmlExtensions</code>, <code>cssExtensions</code>, <code>jsExtensions</code>, and <code>maxFileSize</code> params.</li>
+<li>Added <code>disableGlobalVariableReplacements</code> param.</li>
+<li>Added <code>minifyHtmlAttributes.lastRun</code> exposes the name map, warnings, and file count from the last run.</li>
+<li>Added support for Less and Sass stylesheets.</li>
+<li>Added better error handling.</li>
+<li>Changed <code>data-*</code> handling to rename the attribute name rather than its value, which is what the documentation always described. Values like <code>data-count="5"</code> are no longer corrupted.</li>
+<li>Fixed files containing non-ASCII character in their first 512 bytes being misdetected as binary and skipped entirely.</li>
+<li>Fixed various bugs with renaming selectors.</li>
+<li>Improved performance.</li>
+<li>Updated dependencies.</li>
+</ul>
+<h2 id="102">1.0.2</h2>
+<ul>
+<li>Fixed a crash caused by not populating the <code>exemptNames</code> param.</li>
+</ul>
+<h2 id="101">1.0.1</h2>
+<ul>
+<li>Added option to exempt specific values from being renamed.</li>
+<li>Fixed a bug that caused <code>name</code> attributes to be improperly renamed.</li>
+</ul>
+<h2 id="100">1.0.0</h2>
+<ul>
+<li>Initial commit.</li>
+</ul></article></arg></include>

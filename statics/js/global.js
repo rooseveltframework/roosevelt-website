@@ -27,10 +27,12 @@ const floatOnceNavScrolls = [document.querySelector('button[commandfor="nav"]'),
 
 // the column is sized to its widest link rather than to a set width, so the css that right aligns the floating controls inside it is told how wide it actually is
 const navColumn = document.getElementById('pages')
-if (navColumn) {
-  const reportNavColumnWidth = () => document.documentElement.style.setProperty('--nav-column-width', `${navColumn.getBoundingClientRect().width}px`)
-  window.addEventListener('resize', reportNavColumnWidth, { passive: true })
-  reportNavColumnWidth()
+//
+// a resize observer reports the width the browser already worked out, so nothing is measured on each resize event and only a change to the column itself is reported
+if (navColumn && 'ResizeObserver' in window) {
+  new window.ResizeObserver(([entry]) => {
+    document.documentElement.style.setProperty('--nav-column-width', `${entry.borderBoxSize[0].inlineSize}px`)
+  }).observe(navColumn)
 }
 // an observer rather than a scroll handler, so nothing is measured while the page is merely being scrolled through
 if (navLinks && floatOnceNavScrolls.length && 'IntersectionObserver' in window) {
@@ -58,21 +60,37 @@ document.querySelector('search').insertAdjacentHTML('beforeend', '<output hidden
 // this has to come after the search field is revealed above, or the header would be measured while it is still a field narrower than it ends up
 const pageHeader = document.querySelector('main > header')
 const headerControls = pageHeader && pageHeader.querySelector('#nav-search-wrapper')
-if (headerControls) {
+if (headerControls && 'ResizeObserver' in window) {
   // the class only moves the line vertically, so it can never change the answer and set this oscillating
-  const reportHeaderWrap = () => pageHeader.classList.toggle('controls-wrapped', headerControls.offsetTop > 0)
-  window.addEventListener('resize', reportHeaderWrap, { passive: true })
-  reportHeaderWrap()
+  //
+  // it's checked whenever the header changes width, which is what makes its controls wrap; moving the line changes the header's height, so the class is put on in the next frame rather than in the observer's callback, which would have the observer report that change back to itself in the same frame and the browser complain of a loop
+  let headerWidth
+  new window.ResizeObserver(([entry]) => {
+    const width = entry.borderBoxSize[0].inlineSize
+    if (width === headerWidth) return
+    headerWidth = width
+    window.requestAnimationFrame(() => pageHeader.classList.toggle('controls-wrapped', headerControls.offsetTop > 0))
+  }).observe(pageHeader)
 }
 document.getElementById('search').addEventListener('focus', performSearch)
 document.getElementById('search').addEventListener('input', performSearch)
 document.getElementById('searchForm').addEventListener('submit', (event) => {
   event.preventDefault()
 })
-document.getElementById('search').addEventListener('blur', (event) => {
-  setTimeout(() => {
-    document.querySelector('search output').setAttribute('hidden', 'hidden')
-  }, 1000)
+// the results are dismissed when the user is done with the search box: clicking or tapping somewhere else on the page, tabbing out of it, or pressing escape
+//
+// this is decided by where the click lands rather than by the field losing focus, because clicking a result takes focus off the field before the click on the link happens, and safari doesn't focus links that are clicked at all
+const searchElement = document.querySelector('search')
+const hideSearchResults = () => searchElement.querySelector('output').setAttribute('hidden', 'hidden')
+document.addEventListener('pointerdown', (event) => {
+  if (!searchElement.contains(event.target)) hideSearchResults()
+})
+searchElement.addEventListener('focusout', (event) => {
+  // relatedTarget is where focus went, which is empty when it went nowhere in particular, e.g. to a link safari won't focus, so the results are only dismissed when focus has gone somewhere else that can be named
+  if (event.relatedTarget && !searchElement.contains(event.relatedTarget)) hideSearchResults()
+})
+searchElement.addEventListener('keydown', (event) => {
+  if (event.key === 'Escape') hideSearchResults()
 })
 // the search index is fetched the first time the user shows interest in searching rather than on page load because most visitors never search and the index is much larger than the rest of the site's js combined
 let searchIndex
@@ -131,28 +149,39 @@ async function performSearch () {
     for (const file of pages) {
       if (file.text.toLowerCase().includes(searchTerm)) {
         // extract context around the search term
-        const regex = new RegExp(`(.{0,30})(${searchTerm})(.{0,30})`, 'i') // match with up to n characters before and after
+        //
+        // the search term is escaped before it goes into the regex, so that what the user typed is matched literally rather than read as regex syntax, which would throw on an unbalanced bracket like `(`
+        const regex = new RegExp(`(.{0,30})(${escapeRegExp(searchTerm)})(.{0,30})`, 'i') // match with up to n characters before and after
         const match = file.text.match(regex)
-        let context = searchTerm
+        let context = escapeHtml(searchTerm)
         if (match) {
           const before = match[1] || '' // up to n characters before the match
           const matchedText = match[2] // the matched search term
           const after = match[3] || '' // up to n characters after the match
-          context = `${before}<strong>${matchedText}</strong>${after}` // highlight the matched term
+          context = `${escapeHtml(before)}<strong>${escapeHtml(matchedText)}</strong>${escapeHtml(after)}` // highlight the matched term
         }
 
         // the index names the file each page was built into, e.g. docs/latest/get-started/index.html, and the page is linked to at its folder instead, which is its canonical url
         const url = `/${file.file.replace(/(^|\/)index\.html$/, '$1')}`
-        document.querySelector('search output ul').insertAdjacentHTML('beforeend', `<li><a href="${url}" title="${file.title}">…${context}…</li>`)
+        document.querySelector('search output ul').insertAdjacentHTML('beforeend', `<li><a href="${escapeHtml(url)}" title="${escapeHtml(file.title)}">…${context}…</a></li>`)
       }
     }
-    document.querySelector('search output ul').insertAdjacentHTML('beforeend', `<li><a href="https://github.com/search?q=org%3Arooseveltframework+language%3AMarkdown+${document.getElementById('search').value}&type=code">Search this term on GitHub</li>`)
+    const githubSearchUrl = `https://github.com/search?q=${encodeURIComponent(`org:rooseveltframework language:Markdown ${document.getElementById('search').value}`)}&type=code`
+    document.querySelector('search output ul').insertAdjacentHTML('beforeend', `<li><a href="${escapeHtml(githubSearchUrl)}">Search this term on GitHub</a></li>`)
     // TODO: show/hide based on both focus and non-whitespace search term presence
     document.querySelector('search output').removeAttribute('hidden')
   } else {
     document.querySelector('search output').setAttribute('hidden', 'hidden')
   }
   enhanceTitleAttributes()
+}
+
+// the page text, titles, and what the user typed are all plain text, so they are escaped before they are put into the search results as html
+function escapeHtml (text) {
+  return String(text).replaceAll('&', '&amp;').replaceAll('<', '&lt;').replaceAll('>', '&gt;').replaceAll('"', '&quot;').replaceAll("'", '&#39;')
+}
+function escapeRegExp (text) {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
 }
 
 // add permalink icons to <h[n]> tags
@@ -179,23 +208,39 @@ if (window.location.hash && !document.getElementById(decodeURIComponent(window.l
 }
 
 // add light/dark mode picker
+//
+// "OS preference" is a choice of its own rather than the absence of one, so that someone who picked light or dark can go back to following their os
+const savedTheme = getCookie('theme')
 document.querySelector('dialog#nav')?.insertAdjacentHTML('beforeend', `<details id="theme">
   <summary>Theme</summary>
-  <form class="semanticForms" class="${getCookie('theme') || 'light'}">
+  <form class="semanticForms">
     <select id="mode-selector">
       <option value="os">OS preference</option>
-      <option value="light"${getCookie('theme') === 'light' ? 'selected' : ''}>Light</option>
-      <option value="dark"${getCookie('theme') === 'dark' ? 'selected' : ''}>Dark</option>
+      <option value="light"${savedTheme === 'light' ? ' selected' : ''}>Light</option>
+      <option value="dark"${savedTheme === 'dark' ? ' selected' : ''}>Dark</option>
     </select>
   </form>
 </details>`)
-document.getElementById('mode-selector')?.addEventListener('change', setTheme)
-function setTheme (event) {
-  const cookieValue = getCookie('theme')
+
+// other tabs open on the site are told when the theme is changed in this one, so that they all switch together rather than each keeping the theme it was loaded with
+//
+// the choice is kept in a cookie rather than in localStorage, which doesn't fire the storage event other tabs could listen for, so they are told over a broadcast channel instead
+const themeChannel = 'BroadcastChannel' in window ? new window.BroadcastChannel('theme') : null
+themeChannel?.addEventListener('message', (event) => {
+  const modeSelector = document.getElementById('mode-selector')
+  if (modeSelector) modeSelector.value = event.data
+  setTheme()
+})
+document.getElementById('mode-selector')?.addEventListener('change', (event) => {
+  setCookie('theme', event.target.value, 4015) // save the preference for 11 years
+  setTheme()
+  themeChannel?.postMessage(event.target.value)
+})
+
+function setTheme () {
+  const choice = getCookie('theme')
   const osPreference = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light'
-  window.theme = event?.target?.value || cookieValue || osPreference
-  if (window.theme !== 'light' && window.theme !== 'dark') window.theme = osPreference
-  if (event) setCookie('theme', event?.target?.value, 4015) // save the preference for 11 years
+  window.theme = choice === 'light' || choice === 'dark' ? choice : osPreference
   if (window.theme === 'dark') {
     document.querySelector('html').classList.remove('light')
     document.querySelector('html').classList.add('dark')
@@ -214,18 +259,18 @@ function setTheme (event) {
     form.classList.remove('dark')
     form.classList.add(window.theme)
   })
-  // check for <source> elements and flip them if theme doesn't match OS pref
-  if (osPreference !== window.theme) {
-    document.querySelectorAll('[media^="(prefers-color-scheme"]').forEach((el) => {
-      if (el.getAttribute('media').includes('dark')) el.setAttribute('media', '(prefers-color-scheme: light)')
-      else el.setAttribute('media', '(prefers-color-scheme: dark)')
-    })
-  }
+  // <source> elements that pick an image by os theme are flipped when the chosen theme doesn't match the os
+  //
+  // each one's original media query is kept so that this works out the same answer however many times it's run, since the theme can now be changed from another tab as well as by the os
+  document.querySelectorAll('source[media^="(prefers-color-scheme"]').forEach((el) => {
+    el.dataset.osMedia ??= el.getAttribute('media')
+    const flipped = el.dataset.osMedia.includes('dark') ? '(prefers-color-scheme: light)' : '(prefers-color-scheme: dark)'
+    el.setAttribute('media', osPreference === window.theme ? el.dataset.osMedia : flipped)
+  })
+  // the teddy live demo's output is in a sandboxed iframe this page can't reach into, so its text color is changed by rewriting the document it was given
   document.querySelectorAll('.teddy-live-demo iframe').forEach((iframe) => {
-    if (iframe.contentDocument) {
-      const body = iframe.contentDocument.querySelector('body')
-      body.style.color = window.theme === 'dark' ? 'white' : 'black'
-    }
+    const recolored = iframe.srcdoc.replace(/color: #(?:fff|000);/, `color: ${window.theme === 'dark' ? '#fff' : '#000'};`)
+    if (recolored !== iframe.srcdoc) iframe.srcdoc = recolored
   })
 }
 window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', () => { setTheme() })

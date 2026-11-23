@@ -1,7 +1,13 @@
 <include src="layouts/main">
 <arg pageTitle>Changelog</arg>
 <arg pageId>roosevelt-changelog</arg>
-<arg pageContent><article><h2 id="0346">0.34.6</h2>
+<arg pageContent><article><h2 id="0347">0.34.7</h2>
+<ul>
+<li>Fixed <code>minifyHtmlAttributes</code> throwing away the markup <code>progressively-enhance-web-components</code> writes for web components.</li>
+<li>Fixed static pages failing to include a template from the app's views, such as <code>&lt;include src="layouts/main"&gt;</code> in Teddy, when they were built before any request had been served.</li>
+<li>Updated dependencies.</li>
+</ul>
+<h2 id="0346">0.34.6</h2>
 <ul>
 <li>Fixed errors and crashes that could be caused by using Roosevelt from within Electron.</li>
 <li>Updated dependencies.</li>

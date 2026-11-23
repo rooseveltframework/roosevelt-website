@@ -27,6 +27,14 @@
 </ul>
 <pre><code class="javascript language-javascript">  exemptStylesheets: ['node_modules/some-css-framework/dist/framework.css']</code></pre>
 <ul>
+<li><code>exemptScripts</code> <em>[Array of Strings]</em>: Paths to scripts, or directories of them, that this module is not allowed to edit. Typically a library bundled in from <code>node_modules</code> that looks up elements by class or ID, or reads <code>data-*</code> attributes from your markup. Every class, ID, and <code>data-*</code> name they use is added to <code>exemptNames</code>, so your markup keeps using the names they expect. Default <code>[]</code>.</li>
+</ul>
+<pre><code class="javascript language-javascript">  exemptScripts: ['node_modules/some-ui-library/dist/library.js']</code></pre>
+<ul>
+<li><code>idReferenceAttributes</code> <em>[Array of Strings]</em>: Additional HTML attributes whose value is an ID, or a space-separated list of IDs, to be renamed along with the IDs they point at. Use it for attributes a library defines. A <code>data-*</code> attribute listed here still has its own name renamed unless that name is exempt or <code>disableDataReplacements</code> is set. Default <code>[]</code>.</li>
+</ul>
+<pre><code class="javascript language-javascript">  idReferenceAttributes: ['data-for'] // &lt;label data-for="choices"&gt; follows &lt;ul id="choices"&gt; when it becomes &lt;ul id="a"&gt;</code></pre>
+<ul>
 <li><code>disableClassReplacements</code> <em>[Boolean]</em>: Don't rename <code>class</code> attributes. Default: <code>false</code>.</li>
 <li><code>disableIdReplacements</code> <em>[Boolean]</em>: Don't rename <code>id</code> attributes. Default: <code>false</code>.</li>
 <li><code>disableDataReplacements</code> <em>[Boolean]</em>: Don't rename <code>data-*</code> attributes. Default: <code>false</code>.</li>
