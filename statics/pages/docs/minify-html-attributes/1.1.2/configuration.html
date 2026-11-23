@@ -1,0 +1,69 @@
+<include src="layouts/main">
+<arg pageTitle>HTML attribute minifier — Configuration</arg>
+<arg pageId>minify-html-attributes-html-attribute-minifier-—-configuration</arg>
+<arg pageContent><article><h2 id="api">API</h2>
+<p>In the examples on the usage page, you can see that <code>minify-html-attributes</code> is called with the following params:</p>
+<pre><code class="javascript language-javascript">const editedFiles = require('minify-html-attributes')({
+  htmlDir: './mvc/.preprocessed_views', // where your html files to process are located
+  cssDir: './.preprocessed_statics', // where your css files to process are located
+  jsDir: './.preprocessed_statics' // where your js files to process are located
+})</code></pre>
+<p>Here is a breakdown of all the available params:</p>
+<h3 id="directories">Directories</h3>
+<ul>
+<li><code>htmlDir</code> <em>[String]</em>: Location where your source HTML files are. If no HTML files are detected, this module will do nothing.</li>
+<li><code>cssDir</code> <em>[String]</em>: Location where your source CSS files are. (Optional.)</li>
+<li><code>jsDir</code> <em>[String]</em>: Location where your source JS files are. (Optional.)</li>
+</ul>
+<p>The same directory may be given for more than one of these. Files are claimed by extension first, so a stylesheet sitting in your HTML directory is still read as a stylesheet.</p>
+<h3 id="what-gets-renamed">What gets renamed</h3>
+<ul>
+<li><code>renameAttributeValues</code> <em>[Array of Strings]</em>: Additional HTML attributes whose <em>values</em> should be renamed, the way <code>class</code> and <code>id</code> values are. Each attribute gets its own set of names, and the attribute name itself is left alone. Default <code>[]</code>.</li>
+</ul>
+<pre><code class="javascript language-javascript">  renameAttributeValues: ['custom-attr'] // &lt;p custom-attr="someName"&gt; becomes &lt;p custom-attr="a"&gt;</code></pre>
+<ul>
+<li><code>exemptNames</code> <em>[Array of Strings]</em>: Any names you want exempt from renaming. No other name will be given a replacement that collides with one of these. Default <code>[]</code>.</li>
+<li><code>exemptStylesheets</code> <em>[Array of Strings]</em>: Paths to stylesheets, or directories of them, that this module is not allowed to edit. Typically a dependency theme you pull in with <code>@import</code> from <code>node_modules</code>. Every class and ID they define is added to <code>exemptNames</code>, so your markup keeps using the names those stylesheets expect. Default <code>[]</code>.</li>
+</ul>
+<pre><code class="javascript language-javascript">  exemptStylesheets: ['node_modules/some-css-framework/dist/framework.css']</code></pre>
+<ul>
+<li><code>exemptScripts</code> <em>[Array of Strings]</em>: Paths to scripts, or directories of them, that this module is not allowed to edit. Typically a library bundled in from <code>node_modules</code> that looks up elements by class or ID, or reads <code>data-*</code> attributes from your markup. Every class, ID, and <code>data-*</code> name they use is added to <code>exemptNames</code>, so your markup keeps using the names they expect. Default <code>[]</code>.</li>
+</ul>
+<pre><code class="javascript language-javascript">  exemptScripts: ['node_modules/some-ui-library/dist/library.js']</code></pre>
+<ul>
+<li><code>idReferenceAttributes</code> <em>[Array of Strings]</em>: Additional HTML attributes whose value is an ID, or a space-separated list of IDs, to be renamed along with the IDs they point at. Use it for attributes a library defines. A <code>data-*</code> attribute listed here still has its own name renamed unless that name is exempt or <code>disableDataReplacements</code> is set. Default <code>[]</code>.</li>
+</ul>
+<pre><code class="javascript language-javascript">  idReferenceAttributes: ['data-for'] // &lt;label data-for="choices"&gt; follows &lt;ul id="choices"&gt; when it becomes &lt;ul id="a"&gt;</code></pre>
+<ul>
+<li><code>disableClassReplacements</code> <em>[Boolean]</em>: Don't rename <code>class</code> attributes. Default: <code>false</code>.</li>
+<li><code>disableIdReplacements</code> <em>[Boolean]</em>: Don't rename <code>id</code> attributes. Default: <code>false</code>.</li>
+<li><code>disableDataReplacements</code> <em>[Boolean]</em>: Don't rename <code>data-*</code> attributes. Default: <code>false</code>.</li>
+<li><code>disableGlobalVariableReplacements</code> <em>[Boolean]</em>: Don't rename the implicit global variables browsers create for elements with an <code>id</code>. Only undeclared identifiers that match a real element ID are ever renamed, but set this if your JS reads globals that are defined by a script this module cannot see. Default: <code>false</code>.</li>
+</ul>
+<h3 id="which-files-get-read">Which files get read</h3>
+<ul>
+<li><code>htmlExtensions</code> <em>[Array of Strings]</em>: Only read files with these extensions in <code>htmlDir</code> as HTML. By default every text file in <code>htmlDir</code> is read as HTML, which suits template directories where the files may have no extension at all.</li>
+<li><code>cssExtensions</code> <em>[Array of Strings]</em>: Extensions to read as stylesheets. Default <code>['.css', '.less', '.scss']</code>.</li>
+<li><code>jsExtensions</code> <em>[Array of Strings]</em>: Extensions to read as JavaScript. Default <code>['.js', '.mjs', '.cjs']</code>.</li>
+<li><code>maxFileSize</code> <em>[Number]</em>: Skip files larger than this many bytes. Default <code>16777216</code> (16 MB).</li>
+</ul>
+<p>Binary files, files that are not valid UTF-8, hidden files, and files inside hidden directories are always skipped.</p>
+<h3 id="reporting">Reporting</h3>
+<ul>
+<li><code>onWarning</code> <em>[Function]</em>: Called with a string for each thing this module could not safely rename, and for each file it could not parse. Use it to surface these in your build output.</li>
+</ul>
+<h3 id="the-return-value">The return value</h3>
+<p>The returned <code>editedFiles</code> object is structured as follows:</p>
+<ul>
+<li>Key: the path of the file that was edited.<ul>
+<li><code>type</code> <em>[String]</em>: One of the following values: <code>html</code>, <code>css</code>, or <code>js</code>.</li>
+<li><code>contents</code> <em>[String]</em>: The edited code.</li></ul></li>
+</ul>
+<p>Files that were not modified are not included.</p>
+<p>A summary of the last run is also available on the module itself, which is useful when debugging a build:</p>
+<pre><code class="javascript language-javascript">const minifyHtmlAttributes = require('minify-html-attributes')
+minifyHtmlAttributes({ /* … */ })
+
+console.log(minifyHtmlAttributes.lastRun.nameMap) // { class: { … }, id: { … }, data: { … } }
+console.log(minifyHtmlAttributes.lastRun.warnings) // array of strings
+console.log(minifyHtmlAttributes.lastRun.fileCount) // how many files were read</code></pre></article></arg></include>

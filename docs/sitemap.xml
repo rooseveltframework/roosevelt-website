@@ -2,7 +2,7 @@
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
   <url>
     <loc>https://rooseveltframework.org/</loc>
-    <lastmod>2026-10-01T00:00:00.000Z</lastmod>
+    <lastmod>2026-11-22T00:00:00.000Z</lastmod>
   </url>
   <url>
     <loc>https://rooseveltframework.org/contributors/</loc>
@@ -10,7 +10,7 @@
   </url>
   <url>
     <loc>https://rooseveltframework.org/design-philosophy/</loc>
-    <lastmod>2026-10-01T00:00:00.000Z</lastmod>
+    <lastmod>2026-11-22T00:00:00.000Z</lastmod>
   </url>
   <url>
     <loc>https://rooseveltframework.org/docs/check-if-css-is-disabled/latest/</loc>
@@ -86,7 +86,7 @@
   </url>
   <url>
     <loc>https://rooseveltframework.org/docs/latest/changelog/</loc>
-    <lastmod>2026-10-26T00:00:00.000Z</lastmod>
+    <lastmod>2026-11-22T00:00:00.000Z</lastmod>
   </url>
   <url>
     <loc>https://rooseveltframework.org/docs/latest/coding-apps/</loc>
@@ -150,15 +150,15 @@
   </url>
   <url>
     <loc>https://rooseveltframework.org/docs/minify-html-attributes/latest/</loc>
-    <lastmod>2026-09-25T00:00:00.000Z</lastmod>
+    <lastmod>2026-11-22T00:00:00.000Z</lastmod>
   </url>
   <url>
     <loc>https://rooseveltframework.org/docs/minify-html-attributes/latest/changelog/</loc>
-    <lastmod>2026-09-25T00:00:00.000Z</lastmod>
+    <lastmod>2026-11-22T00:00:00.000Z</lastmod>
   </url>
   <url>
     <loc>https://rooseveltframework.org/docs/minify-html-attributes/latest/configuration/</loc>
-    <lastmod>2026-09-25T00:00:00.000Z</lastmod>
+    <lastmod>2026-11-22T00:00:00.000Z</lastmod>
   </url>
   <url>
     <loc>https://rooseveltframework.org/docs/minify-html-attributes/latest/usage/</loc>
@@ -238,7 +238,7 @@
   </url>
   <url>
     <loc>https://rooseveltframework.org/docs/semantic-forms/latest/changelog/</loc>
-    <lastmod>2026-10-24T00:00:00.000Z</lastmod>
+    <lastmod>2026-11-22T00:00:00.000Z</lastmod>
   </url>
   <url>
     <loc>https://rooseveltframework.org/docs/semantic-forms/latest/checkboxes/</loc>
@@ -246,7 +246,7 @@
   </url>
   <url>
     <loc>https://rooseveltframework.org/docs/semantic-forms/latest/fullDemo/</loc>
-    <lastmod>2026-10-01T00:00:00.000Z</lastmod>
+    <lastmod>2026-11-22T00:00:00.000Z</lastmod>
   </url>
   <url>
     <loc>https://rooseveltframework.org/docs/semantic-forms/latest/inputs/</loc>
@@ -254,7 +254,7 @@
   </url>
   <url>
     <loc>https://rooseveltframework.org/docs/semantic-forms/latest/layout/</loc>
-    <lastmod>2026-10-24T00:00:00.000Z</lastmod>
+    <lastmod>2026-11-22T00:00:00.000Z</lastmod>
   </url>
   <url>
     <loc>https://rooseveltframework.org/docs/semantic-forms/latest/reservedKeyboardShortcuts/</loc>
@@ -262,11 +262,11 @@
   </url>
   <url>
     <loc>https://rooseveltframework.org/docs/semantic-forms/latest/theming/</loc>
-    <lastmod>2026-10-24T00:00:00.000Z</lastmod>
+    <lastmod>2026-11-22T00:00:00.000Z</lastmod>
   </url>
   <url>
     <loc>https://rooseveltframework.org/docs/semantic-forms/latest/usage/</loc>
-    <lastmod>2026-10-24T00:00:00.000Z</lastmod>
+    <lastmod>2026-11-22T00:00:00.000Z</lastmod>
   </url>
   <url>
     <loc>https://rooseveltframework.org/docs/single-page-express/latest/</loc>
@@ -274,11 +274,11 @@
   </url>
   <url>
     <loc>https://rooseveltframework.org/docs/single-page-express/latest/changelog/</loc>
-    <lastmod>2026-10-24T00:00:00.000Z</lastmod>
+    <lastmod>2026-11-22T00:00:00.000Z</lastmod>
   </url>
   <url>
     <loc>https://rooseveltframework.org/docs/single-page-express/latest/configuration/</loc>
-    <lastmod>2026-10-24T00:00:00.000Z</lastmod>
+    <lastmod>2026-11-22T00:00:00.000Z</lastmod>
   </url>
   <url>
     <loc>https://rooseveltframework.org/docs/single-page-express/latest/usage/</loc>
@@ -310,7 +310,7 @@
   </url>
   <url>
     <loc>https://rooseveltframework.org/docs/teddy/latest/changelog/</loc>
-    <lastmod>2026-11-15T00:00:00.000Z</lastmod>
+    <lastmod>2026-11-16T00:00:00.000Z</lastmod>
   </url>
   <url>
     <loc>https://rooseveltframework.org/docs/teddy/latest/configuration/</loc>

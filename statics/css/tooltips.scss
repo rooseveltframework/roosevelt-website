@@ -1,4 +1,4 @@
-// tooltips, which are popovers placed with css anchor positioning (see statics/js/tooltips.js): dark, with an arrow pointing at the element each is for, fading in
+// tooltips, which are popovers placed with css anchor positioning (see statics/js/tooltips.js): dark, with an arrow pointing at the element each is for, fading in and out
 
 // the popover is only positioned; what is drawn is the box inside it
 #tooltip {
@@ -16,14 +16,22 @@
   font-family: inherit;
   overflow: visible;
 
-  // it fades in over 300ms and out over 250ms (see statics/js/tooltips.js, which sets data-state, and closes it once it's faded out); the pointer goes straight through it to whatever is under it, so it hides as soon as the pointer is off its element, even onto the tooltip
+  // it fades in over 300ms and out over 250ms, which the browser does by itself as statics/js/tooltips.js opens and closes it: @starting-style gives it the opacity it fades in from, and display and overlay are transitioned so that it stays drawn, and in the top layer, until it has faded out
+  //
+  // the pointer goes straight through it to whatever is under it, so it hides as soon as the pointer is off its element, even onto the tooltip
   opacity: 0;
   pointer-events: none;
-  transition: opacity 0.25s;
+  transition: opacity 0.25s, display 0.25s allow-discrete, overlay 0.25s allow-discrete;
 
-  &[data-state="visible"] {
+  &:popover-open {
     opacity: 1;
     transition-duration: 0.3s;
+  }
+
+  @starting-style {
+    &:popover-open {
+      opacity: 0;
+    }
   }
 
   &[data-placement="bottom"] {

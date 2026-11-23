@@ -705,6 +705,30 @@ function finishBuild () {
 
   highlightCodeBlocks()
   buildSearchIndex()
+  addContentSecurityPolicy()
+}
+
+// give each rendered page a content security policy that only lets it run the site's own script files and the inline scripts that are in it now
+//
+// github pages can't send headers, so it goes in a meta tag, which has to be written after the page is rendered because the inline scripts are allowed by the hash of their exact text as it was rendered, and a script that was changed, or injected into the page, wouldn't match
+//
+// a meta tag can't say where to report violations, so there is no report-uri or 'report-sample'; and there is no 'strict-dynamic', which would stop the page loading the script files its markup names
+const crypto = require('crypto')
+const cspMetaRegex = /<meta http-equiv="?Content-Security-Policy"?[^>]*>/i
+const inlineScriptRegex = /<script>([\s\S]*?)<\/script>/gi
+function addContentSecurityPolicy () {
+  for (const fileName of fs.readdirSync('docs', { recursive: true })) {
+    if (!fileName.endsWith('.html')) continue
+    const file = path.join('docs', fileName)
+    const html = fs.readFileSync(file, 'utf8')
+    if (!/<head>/i.test(html)) continue // e.g. a fragment rather than a page
+    const hashes = [...html.matchAll(inlineScriptRegex)].map(([, script]) => `'sha256-${crypto.createHash('sha256').update(script).digest('base64')}'`)
+    const policy = [`script-src 'self' ${hashes.join(' ')}`.trim(), "object-src 'none'", "base-uri 'none'"].join('; ')
+    const meta = `<meta http-equiv="Content-Security-Policy" content="${policy}">`
+    // it goes first in the head, ahead of every script it covers
+    const withPolicy = cspMetaRegex.test(html) ? html.replace(cspMetaRegex, meta) : html.replace(/<head>/i, `<head>${meta}`)
+    if (withPolicy !== html) fs.writeFileSync(file, withPolicy)
+  }
 }
 
 // apply syntax highlighting to the rendered docs/ templates
@@ -754,6 +778,7 @@ function onStaticsRebuilt (app, files) {
   if (touchedAPage) {
     highlightCodeBlocks() // the rerendered pages came back out of the templates unhighlighted
     buildSearchIndex()
+    addContentSecurityPolicy() // and without their content security policy
   }
 }
 
@@ -776,7 +801,7 @@ function buildSearchIndex () {
     if (fastMode && shardMatch) continue // the old versions weren't rebuilt in fast mode, so their existing index files are still accurate
 
     const $ = cheerio.load(fs.readFileSync(path.join('docs/', file), 'utf8'))
-    let title = $('title').html()
+    let title = $('title').text() // plain text, which the search results escape when they put it into the page
     if (title === 'Redirecting...') continue
     // the site's own name is dropped from search results, since every page carries it and it crowds out the part that tells them apart
     if (title.startsWith('Roosevelt Web Framework — ')) title = title.replace('Roosevelt Web Framework — ', '')

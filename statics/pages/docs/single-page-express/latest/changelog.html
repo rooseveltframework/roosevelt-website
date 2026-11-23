@@ -1,7 +1,14 @@
 <include src="layouts/main">
 <arg pageTitle>Single Page Express — Changelog</arg>
 <arg pageId>single-page-express-single-page-express-—-changelog</arg>
-<arg pageContent><article><h2 id="230">2.3.0</h2>
+<arg pageContent><article><h2 id="231">2.3.1</h2>
+<ul>
+<li>Changed the default render method to skip view transitions for users whose system asks for reduced motion. Added the <code>viewTransitionsWithReducedMotion</code> constructor param to keep them.</li>
+<li>Changed the default render method to put focus back where it was when a page was left, usually the link that was followed, on going back or forward to that page.</li>
+<li>Changed the <code>express-complex</code> sample app to animate only for users who have not asked for reduced motion.</li>
+<li>Updated dependencies.</li>
+</ul>
+<h2 id="230">2.3.0</h2>
 <ul>
 <li>Added the <code>history</code> constructor param: <code>'browser'</code> (the default), <code>'memory'</code>, which records navigations in a history of the app's own and leaves the url alone, as suits a page loaded from a file in an Electron app, or <code>'none'</code>. Also added a <code>history</code> param for <code>app.triggerRoute</code>: <code>'push'</code>, <code>'replace'</code>, or <code>'none'</code>. A browser that refuses to record a navigation switches the app to a memory history, with a warning, rather than the navigation failing.</li>
 <li>Added <code>app.back()</code>, <code>app.forward()</code>, <code>app.canGoBack()</code>, and <code>app.canGoForward()</code>, which work in any history mode.</li>

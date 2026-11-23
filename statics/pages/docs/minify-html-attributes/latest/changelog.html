@@ -1,7 +1,15 @@
 <include src="layouts/main">
 <arg pageTitle>HTML attribute minifier — Changelog</arg>
 <arg pageId>minify-html-attributes-html-attribute-minifier-—-changelog</arg>
-<arg pageContent><article><h2 id="111">1.1.1</h2>
+<arg pageContent><article><h2 id="112">1.1.2</h2>
+<ul>
+<li>Added <code>exemptScripts</code> param, the counterpart of <code>exemptStylesheets</code> for scripts this module is not handed, such as a library bundled in from <code>node_modules</code>.</li>
+<li>Added <code>idReferenceAttributes</code> param, for attributes whose value is an ID that a library defines. Their values are renamed along with the IDs they point at.</li>
+<li>Added warnings for class values this module has to leave alone because a template builds them, such as <code>class="flash {type}"</code>, and for class attributes a template writes from inside another attribute. Either stops matching a renamed class in your CSS or JS without any error, so they are reported through <code>onWarning</code> whenever a class is renamed.</li>
+<li>Fixed <code>popovertarget</code>, <code>commandfor</code>, and <code>interestfor</code> not following a renamed ID, which broke popovers and invoker buttons, and <code>&lt;output for&gt;</code> only following the first of the IDs it lists.</li>
+<li>Updated dependencies.</li>
+</ul>
+<h2 id="111">1.1.1</h2>
 <ul>
 <li>Fixed <code>CHANGELOG.md</code>, <code>CONFIGURATION.md</code>, and <code>USAGE.md</code> being omitted from the published npm package.</li>
 </ul>

@@ -9,7 +9,6 @@
 // the tooltip never catches the pointer (see tooltips.scss): moving the pointer from an element onto its tooltip is leaving the element, so the tooltip hides
 const PLACEMENTS = ['top', 'bottom', 'left', 'right']
 const OPPOSITE = { top: 'bottom', bottom: 'top', left: 'right', right: 'left' }
-const FADE_OUT = 250 // ms the tooltip takes to fade out, as tooltips.scss says, before it's closed
 
 const supported = typeof window !== 'undefined' && 'popover' in window.HTMLElement.prototype && window.CSS?.supports?.('anchor-name: --tooltip') && window.CSS.supports('position-area: top') && window.CSS.supports('position-try-fallbacks: flip-block')
 
@@ -18,7 +17,6 @@ let shownFor = null // the element the tooltip is currently shown for
 let shownBy = null // what showed it: 'pointer', 'focus', or 'touch'
 let clickedOn = null // an element that was clicked, whose tooltip stays hidden until the pointer leaves it
 let describedBy = null // the element's aria-describedby from before its tooltip was shown, put back once its tooltip is hidden
-let fadingOut = null // the timer that closes the tooltip once it's faded out
 
 function tooltipElement () {
   if (tooltip?.isConnected) return tooltip
@@ -40,16 +38,12 @@ function show (element, by) {
   const placement = element.getAttribute('data-tooltip-placement')
   box.dataset.placement = PLACEMENTS.includes(placement) ? placement : 'top'
   box.dataset.side = box.dataset.placement
-  // it fades in: it's opened transparent, and made opaque once the browser has drawn it that way, which css transitions
-  clearTimeout(fadingOut)
-  if (box.matches(':popover-open')) box.hidePopover() // (still fading out from another element, so it's opened again, anchored to this one)
-  box.dataset.state = 'hidden'
+  // it fades in and out by itself as it's opened and closed (see tooltips.scss)
   box.showPopover({ source: element })
   shownFor = element
   describedBy = element.getAttribute('aria-describedby')
   element.setAttribute('aria-describedby', [describedBy, 'tooltip'].filter(Boolean).join(' '))
-  side() // (which also has the browser work out its style as it is, transparent, so the change below is transitioned)
-  box.dataset.state = 'visible'
+  side()
 }
 
 function hide () {
@@ -59,11 +53,7 @@ function hide () {
   shownFor = null
   shownBy = null
   describedBy = null
-  if (!tooltip?.matches(':popover-open')) return
-  // it fades out before it's closed, unless it's shown again by then
-  tooltip.dataset.state = 'hidden'
-  clearTimeout(fadingOut)
-  fadingOut = setTimeout(() => { if (!shownFor && tooltip.matches(':popover-open')) tooltip.hidePopover() }, FADE_OUT)
+  if (tooltip?.matches(':popover-open')) tooltip.hidePopover() // it's kept on screen while it fades out (see tooltips.scss)
 }
 
 // which side of its element the tooltip ended up on once the browser placed it, which can be the opposite of the side asked for if there was no room there, so the arrow and the space between them can be put on the right side
@@ -139,7 +129,9 @@ if (supported) {
   }, true)
   document.addEventListener('keydown', event => { if (event.key === 'Escape') hide() })
   // the browser can take a frame or two after scrolling to flip the tooltip, so it's measured on the next two frames, and again once scrolling stops
-  const remeasure = () => window.requestAnimationFrame(() => { side(); window.requestAnimationFrame(side) })
+  //
+  // nothing is scheduled while no tooltip is showing, which is nearly all of the time the page is being scrolled
+  const remeasure = () => { if (shownFor) window.requestAnimationFrame(() => { side(); window.requestAnimationFrame(side) }) }
   window.addEventListener('scroll', remeasure, { capture: true, passive: true })
   window.addEventListener('scrollend', side, { capture: true, passive: true })
   window.addEventListener('resize', remeasure, { passive: true })

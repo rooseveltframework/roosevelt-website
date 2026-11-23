@@ -2,12 +2,35 @@
 @use "helpers";
 @use "tooltips";
 
-@view-transition { // enable multi-page view transitions
-  navigation: auto;
+// enable multi-page view transitions, but only for people who haven't asked their os to reduce motion
+//
+// it's the rule turning them on that is put behind the media query, rather than the animations being overridden for everyone else, so that the browser does no transition at all for them
+@media (prefers-reduced-motion: no-preference) {
+  @view-transition {
+    navigation: auto;
+  }
 }
 
+// dvh rather than vh, which on mobile is the height of the viewport with the browser's toolbars hidden, so a short page would always be a little taller than the screen and scroll
 html, body, main {
-  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+// tells the browser which theme the page is in, so the scrollbars, form controls, and the blank page shown before the css loads match it rather than staying light
+//
+// the meta tag in the layout says the same before any css has loaded, and the script in the layout puts the class on before anything is drawn
+html {
+  color-scheme: light;
+}
+
+html.dark {
+  color-scheme: dark;
+}
+
+@media (prefers-color-scheme: dark) {
+  html:not(.dark, .light) {
+    color-scheme: dark;
+  }
 }
 
 html, html.light { // default styles; light theme is also the default
@@ -17,6 +40,16 @@ html, html.light { // default styles; light theme is also the default
     color: #000;
     margin: 0;
     font-size: 110%;
+
+    // the fallback font shown until nunito has loaded is scaled to nunito's x-height (484 units of 1000), so that the text is close to the same size when the web font swaps in and the page barely reflows
+    //
+    // nunito itself is unchanged by this, since 0.484 is its own ratio
+    font-size-adjust: 0.484;
+
+    // monospace text isn't in nunito, so scaling it to nunito's x-height would only shrink it
+    code, kbd, samp, pre {
+      font-size-adjust: none;
+    }
 
     ::selection {
       background-color: #0073e9;
@@ -157,6 +190,7 @@ html, html.light { // default styles; light theme is also the default
 
     img {
       max-width: 100%; // ensure the image never exceeds the width of its container
+      height: auto; // keeps the aspect ratio when max-width narrows an image whose width and height attributes are set
     }
 
     pre {
@@ -324,7 +358,7 @@ html, html.light { // default styles; light theme is also the default
               border: 1px #c0c0c0 solid;
               margin-top: 0;
               border-radius: 15px;
-              max-height: calc(70vh);
+              max-height: 70dvh;
               overflow-y: scroll;
               width: 120px;
               max-width: 120px;
@@ -365,7 +399,7 @@ html, html.light { // default styles; light theme is also the default
 
         > nav#pages {
           background-color: #ccc;
-          min-height: calc(100vh - 70px);
+          min-height: calc(100dvh - 70px);
           flex: 0 0 auto;
           width: max-content;
           font-weight: bold;
@@ -720,7 +754,7 @@ html.dark {
         position: fixed;
         width: max-content;
         max-width: 90vw;
-        max-height: 90vh;
+        max-height: 90dvh;
         overflow: auto;
         margin: auto;
         padding: 0 10px;
