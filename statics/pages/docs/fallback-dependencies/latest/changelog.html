@@ -1,7 +1,15 @@
 <include src="layouts/main">
 <arg pageTitle>Fallback dependencies — Changelog</arg>
 <arg pageId>fallback-dependencies-fallback-dependencies-—-changelog</arg>
-<arg pageContent><article><h2 id="203">2.0.3</h2>
+<arg pageContent><article><h2 id="204">2.0.4</h2>
+<ul>
+<li>Improved up-to-date detection performance by resolving specs and inspecting existing targets concurrently across dependencies instead of one at a time, while still applying any needed updates, clones, and <code>npm ci</code> runs in declared order.</li>
+<li>Improved local git checks to run asynchronously alongside remote resolution rather than spawning multiple blocking <code>git</code> calls per dependency, and avoided a duplicate <code>git ls-remote</code> network round-trip when cloning a named ref.</li>
+<li>Improved fallback speed when a higher-priority host is unreachable by skipping connection retry backoff when another fallback is available and caching host-level network failures for the remainder of the run.</li>
+<li>Improved up-to-date checks for existing clones already detached on a short commit id by no longer triggering a temporary clone during resolution.</li>
+<li>Updated dependencies.</li>
+</ul>
+<h2 id="203">2.0.3</h2>
 <ul>
 <li>Fixed updating an existing clone failing when a tag on the remote had been moved to a different commit.</li>
 <li>Fixed only the final fallback's error being logged when all fallbacks for a dependency fail. Every failed attempt's error is now reported.</li>
