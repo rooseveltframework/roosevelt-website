@@ -1,7 +1,12 @@
 <include src="layouts/main">
 <arg pageTitle>Teddy — Changelog</arg>
 <arg pageId>teddy-teddy-—-changelog</arg>
-<arg pageContent><article><h2 id="233">2.3.3</h2>
+<arg pageContent><article><h2 id="234">2.3.4</h2>
+<ul>
+<li>Breaking: Changed an <code>&lt;include&gt;</code> whose <code>src</code> comes from a <code>{variable}</code>, such as <code>&lt;include src="{page}"&gt;</code>, to only load files inside the template root. A value from the model that climbed out with <code>..</code> or was an absolute path could read and render any <code>.html</code> file on the server. A <code>src</code> with no variable in it, such as <code>&lt;include src="../shared/header"&gt;</code>, can still point outside the root.</li>
+<li>Updated dependencies.</li>
+</ul>
+<h2 id="233">2.3.3</h2>
 <ul>
 <li>Shrank production bundle</li>
 <li>Updated dependencies.</li>
